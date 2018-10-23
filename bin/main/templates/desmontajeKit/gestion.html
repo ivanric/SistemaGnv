@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta http-equiv="Content-Type" content="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>gestion</title>
+</head>
+<body>
+	<!-- <h2 style="text-align: center;">GESTION BENEFICIARIOS</h2> -->
+	<div class="card z-depth-2">
+		<div class="card-header">
+			<h2 class="panel-title">
+				DESMONTAJE KIT <small>kits desmontados
+					registrados en el Sistema</small>
+			</h2>
+		</div>
+		<div class="panel-body" style="margin-top: -30px"> 
+			<div class="row">
+				<div class="col-md-12" style="text-align: right;margin-bottom: 15px">			
+					<button id="btn-add" class="btn btn-default waves-effect" disabled="disabled">NUEVO DESMONTAJE</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-3 col-xs-12" style="margin-bottom: 10px;">
+							<input type="text" id="filtro" name=""
+								class="form-control_filtro unput-sm"
+								placeholder=" Buscar Apellidos nombres o placa..">
+						</div>
+						<div class="col-md-3 col-xs-12"></div>
+						<div class="col-md-6 col-xs-12"></div>
+
+					</div>
+				</div>
+				<div class="col-md-12">
+					<table id="tablaData" class="table table-vmiddle nowrap"
+						width="100%">
+						<thead>
+							<tr>
+                                <th class="text-center">#</th>
+								<th class="text-center">Fecha</th>
+								<th class="text-center">#Solicitud</th>
+								<th class="text-center">Taller</th>
+								<th class="text-center">Placa</th>
+								<th class="text-center">Beneficiario</th>
+								<th class="text-center">ci</th>
+<!-- 								<th class="text-center">Opciones</th> -->
+
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	    var result=Get_Opciones(null);
+	    if(ExisteOpcion('adicionar')){
+	        $('#btn-add').attr({
+	            onclick:"(Gestionar.add())",
+	            // accesskey:""
+	            })
+	        $('#btn-add').removeAttr("disabled ").focus().val("Ahora si lo puedes utilizar")
+	    }
+	    function ExisteOpcion(opc){
+	        // alert('entro comparar')
+	        var resultado=false;
+	        for (var i = 0; i < result.AccionesUser.length; i++) {
+	            console.log('for_: ',result.AccionesUser[i]);
+	            if(result.AccionesUser[i].codigo==opc){
+	                resultado=true;         
+	            }
+	        }
+	        // console.log('result_dentro:',resultado)              
+	        return resultado;
+	    }
+        var filtro=$('#filtro').val();
+        listar();
+        $('#filtro').on('keyup',function(){
+            filtro=$(this).val();
+            listar();
+        })
+
+		var DTable='';
+        function listar(){
+            $.ajax({
+                url:'../RestDesmontajeKit/listar',
+                type:'post',
+                dataType:'json',
+                data:{
+                    filtro:filtro
+                },
+                success:function(resp){
+                    console.log('icont_')
+                    if ($.fn.DataTable.isDataTable('#tablaData')) {
+                        DTable.destroy();
+                        iniciarDatable(resp);       
+                    } else {
+                        iniciarDatable(resp);
+                    }   
+                },
+                error:function(err){
+                    alert('sin respuesta del servidor')
+                }
+            })
+        }
+
+		function iniciarDatable(lista){
+            console.log('respuestaAjax: ',lista);
+            DTable=$('#tablaData').DataTable({
+                "oLanguage": {
+                    "sUrl": "/js/dataTables/Spanish.lang"
+                },
+                responsive:true,
+                "dom":'rt<button>ip',
+                // "ordering":false,
+                "pageLength":5,
+                data:lista,
+                columns:[
+                    {data:'iddes'},
+                    {data:'iddes'},
+                    {data:'iddes'},
+                    {data:'iddes'},
+                    {data:'iddes'},
+                    {data:'iddes'},
+                    {data:'iddes'},
+//                     {data:'iddes'},
+                ]
+                ,
+                "createdRow":function(row,data,index){
+                    $('td',row).eq(0).html(index+1).addClass('text-center');
+                    $('td',row).eq(1).html(data.fecha)
+                    $('td',row).eq(2).html(data.registroKit.ordenServicio.solicitud.numSolt)
+                    $('td',row).eq(3).html(data.taller.nombretall)
+                    $('td',row).eq(4).html(data.registroKit.ordenServicio.solicitud.vehiculo.placa)
+                    $('td',row).eq(5).html(data.registroKit.ordenServicio.solicitud.persona.ap+' '+data.registroKit.ordenServicio.solicitud.persona.am+' '+data.registroKit.ordenServicio.solicitud.persona.nombres)
+                    $('td',row).eq(6).html(data.registroKit.ordenServicio.solicitud.persona.ci)
+                    // $('td',row).eq(7).html()
+                    // if (data.aprobadoSiNo==0) {
+					// 		$('td',row).eq(8).html('<input type="checkbox" class=""  disabled="disabled">').addClass('text-center');
+                    // } else {
+                    //     $('td',row).eq(8).html('<input type="checkbox" class="" checked disabled="disabled">').addClass('text-center');
+                    // }
+                    // if(data.personaNuevoBenf.beneficiario.estado==1){
+                    //     $('td',row).eq(9).html('<button type="button" class="btn btn-success waves-effect" href="#" style="text-align:center"><i class="fa fa-thumbs-o-up"></i></button>').addClass('text-center').addClass('text-center');
+                    // }else{
+                    //     $('td',row).eq(9).html('<button type="button" class="btn btn-danger waves-effect" href="#" style="text-align:center"><i class="fa fa-thumbs-o-down"></i></button>').addClass('text-center').addClass('text-center');
+                    // }
+
+                    // if (data.aprobadoSiNo==0){
+                    //     $('td',row).eq(10).html('<button id="btn-aprob" class="btn bgm-indigo waves-effect btn-sm btn-espacio" accesskey="'+data.idtrasl+'" data-href="'+data.idtrasl+'" onclick="(Gestionar.formAprob(this))"><span class="zmdi zmdi-wrench zmdi-hc-fw"></span>Realizar Aprobaciónes</button>');
+                    // }else{
+                    //     $('td',row).eq(10).html('<button id="btn-aprob" class="btn bgm-pink waves-effect btn-sm btn-espacio" accesskey="'+data.idtrasl+'" data-href="'+data.idtrasl+'" onclick="(Gestionar.formAprob(this))"><span class="zmdi zmdi-wrench zmdi-hc-fw"></span>Aprobado</button>');
+                    // } 
+                    // if(ExisteOpcion('ver')  ){
+                    //     $('td',row).eq(10).append('<button id="btn-ver" class="btn bgm-cyan waves-effect btn-sm btn-espacio" accesskey="'+data.idtrasl+'" data-href="'+data.idtrasl+'" onclick="(Gestionar.ver(this))"><span class="zmdi zmdi-print"></span> Ver Transferencia</button>');
+                    // }else{
+                    //     $('td',row).eq(10).append('<button id="btn-ver" class="btn bgm-cyan waves-effect btn-sm  btn-espacio" disabled="disabled"><span class="zmdi zmdi-print"></span>Ver Transferencia</button>');  
+                    // }
+                }
+                ,
+                "fnDrawCallback":function(oSetttings){
+                    destruir(DTable);
+                }
+            });
+        }
+		function destruir(dt){
+            console.log('destroy')
+            dt.destroy();
+            DTable=$('#tablaData').DataTable({
+                "oLanguage": {
+                    "sUrl": "/js/dataTables/Spanish.lang"
+                },
+                "dom":'rt<button>ip',
+                "pageLength":5,
+                responsive:true
+            })
+        }
+		var Gestionar={
+			add:function(){
+				$.ajax({
+                    url:'../DesmontajeKit/modal-add',
+                    type:'post',
+                    success:function(resp){
+                        $('#cont-modales').html(resp);
+                        $('#modal-add').modal('show')
+                        var respCi="";
+                        $('#formulario-add').formValidation({
+						})
+                        .on('success.form.fv', function(e){
+                           e.preventDefault();
+                           
+                           Registrar();
+                        })
+                        function Registrar(){
+                            swal({   
+                                title: "Seguro de realizar desmontaje Kit GNV?",   
+                                text: "Usted registrara el desmontaje de kit GNV",   
+                                type: "warning",   
+                                showCancelButton: true,   
+                                confirmButtonColor: "#DD6B55",   
+                                confirmButtonText: "Si, Continuar!",   
+                                cancelButtonText: "No, Cancelar!",   
+                                closeOnConfirm: false,   
+                                closeOnCancel: false 
+                                }, function(isConfirm){   
+                                    if (isConfirm) {     
+                                        $('#formulario-add').ajaxSubmit({
+                                            dataType:'json',
+                                            success:function(res){
+                                                console.log('registrado',res)
+                                                if(res.estado){
+                                                    $.ajax({
+                                                        url:"../DesmontajeKit/Gestion",
+                                                        success:function(gestion){
+                                                            $('#contenedor-gestion').html(gestion); 
+                                                            swal({
+                                                                title:"Registrado",
+                                                                text:"Se ha realizado desmontaje de kit gnv exitosamente",
+                                                                type:"success",
+                                                                timer: 2000,   
+                                                                showConfirmButton: false 
+                                                            });
+                                                            $('#modal-add').modal('hide')
+                                                        }
+                                                    })      
+                                                }
+                                            }
+                                        })
+
+                                    } else {     
+                                        swal({
+                                            title:"Cancelado",
+                                            text:"Se ha cancelado operacion",
+                                            type:"error",
+                                            timer:2000,
+                                            showCancelButton:false,
+                                            showConfirmButton:false
+
+                                        })
+                                        $('#modal-add').modal('hide')
+                                    } 
+                                });
+
+                        }
+                    },  
+                    error:function(err){
+                        alert('sin respuesta del servidor')
+                        location.href="../principal/index"
+                    }
+                })
+			}
+		}	
+	</script>	
+</body>
+</html>

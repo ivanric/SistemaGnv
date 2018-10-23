@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta http-equiv="Content-Type" content="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>gestion</title>
+</head>
+<body>
+	<!-- <h2 style="text-align: center;">GESTION BENEFICIARIOS</h2> -->
+	<div class="card z-depth-2">
+		<div class="card-header">
+			<h2 class="panel-title">
+				GESTION TRANSFERENCIAS BENEFICIARIOS <small>Administre beneficiarios
+					registrados en el Sistema</small>
+			</h2>
+		</div>
+		<div class="panel-body" style="margin-top: -30px"> 
+			<div class="row">
+				<div class="col-md-12" style="text-align: right;margin-bottom: 15px">			
+					<button id="btn-add" class="btn btn-default waves-effect" disabled="disabled">NUEVA TRANSFERENCIA BENEFICIARIO</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-3 col-xs-12" style="margin-bottom: 10px;">
+							<input type="text" id="filt-ben" name=""
+								class="form-control_filtro unput-sm"
+								placeholder=" Buscar Apellidos nombres o cedula..">
+						</div>
+						<div class="col-md-3 col-xs-12"></div>
+						<div class="col-md-6 col-xs-12 navbar-right" style="text-align: right; margin-top: 10px">
+							<label class="radio radio-inline m-r-20"> <input
+								type="radio" name="iestado" id="activos" value="1"> <i
+								class="input-helper"></i>activos
+							</label> <label class="radio radio-inline m-r-20"> <input
+								type="radio" name="iestado" id="bajas" value="0"> <i
+								class="input-helper"></i>bajas
+							</label> <label class="radio radio-inline m-r-20"> <input
+								type="radio" name="iestado" id="todos" value="-1"
+								checked="checked"> <i class="input-helper"></i>todos
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<table id="tablaData" class="table table-vmiddle nowrap"
+						width="100%">
+						<thead>
+							<tr>
+                                <th class="text-center">#</th>
+								<th class="text-center">Fecha</th>
+								<th class="text-center">#Solicitud</th>
+								<th class="text-center">#Placa</th>
+								<th class="text-center">beneficiario Anterior</th>
+								<th class="text-center">beneficiario Nuevo</th>
+								<th class="text-center">ci</th>
+								<th class="text-center">direccion</th>
+								<th class="text-center">Aprobado</th>
+								<th class="text-center">Estado Beneficiario Nuevo</th>
+								<th class="text-center">Opciones</th>
+
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+    <script type="text/javascript">
+        var GTamAprob=0;
+        var GminTam=1,GmaxTam;
+        var GDataOpciones=result;
+     	var GClickBotton=false;
+        var GAprobFinal=0;
+        var idSOLT;
+        var idTb;
+
+        var result=Get_Opciones(null);
+        if(ExisteOpcion('adicionar')){
+            $('#btn-add').attr({
+                onclick:"(Gestionar.add())",
+                // accesskey:""
+                })
+            $('#btn-add').removeAttr("disabled ").focus().val("Ahora si lo puedes utilizar")
+        }
+        function ExisteOpcion(opc){
+            // alert('entro comparar')
+            var resultado=false;
+            for (var i = 0; i < result.AccionesUser.length; i++) {
+                console.log('for_: ',result.AccionesUser[i]);
+                if(result.AccionesUser[i].codigo==opc){
+                    resultado=true;         
+                }
+            }
+            // console.log('result_dentro:',resultado)              
+            return resultado;
+        }
+        var filtro=$('#filt-ben').val();
+        var estado=$('input[name="iestado"]:checked').val();
+        listar();
+        $('#filt-ben').on('keyup',function(){
+            filtro=$(this).val();
+            listar();
+        })
+        $('input[name="iestado"]').on('change',function(){
+            estado=$(this).val();
+            listar();
+        })
+        var DTable='';
+        function listar(){
+            $.ajax({
+                url:'../RestTBeneficiarios/listar',
+                type:'post',
+                dataType:'json',
+                data:{
+                    filtro:filtro,
+                    estado:estado,
+                },
+                success:function(resp){
+                    console.log('icont_')
+                    if ($.fn.DataTable.isDataTable('#tablaData')) {
+                        DTable.destroy();
+                        iniciarDatable(resp);       
+                    } else {
+                        iniciarDatable(resp);
+                    }   
+                },
+                error:function(err){
+                    alert('sin respuesta del servidor')
+                }
+            })
+        }
+        function iniciarDatable(lista){
+            console.log('respuestaAjax: ',lista);
+            DTable=$('#tablaData').DataTable({
+                "oLanguage": {
+                    "sUrl": "/js/dataTables/Spanish.lang"
+                },
+                responsive:true,
+                "dom":'rt<button>ip',
+                // "ordering":false,
+                "pageLength":5,
+                data:lista,
+                columns:[
+                    {data:'idbenNuevo'},
+                    {data:'idbenNuevo'},
+                    {data:'idbenNuevo'},
+                    {data:'idbenNuevo'},
+                    {data:'idbenNuevo'},
+                    {data:'idbenNuevo'},
+                    {data:'idbenNuevo'},
+                    {data:'idbenNuevo'},
+                    {data:'idbenNuevo'}, 
+                    {data:'idbenNuevo'},
+                    {data:'idbenNuevo'},
+                ]
+                ,
+                "createdRow":function(row,data,index){
+                    $('td',row).eq(0).html(index+1).addClass('text-center');
+                    $('td',row).eq(1).html(data.fechaTraslado)
+                    $('td',row).eq(2).html(data.registroKit.ordenServicio.solicitud.numSolt)
+                    $('td',row).eq(3).html(data.registroKit.ordenServicio.solicitud.vehiculo.placa)
+                    $('td',row).eq(4).html(data.personaAnteriorBenf.ap+' '+data.personaAnteriorBenf.am+' '+data.personaAnteriorBenf.nombres)
+                    $('td',row).eq(5).html(data.personaNuevoBenf.ap+' '+data.personaNuevoBenf.am+' '+data.personaNuevoBenf.nombres)
+                    $('td',row).eq(6).html(data.personaNuevoBenf.ci)
+                    $('td',row).eq(7).html(data.personaNuevoBenf.direccion)
+                    if (data.aprobadoSiNo==0) {
+							$('td',row).eq(8).html('<input type="checkbox" class=""  disabled="disabled">').addClass('text-center');
+                    } else {
+                        $('td',row).eq(8).html('<input type="checkbox" class="" checked disabled="disabled">').addClass('text-center');
+                    }
+                    if(data.personaNuevoBenf.beneficiario.estado==1){
+                        $('td',row).eq(9).html('<button type="button" class="btn btn-success waves-effect" href="#" style="text-align:center"><i class="fa fa-thumbs-o-up"></i></button>').addClass('text-center').addClass('text-center');
+                    }else{
+                        $('td',row).eq(9).html('<button type="button" class="btn btn-danger waves-effect" href="#" style="text-align:center"><i class="fa fa-thumbs-o-down"></i></button>').addClass('text-center').addClass('text-center');
+                    }
+
+                    if (data.aprobadoSiNo==0){
+                        $('td',row).eq(10).html('<button id="btn-aprob" class="btn bgm-indigo waves-effect btn-sm btn-espacio" accesskey="'+data.idtrasl+'" data-href="'+data.idtrasl+'" onclick="(Gestionar.formAprob(this))"><span class="zmdi zmdi-wrench zmdi-hc-fw"></span>Realizar Aprobaciónes</button>');
+                    }else{
+                        $('td',row).eq(10).html('<button id="btn-aprob" class="btn bgm-pink waves-effect btn-sm btn-espacio" accesskey="'+data.idtrasl+'" data-href="'+data.idtrasl+'" onclick="(Gestionar.formAprob(this))"><span class="zmdi zmdi-wrench zmdi-hc-fw"></span>Aprobado</button>');
+                    } 
+                    if(ExisteOpcion('ver')  ){
+                        $('td',row).eq(10).append('<button id="btn-ver" class="btn bgm-cyan waves-effect btn-sm btn-espacio" accesskey="'+data.idtrasl+'" data-href="'+data.idtrasl+'" onclick="(Gestionar.ver(this))"><span class="zmdi zmdi-print"></span> Ver Transferencia</button>');
+                    }else{
+                        $('td',row).eq(10).append('<button id="btn-ver" class="btn bgm-cyan waves-effect btn-sm  btn-espacio" disabled="disabled"><span class="zmdi zmdi-print"></span>Ver Transferencia</button>');  
+                    }
+                }
+                ,
+                "fnDrawCallback":function(oSetttings){
+                    destruir(DTable);
+                }
+            });
+        }
+        function destruir(dt){
+            console.log('destroy')
+            dt.destroy();
+            DTable=$('#tablaData').DataTable({
+                "oLanguage": {
+                    "sUrl": "/js/dataTables/Spanish.lang"
+                },
+                "dom":'rt<button>ip',
+                "pageLength":5,
+                responsive:true
+            })
+        }
+      	var MAX_TELEFONOS = 2;
+        var cont_doc;
+        var m_cont_doc;
+        var Gestionar={
+            
+            add:function(){
+                $.post('/RestTBeneficiarios/documentosBeneficiario',function(respDoc){
+                     cont_doc=respDoc.length
+                })  
+                $.ajax({
+                    url:'../TBeneficiario/modal-add',
+                    type:'post',
+                    success:function(resp){
+                        $('#cont-modales').html(resp);
+                        $('#text-desc').val('')
+                        $('#select-genero').chosen()
+                        $('#ciCod').chosen()
+                        $('#modal-add').modal('show')
+                        var respCi="";
+                        $('#formulario-add').formValidation({
+                            fields:{
+                            	ciN:{
+                            		validators:{
+                            			callback:{
+                            				message:'callback cedula existente',
+                            				callback:function(value,validator,$field){
+                            					console.log('valor de cedula: ',value)
+                            					$.ajax({
+	                                                url:"../RestBeneficiarios/existeCi",
+	                                                data:{
+	                                                    ci:value
+	                                                },
+	                                                type:"post",
+	                                                dataType:"json",
+	                                                async:false,
+	                                                cache:false,
+	                                                success:function(resp){
+	                                                    respCi=resp.estado
+	                                                },  
+	                                                error:function(err){
+	                                                    alert('sin respuesta del servidor')
+	                                                }
+	
+	                                            })
+                            					if(respCi){
+                            					     return {
+                                                         valid:false,
+                                                         message:'esta cedula ya esta registrada'
+                                                     } 
+                            					}else{
+                            						return true;	
+                            					}
+                            					
+                            				}
+                            			}
+                            		}
+                            	},
+                                nombresN:{
+                                    validators:{
+                                        callback:{
+                                            message:"Call",
+                                            callback:function(value,validators,$field){
+                                                var Patron=/^[a-zA-Z]*$/;
+                                                if (!value.search(Patron)) {
+                                                    return true
+                                                } else {
+                                                    return {
+                                                         valid:false,
+                                                         message:'Este campo solo acepta letras'
+                                                     } 
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                apN:{
+                                    validators:{
+                                        callback:{
+                                            message:"Call",
+                                            callback:function(value,validators,$field){
+                                                var Patron=/^[a-zA-Z]*$/;
+                                                if (!value.search(Patron)) {
+                                                    return true
+                                                } else {
+                                                    return {
+                                                         valid:false,
+                                                         message:'Este campo solo acepta letras'
+                                                     } 
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                amN:{
+                                    validators:{
+                                        callback:{
+                                            message:"Call",
+                                            callback:function(value,validators,$field){
+                                                var Patron=/^[a-zA-Z]*$/;
+                                                if (!value.search(Patron)) {
+                                                    return true
+                                                } else {
+                                                    return {
+                                                         valid:false,
+                                                         message:'Este campo solo acepta letras'
+                                                     } 
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                'documentos[]': {
+                                //     validators: {
+                                //         notEmpty: {
+                                //             message: 'Seleccione Docuementos'
+                                //         },
+                                //         choice: {
+                                //             min: cont_doc,
+                                //             max: cont_doc,
+                                //             message: 'Seleccione todos los documentos '
+                                //         }
+                                //     }
+
+                                    validators:{
+                                        callback:{
+                                            message:"Call",
+                                            callback:function(value,validators,$field){
+                                                return {valid:true}
+                                            }
+                                        }
+                                    }
+                                },
+                                'telefono[]': {
+                                    validators: {
+                                        stringLength: {
+                                            max: 10,
+                                            message: 'El tamaño debe ser maximo hasta 10 caracteres'
+                                        }
+                                    }
+                                },
+                                'aprobacion[]': {
+                                    validators: {
+                                        // notEmpty: {
+                                        //     message: 'Require Aprobaciones'
+                                        // },
+                                        choice: {
+                                            min: 1,
+                                            max: 4,
+                                            message: 'Debe Seleccionar como minimo una Aprobacion'
+                                        },
+                                        callback:{
+                                            // message:'callback',
+                                            callback:function(value,validators,$fields){
+                                                var id_check=$fields[0].id;
+                                                var accesskey=$fields[0].accessKey;
+                                                var Field_Id=id_check.slice(0,-1)
+                                                var ServerCheck=$('#'+Field_Id+accesskey).attr('servcheck');
+                                                var ServerCheck_ant;
+                                                var chec_ante='';
+                                                var id_ant;
+                                                var Loc_estado=true;
+                                                var invalidate=true;
+                                                var mensaje='';
+                                                var data_id=$('#'+id_check).data('id');
+                                                console.log('VALUE:',value)        
+                                                console.log('fields_:',$fields)
+                                                console.log('accesskey_:',accesskey)
+                                                var check_actual=$('#'+Field_Id+$fields[0].accessKey);
+                                                // console.log('CKECK_ACTUAL: ',check_actual)
+                                                // alert('VAL:'+value)
+                                                
+                                                if(GClickBotton==false){
+                                                    if(check_actual.is(':checked')){
+                                                        // alert('esta checked')
+                                                        PausaAprob(parseInt(accesskey)+1,data_id)
+                                                    }else{
+                                                        // alert('no esta checked')
+                                                        invalidate=true
+                                                        var boolch;    
+                                                        var ck_an;
+                                                        var cont=0;
+                                                        for (var i = 1; i <=accesskey; i++) {
+                                                            boolch=$('#'+Field_Id+i+'').is(':checked');
+                                                            if(boolch!=true){
+                                                                cont=cont+1;
+                                                            }
+                                                            if(cont==1){
+                                                                ck_an=$('#'+Field_Id+i+'').attr('accesskey')
+                                                                id_ant=parseInt(ck_an)-1;
+
+                                                            }
+                                                        }
+                                                        console.log('id_ant: ',id_ant)
+                                                        ServerCheck_ant=$('#'+Field_Id+id_ant+'').attr('servcheck')
+
+                                                        //cuando se desqueo y se vuelve el pausa a la chequeado anterior
+                                                        if(ServerCheck_ant=="true"){//SI YA ESTABA CHEQUEADO O APROBADO
+                                                            PausaAprob(-1,0)
+                                                        }else{
+                                                            // PausaAprob(parseInt(ck_an),0)
+                                                            PausaAprob(parseInt(ck_an),data_id-1)//MODIFIQUEEEEEEEE
+                                                        }
+                                                    }
+                                                }
+
+
+
+                                                if(accesskey>1){
+                                                    for (var i = 1; i < accesskey; i++) {
+                                                        var ckeck_for=$('#'+Field_Id+i).is(':checked');
+                                                        console.log('ckeck_for_:'+i)
+                                                        if(!ckeck_for){
+                                                            Loc_estado=false;
+                                                        }
+                                                    }
+                                                }
+                                                console.log('GTamAprob: ',GTamAprob)
+                                                var iter=parseInt(accesskey)+1;
+                                                console.log('iter:',iter)
+                                                console.log('ServerCheck: ',ServerCheck)
+                                                if(ServerCheck=="false"){
+                                                    //alert('1')
+                                                    for (var i =iter; i <= GTamAprob; i++) {
+                                                        //alert('entro borrando: ',accesskey)
+                                                        var check_before='#'+Field_Id+i;
+                                                        console.log('check_before: '+check_before)
+                                                        $(check_before).prop('checked',false)
+                                                    }
+                                                }    
+                                                if(!Loc_estado){
+                                                    //alert('2')
+                                                    if(check_actual.is(':checked')){
+                                                        invalidate=false;
+                                                        mensaje="Debe Seguir las Aprobaciones segun su orden"
+                                                    }else{
+                                                        invalidate=true;
+                                                    }
+                                                }else{
+                                                    //alert('3')
+                                                    if(accesskey==1){
+                                                        var checkOne=$('#'+Field_Id+accesskey);
+                                                        // var posi=parseInt(accesskey)+1;
+                                                        // $('#'+Field_Id+ac).prop('checked',false)
+                                                        if(checkOne.is(':checked')==false){
+                                                            // return false
+                                                            invalidate=false;
+
+                                                        }
+                                                    }
+                                                    // return true;
+                                                    // return invalidate;
+                                                }
+                                                GClickBotton=false
+                                                // return true;
+                                                return{
+                                                    valid:invalidate,
+                                                    message:mensaje
+                                                    
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+
+                            }
+                        })
+                        .on('click', '.addButton', function(){
+				            var $template = $('#optionTemplate');
+				            var   $clone    = $template
+				                                .clone()
+				                                .removeClass('hide')
+				                                .removeAttr('id')
+				                                .insertBefore($template);
+				            $clone.find('.form-control').attr('name','telefono[]');
+				            var   $option   = $clone.find('[name="telefono[]"]');
+				            $('#formulario-add').formValidation('addField', $option);
+				        })
+				        .on('click', '.removeButton', function() {
+				            var $row    = $(this).parents('.form-group'),
+				                $option = $row.find('[name="telefono[]"]');
+							console.log('padre: ',$row)
+				            $row.remove();
+				            $('#formulario-add').formValidation('removeField', $option);
+				        })
+				        .on('added.field.fv', function(e, data) {
+				            if (data.field === 'telefono[]') {
+				                if ($('#formulario-add').find(':visible[name="telefono[]"]').length >= MAX_TELEFONOS) {
+				                    $('#formulario-add').find('.addButton').attr('disabled', 'disabled');
+				                }
+				            }
+				        })
+				        .on('removed.field.fv', function(e, data) {
+				           if (data.field === 'telefono[]') {
+				                if ($('#formulario-add').find(':visible[name="telefono[]"]').length < MAX_TELEFONOS) {
+				                    $('#formulario-add').find('.addButton').removeAttr('disabled');
+				                }
+				            }
+				        })
+                        .on('success.form.fv', function(e){
+                           e.preventDefault();
+                           
+                           Registrar();
+                        })
+                        $.post('/RestTBeneficiarios/documentosBeneficiario',function(respDoc){
+                            $('#formulario-add').find('#js_doc').html('')
+                            console.log('listaDoc: ',respDoc)
+                            $(respDoc).each(function(index,item){
+                                console.log('index_ckec:',index)
+                                contador_tam=index+1;
+
+                                $('#js_doc').append(
+                                    `<div class="checkbox m-b-15">
+                                        <label>
+                                            <input value="${item.iddocb}" type="checkbox" name="documentos[]" >
+                                            <i class="input-helper" ></i>${item.nombre}
+                                        </label>
+                                    </div>`
+                                );
+                            })
+                            $('#formulario-add').find('#m_cont_doc').val(respDoc.length);
+                            $('#formulario-add').formValidation('addField','documentos[]');
+                            
+                        })
+                        function Registrar(){
+                            swal({   
+                                title: "Seguro de Transferir Beneficiario?",   
+                                text: "Usted registrara una transferencia de Beneficiario",   
+                                type: "warning",   
+                                showCancelButton: true,   
+                                confirmButtonColor: "#DD6B55",   
+                                confirmButtonText: "Si, Continuar!",   
+                                cancelButtonText: "No, Cancelar!",   
+                                closeOnConfirm: false,   
+                                closeOnCancel: false 
+                                }, function(isConfirm){   
+                                    if (isConfirm) {     
+                                        $('#formulario-add').ajaxSubmit({
+                                            dataType:'json',
+                                            data:{
+                                                dataFinal:GAprobFinal,
+                                                idsolt:idSOLT
+                                            },
+                                            success:function(res){
+                                                console.log('registrado',res)
+                                                if(res.estado){
+                                                    $.ajax({
+                                                        url:"../TBeneficiario/Gestion",
+                                                        success:function(gestion){
+                                                            $('#contenedor-gestion').html(gestion); 
+                                                            swal({
+                                                                title:"Registrado",
+                                                                text:"Se ha Transferido beneficiario exitosamente",
+                                                                type:"success",
+                                                                timer: 2000,   
+                                                                showConfirmButton: false 
+                                                            });
+                                                            $('#modal-add').modal('hide')
+                                                            var idT=res.idtrasl;
+                                                              $("#frameReportes").attr("src",'../RestTBeneficiarios/Imprimir?idtrasl='+idT);
+                                                              $("#reportes").modal('show'); 
+                                                        }
+                                                    })      
+                                                }
+                                            }
+                                        })
+
+                                    } else {     
+                                        swal({
+                                            title:"Cancelado",
+                                            text:"Se ha cancelado operacion",
+                                            type:"error",
+                                            timer:2000,
+                                            showCancelButton:false,
+                                            showConfirmButton:false
+
+                                        })
+                                        $('#modal-add').modal('hide')
+                                    } 
+                                });
+
+                        }
+                    },  
+                    error:function(err){
+                        alert('sin respuesta del servidor')
+                        location.href="../principal/index"
+                    }
+                })
+            },
+            formAprob:function(a){
+        		idTb=$(a).attr('accesskey');
+        		$.ajax({
+        			url:'../TBeneficiario/modal-aprobacion',
+        			type:'post',
+        			cache:false,
+                    async:false,
+        			success:function(resp){
+                         $('#cont-modales').html(resp);
+                    
+
+
+        			     $('#formulario-add-aprobTB').find('#modal-add').modal('show')
+        			    //  document.getElementById('btn-guardar-aprob').disabled=true;
+						//  $('#formulario-add-aprobTB').find("#btn-guardar-aprob").attr('disabled','disabled');
+						//  $('#formulario-add-aprobTB').find("input[type=submit]").attr('disabled','disabled');
+                    },
+        			error:function(err){
+        				alert('sin respuesta del servidor ', err)
+        			}
+        		})
+        		this.EnviarFormulario();
+        	},
+            EnviarFormulario:function(){
+
+                $('#formulario-add-aprobTB').formValidation({
+                    fields:{
+                        'aprobacion[]': {
+                            validators: {
+                                // notEmpty: {
+                                //     message: 'Require Aprobaciones'
+                                // },
+                                choice: {
+                                    min: 1,
+                                    max: 4,
+                                    message: 'Debe Seleccionar como minimo una Aprobacion'
+                                },
+                                callback:{
+                                    // message:'callback',
+                                    callback:function(value,validators,$fields){
+                                        var id_check=$fields[0].id;
+                                        var accesskey=$fields[0].accessKey;
+                                        var Field_Id=id_check.slice(0,-1)
+                                        var ServerCheck=$('#'+Field_Id+accesskey).attr('servcheck');
+                                        var ServerCheck_ant;
+                                        var chec_ante='';
+                                        var id_ant;
+                                        var Loc_estado=true;
+                                        var invalidate=true;
+                                        var mensaje='';
+                                        var data_id=$('#'+id_check).data('id');
+                                        console.log('VALUE:',value)        
+                                        console.log('fields_:',$fields)
+                                        console.log('accesskey_:',accesskey)
+                                        var check_actual=$('#'+Field_Id+$fields[0].accessKey);
+                                        // console.log('CKECK_ACTUAL: ',check_actual)
+                                        // alert('VAL:'+value)
+                                        
+                                        if(GClickBotton==false){
+                                            if(check_actual.is(':checked')){
+                                                // alert('esta checked')
+                                                PausaAprob(parseInt(accesskey)+1,data_id)
+                                            }else{
+                                                // alert('no esta checked')
+                                                invalidate=true
+                                                var boolch;    
+                                                var ck_an;
+                                                var cont=0;
+                                                for (var i = 1; i <=accesskey; i++) {
+                                                    boolch=$('#'+Field_Id+i+'').is(':checked');
+                                                    if(boolch!=true){
+                                                        cont=cont+1;
+                                                    }
+                                                    if(cont==1){
+                                                        ck_an=$('#'+Field_Id+i+'').attr('accesskey')
+                                                        id_ant=parseInt(ck_an)-1;
+
+                                                    }
+                                                }
+                                                console.log('id_ant: ',id_ant)
+                                                ServerCheck_ant=$('#'+Field_Id+id_ant+'').attr('servcheck')
+
+                                                //cuando se desqueo y se vuelve el pausa a la chequeado anterior
+                                                if(ServerCheck_ant=="true"){//SI YA ESTABA CHEQUEADO O APROBADO
+                                                    PausaAprob(-1,0)
+                                                }else{
+                                                    // PausaAprob(parseInt(ck_an),0)
+                                                    PausaAprob(parseInt(ck_an),data_id-1)//MODIFIQUEEEEEEEE
+                                                }
+                                            }
+                                        }
+
+
+
+                                        if(accesskey>1){
+                                            for (var i = 1; i < accesskey; i++) {
+                                                var ckeck_for=$('#'+Field_Id+i).is(':checked');
+                                                console.log('ckeck_for_:'+i)
+                                                if(!ckeck_for){
+                                                    Loc_estado=false;
+                                                }
+                                            }
+                                        }
+                                        console.log('GTamAprob: ',GTamAprob)
+                                        var iter=parseInt(accesskey)+1;
+                                        console.log('iter:',iter)
+                                        console.log('ServerCheck: ',ServerCheck)
+                                        if(ServerCheck=="false"){
+                                            //alert('1')
+                                            for (var i =iter; i <= GTamAprob; i++) {
+                                                //alert('entro borrando: ',accesskey)
+                                                var check_before='#'+Field_Id+i;
+                                                console.log('check_before: '+check_before)
+                                                $(check_before).prop('checked',false)
+                                            }
+                                        }    
+                                        if(!Loc_estado){
+                                            //alert('2')
+                                            if(check_actual.is(':checked')){
+                                                invalidate=false;
+                                                mensaje="Debe Seguir las Aprobaciones segun su orden"
+                                            }else{
+                                                invalidate=true;
+                                            }
+                                        }else{
+                                            //alert('3')
+                                            if(accesskey==1){
+                                                var checkOne=$('#'+Field_Id+accesskey);
+                                                // var posi=parseInt(accesskey)+1;
+                                                // $('#'+Field_Id+ac).prop('checked',false)
+                                                if(checkOne.is(':checked')==false){
+                                                    // return false
+                                                    invalidate=false;
+
+                                                }
+                                            }
+                                            // return true;
+                                            // return invalidate;
+                                        }
+                                        GClickBotton=false
+                                        // return true;
+                                        return{
+                                            valid:invalidate,
+                                            message:mensaje
+                                            
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+
+                    }
+                })
+                .on('success.form.fv', function(e){
+                    e.preventDefault();
+                    var $form=$(e.target); 
+                    Registrar($form);
+                })    
+
+
+                function Registrar(formulario){
+                    // alert(GAprobFinal)
+                    var $form=formulario;
+                    var formData = new FormData();
+                    var params   = $form.serializeArray();
+                    var aprobacion    = $form.find('[name="aprobacion[]"]')[0];
+                    console.log('serializado: ',$form.serialize())
+                    console.log('params: ',params)
+                    console.log('aprobacion: ',aprobacion)
+                    
+                    $.each(aprobacion, function(i, aprob) {
+                        formData.append('aprob-' + i, aprob);
+                    });
+                    $.each(params, function(i, val) {
+                        formData.append(val.name, val.value);
+                    });
+                    console.log('formData: ',formData)
+
+                    // if(GAprobFinal!=0){
+                    //     $.growl.error({
+                    //         title:'Advertencia', 
+                    //         message: "Usted realizará la aprobacion Final de esta Solicitud!",
+                    //         duration:5000,
+                    //         size:'large',
+                    //         location:'tc' 
+                    //     });
+                    // } 
+                    swal({   
+                        title: "Seguro de registrar Aprobaciones?",   
+                        text: "Usted registrara Aprobaciones",   
+                        type: "warning",   
+                        showCancelButton: true,   
+                        confirmButtonColor: "#DD6B55",   
+                        confirmButtonText: "Si, Continuar!",   
+                        cancelButtonText: "No, Cancelar!",   
+                        closeOnConfirm: false,   
+                        closeOnCancel: false 
+                        }, function(isConfirm){   
+                            if (isConfirm) {
+                                $('#formulario-add-aprobTB').ajaxSubmit({
+                                    dataType:'json',
+                                    data:{
+                                        dataFinal:GAprobFinal,
+                                        idsolt:idSOLT,
+                                        idtrasl:idTb
+                                    },
+                                    success:function(res){
+                                        console.log('registrado',res)
+                                        if(res.status){
+                                            $.ajax({
+                                                url:"../TBeneficiario/Gestion",
+                                                success:function(gestion){
+                                                    $('#contenedor-gestion').html(gestion); 
+                                                    swal({
+                                                        title:"Aprobacion Registrada",
+                                                        text:"Se ha registrado Aprobaciones exitosamente",
+                                                        type:"success",
+                                                        timer: 2000,   
+                                                        showConfirmButton: false 
+                                                    });
+                                                    $('#formulario-add-aprobTB').find('#modal-add').modal('hide')
+
+                                                    // $("#frameReportes").attr("src",'../RestAprobaciones/Imprimir?idsolt='+idSOLT+'&'+$form.serialize());
+                                                    // $("#reportes").modal('show');
+                    
+                                                }
+                                            })      
+                                        }else{
+                                            swal({
+                                                title:"Error",
+                                                text:"Se ha encontrado un Error en el Sistema",
+                                                type:"error",
+                                                timer:2000,
+                                                showCancelButton:false,
+                                                showConfirmButton:false
+
+                                            })
+                                        $('#formulario-add-aprobTB').find('#modal-add').modal('hide')
+                                        }
+                                    }
+                                })
+
+                            } else {     
+                                // swal("Cancelled", "Your imaginary file is safe :)", "error");   
+                                swal({
+                                    title:"Cancelado",
+                                    text:"Se ha cancelado operacion",
+                                    type:"error",
+                                    timer:2000,
+                                    showCancelButton:false,
+                                    showConfirmButton:false
+
+                                })
+                            $('#formulario-add-aprobTB').find('#modal-add').modal('hide')
+                            } 
+                        });
+                }  
+            
+                
+            },
+            ver:function(a){
+                idTb=$(a).attr('accesskey');
+                console.log('idTb: ',idTb)
+                $.ajax({
+                    url:'../TBeneficiario/modal-ver',
+                    type:"post",
+                    success:function(resp){
+                        $('#cont-modales').html(resp);
+                        $('#modal-ver').modal('show');
+                        $('#formulario-ver').formValidation({
+                        }).on('success.form.fv', function(e){
+                           e.preventDefault();
+                           imprimir();
+                        })
+                        function imprimir(){
+                            $("#frameReportes").attr("src",'../RestTBeneficiarios/Imprimir?idtrasl='+idTb);
+                            $("#reportes").modal('show'); 
+                        }
+                    },
+                    error:function(){
+                        alert('error sin respuesta del Servidor')
+                    }
+                })
+            },
+            
+        }
+
+        function resetearFormulario(form){
+            $(form).data('formValidation').resetForm(true)
+        }
+        
+        $('#generarR').click(function(){ 
+  			$("#frameReportes").attr("src",'../Beneficiarios/listaReporte');
+
+			$("#reportes").modal('show');
+  		});
+        
+    </script>
+</body>
+</html>

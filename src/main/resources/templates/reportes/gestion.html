@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Reportes del Sistema</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-4">
+                    <b>Seleccione Reporte</b>
+                </div>
+                <div class="col-md-8">
+                    <select name="reportes" id="select-reportes" >
+                        <option value="-1">Seleccione Reporte</option>
+                        <option value="10">liston</option>
+                    </select>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="div_fecha">
+
+                </div>
+
+            </div>
+            <br>
+            <div class="row">
+                <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-success waves-effect" id="js_excel"><i class="exportar fa fa-file-excel-o"></i> Reporte en Excel</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-danger waves-effect" id="js_pdf"><i class="exportar fa fa-file-pdf-o"></i> Reporte en  Pdf</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+    <br>
+</body>
+<!-- <script type="" src="../static/bower_components/jquery/dist/jquery.js" th:src="@{/bower_components/jquery/dist/jquery.js}"></script> -->
+
+<script  type="text/javascript">
+    var tipo;
+    // var enlace="../RestResports/solicitudF";
+    var enlace="";
+    $.getJSON('../RestResports/allReport',function(datos){
+        console.log(datos)
+        item=datos[0]
+        $('select[name="reportes"]').append(`<option value="${item.idreport}" accesskey="${item.enlace}" data-id="${item.fechaSiNo}">${item.nombre}</option>`)
+        $('select[name="reportes"]').chosen()
+        // $('#select-comb').trigger('chosen:updated');
+
+    })
+
+    $('#select-reportes').on('change',function(){
+        $('.div_fecha').html('');
+        // console.log($(this).val())
+        enlace=$('#select-reportes option:selected').attr('accesskey')
+        console.log('enlace:',enlace)
+        if(enlace == undefined){
+            enlace="";
+        }
+        var estadoFecha=$('#select-reportes option:selected').data('id')
+        // alert(enlace+' '+estadoFecha)
+        if(estadoFecha==1){
+            $('.div_fecha').html(`
+                <div class="col-md-6">
+                    <b>Fecha Inicial</b> <input type="date" class="form-control" name="fecha_inicial">  
+                </div>
+                <div class="col-md-6">
+                    <b>Fecha Final</b>   <input type="date" class="form-control" name="fecha_final">  
+                </div>
+            `);
+        }
+    })
+
+    $('#js_pdf').click(function(){
+        tipo="pdf"
+        // window.location.href="/RestResports/listar"
+        enviar();
+    })
+    $('#js_excel').click(function(){
+        tipo="xls"
+        enviar();
+
+        // window.location.href="/RestResports/listarExcel"
+        // window.location.href="http://docs.google.com/gview?url=/RestResports/listar&embedded=true"
+        // $("#frameReportes").attr("src","http://docs.google.com/gview?url=/RestResports/listar&embedded=true");
+        // $("#frameReportes").attr("src",'../RestResports/solicitudF');
+        // $("#reportes").modal('show'); 
+    })
+
+    function enviar(){
+        // alert(tipo)
+        if( enlace!=""){
+            console.log('e:',enlace)
+            if(tipo=="pdf"){
+               $("#frameReportes").attr("src",enlace+'?tipo='+tipo);
+               $("#reportes").modal('show'); 
+            }else{
+                $("#frameReportes").attr("src",enlace+'?tipo='+tipo);
+            }
+        }
+    }
+</script>
+</html>
