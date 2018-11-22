@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
+<!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.0.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="getTBeneficiario" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="87c75c4c-153d-4923-adf0-cddb87e43518">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="conect"/>
@@ -172,7 +172,7 @@ WHERE tb.idtrasl=$P{idTrasl_param}]]>
 				<reportElement x="0" y="17" width="570" height="1" uuid="86dd2c4b-a81e-4f8f-98cd-3b8a68febe61"/>
 			</line>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="19" width="159" height="13" forecolor="#000000" uuid="31deb439-7b42-4e16-9a06-ac794cc77e26">
+				<reportElement positionType="Float" x="0" y="19" width="159" height="13" forecolor="#000000" uuid="31deb439-7b42-4e16-9a06-ac794cc77e26">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Bottom">
@@ -181,7 +181,7 @@ WHERE tb.idtrasl=$P{idTrasl_param}]]>
 				<text><![CDATA[Número de Orden de Servicio]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="224" y="19" width="145" height="13" forecolor="#000000" uuid="780845d7-6516-496e-b9f8-3b9f87f478e7">
+				<reportElement positionType="Float" x="224" y="19" width="145" height="13" forecolor="#000000" uuid="780845d7-6516-496e-b9f8-3b9f87f478e7">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Bottom">
@@ -190,7 +190,7 @@ WHERE tb.idtrasl=$P{idTrasl_param}]]>
 				<text><![CDATA[Número de Solicitud]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="420" y="19" width="149" height="13" forecolor="#000000" uuid="16918f9e-fcef-44c2-9f4e-ccbe99eecbb8">
+				<reportElement positionType="Float" x="420" y="19" width="149" height="13" forecolor="#000000" uuid="16918f9e-fcef-44c2-9f4e-ccbe99eecbb8">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Bottom">
@@ -212,7 +212,7 @@ WHERE tb.idtrasl=$P{idTrasl_param}]]>
 				<reportElement x="0" y="51" width="570" height="1" uuid="4f10a0ad-500a-4b30-9680-398112e9db2b"/>
 			</line>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="70" width="159" height="13" forecolor="#000000" uuid="181b66b4-9c45-485e-8cc3-60707d501e3a">
+				<reportElement positionType="Float" x="0" y="70" width="159" height="13" forecolor="#000000" uuid="181b66b4-9c45-485e-8cc3-60707d501e3a">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Bottom">
@@ -221,7 +221,7 @@ WHERE tb.idtrasl=$P{idTrasl_param}]]>
 				<text><![CDATA[Nombre Completo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="224" y="70" width="145" height="13" forecolor="#000000" uuid="5efe1a4a-639b-4eee-bc96-7101cda25dc4">
+				<reportElement positionType="Float" x="224" y="70" width="145" height="13" forecolor="#000000" uuid="5efe1a4a-639b-4eee-bc96-7101cda25dc4">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Bottom">
@@ -230,7 +230,7 @@ WHERE tb.idtrasl=$P{idTrasl_param}]]>
 				<text><![CDATA[Cedula]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="420" y="70" width="149" height="13" forecolor="#000000" uuid="c19043cd-809d-4244-ae7e-4b67e5150751">
+				<reportElement positionType="Float" x="420" y="70" width="149" height="13" forecolor="#000000" uuid="c19043cd-809d-4244-ae7e-4b67e5150751">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Bottom">
@@ -239,7 +239,7 @@ WHERE tb.idtrasl=$P{idTrasl_param}]]>
 				<text><![CDATA[Dirección]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="99" width="159" height="13" forecolor="#000000" uuid="4c4f0df6-e592-462c-bf91-ec89d832cea1">
+				<reportElement positionType="Float" x="0" y="99" width="159" height="13" forecolor="#000000" uuid="4c4f0df6-e592-462c-bf91-ec89d832cea1">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Bottom">
@@ -248,7 +248,7 @@ WHERE tb.idtrasl=$P{idTrasl_param}]]>
 				<text><![CDATA[Email]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="224" y="99" width="145" height="13" forecolor="#000000" uuid="20350ff8-d8ce-4f87-bae2-d726c5f3ad1e">
+				<reportElement positionType="Float" x="224" y="99" width="145" height="13" forecolor="#000000" uuid="20350ff8-d8ce-4f87-bae2-d726c5f3ad1e">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Bottom">
@@ -257,7 +257,7 @@ WHERE tb.idtrasl=$P{idTrasl_param}]]>
 				<text><![CDATA[Celular/Telefono]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="420" y="99" width="149" height="13" forecolor="#000000" uuid="b7373bf3-455e-4972-8c7c-ff42c4794f17">
+				<reportElement positionType="Float" x="420" y="99" width="149" height="13" forecolor="#000000" uuid="b7373bf3-455e-4972-8c7c-ff42c4794f17">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Bottom">
@@ -279,7 +279,7 @@ WHERE tb.idtrasl=$P{idTrasl_param}]]>
 				<reportElement x="0" y="148" width="570" height="1" uuid="93cd705a-4eb9-4d80-90ab-db3bd2ad8bb5"/>
 			</line>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="224" y="149" width="145" height="13" forecolor="#000000" uuid="ee9b1033-4cce-4ca7-b602-da85d72eb092">
+				<reportElement positionType="Float" x="224" y="149" width="145" height="13" forecolor="#000000" uuid="ee9b1033-4cce-4ca7-b602-da85d72eb092">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Bottom">
@@ -288,7 +288,7 @@ WHERE tb.idtrasl=$P{idTrasl_param}]]>
 				<text><![CDATA[Marca Vehículo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="149" width="159" height="13" forecolor="#000000" uuid="bc5bf3ea-2304-4d35-bfed-785dea086314">
+				<reportElement positionType="Float" x="0" y="149" width="159" height="13" forecolor="#000000" uuid="bc5bf3ea-2304-4d35-bfed-785dea086314">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Bottom">
@@ -297,7 +297,7 @@ WHERE tb.idtrasl=$P{idTrasl_param}]]>
 				<text><![CDATA[Placa]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="420" y="149" width="149" height="13" forecolor="#000000" uuid="ddf2ed5c-7902-41bf-a24c-e4996567de04">
+				<reportElement positionType="Float" x="420" y="149" width="149" height="13" forecolor="#000000" uuid="ddf2ed5c-7902-41bf-a24c-e4996567de04">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Bottom">
@@ -306,7 +306,7 @@ WHERE tb.idtrasl=$P{idTrasl_param}]]>
 				<text><![CDATA[Tipo Vehículo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="178" width="159" height="13" forecolor="#000000" uuid="da4ebf13-18d8-43f0-83a2-1f8dd95ec321">
+				<reportElement positionType="Float" x="0" y="178" width="159" height="13" forecolor="#000000" uuid="da4ebf13-18d8-43f0-83a2-1f8dd95ec321">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Bottom">
@@ -315,7 +315,7 @@ WHERE tb.idtrasl=$P{idTrasl_param}]]>
 				<text><![CDATA[Sistema Motor]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="224" y="178" width="145" height="13" forecolor="#000000" uuid="39f2e67c-3e55-4282-8451-f964b76e6c24">
+				<reportElement positionType="Float" x="224" y="178" width="145" height="13" forecolor="#000000" uuid="39f2e67c-3e55-4282-8451-f964b76e6c24">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Bottom">
@@ -324,7 +324,7 @@ WHERE tb.idtrasl=$P{idTrasl_param}]]>
 				<text><![CDATA[Número de Motor]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="420" y="178" width="149" height="13" forecolor="#000000" uuid="9810afb0-d7d2-4d87-86f5-b2cd41b54902">
+				<reportElement positionType="Float" x="420" y="178" width="149" height="13" forecolor="#000000" uuid="9810afb0-d7d2-4d87-86f5-b2cd41b54902">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Bottom">
@@ -346,7 +346,7 @@ WHERE tb.idtrasl=$P{idTrasl_param}]]>
 				<reportElement x="0" y="229" width="570" height="1" uuid="da04cb2c-49c7-4477-8685-8cfd9a696df9"/>
 			</line>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="231" width="159" height="13" forecolor="#000000" uuid="a4d309dd-e206-4962-8126-0e303d9a83da">
+				<reportElement positionType="Float" x="0" y="231" width="159" height="13" forecolor="#000000" uuid="a4d309dd-e206-4962-8126-0e303d9a83da">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Bottom">
@@ -355,7 +355,7 @@ WHERE tb.idtrasl=$P{idTrasl_param}]]>
 				<text><![CDATA[Nombre Completo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="224" y="231" width="145" height="13" forecolor="#000000" uuid="2330dcb3-fa8d-424a-899d-b599e0d4a35b">
+				<reportElement positionType="Float" x="224" y="231" width="145" height="13" forecolor="#000000" uuid="2330dcb3-fa8d-424a-899d-b599e0d4a35b">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Bottom">
@@ -364,7 +364,7 @@ WHERE tb.idtrasl=$P{idTrasl_param}]]>
 				<text><![CDATA[Cedula]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="420" y="231" width="149" height="13" forecolor="#000000" uuid="f0a08a69-2063-49e7-b1bd-4f74792b7464">
+				<reportElement positionType="Float" x="420" y="231" width="149" height="13" forecolor="#000000" uuid="f0a08a69-2063-49e7-b1bd-4f74792b7464">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Bottom">
@@ -373,7 +373,7 @@ WHERE tb.idtrasl=$P{idTrasl_param}]]>
 				<text><![CDATA[Dirección]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="261" width="159" height="13" forecolor="#000000" uuid="747e018a-1087-493c-acc5-bc46159deac2">
+				<reportElement positionType="Float" x="0" y="261" width="159" height="13" forecolor="#000000" uuid="747e018a-1087-493c-acc5-bc46159deac2">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Bottom">
@@ -382,7 +382,7 @@ WHERE tb.idtrasl=$P{idTrasl_param}]]>
 				<text><![CDATA[Email]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="224" y="261" width="145" height="13" forecolor="#000000" uuid="8d498085-fadd-4fcd-8888-79db9713a2ac">
+				<reportElement positionType="Float" x="224" y="261" width="145" height="13" forecolor="#000000" uuid="8d498085-fadd-4fcd-8888-79db9713a2ac">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Bottom">
@@ -391,7 +391,7 @@ WHERE tb.idtrasl=$P{idTrasl_param}]]>
 				<text><![CDATA[Celular/Telefono]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="420" y="261" width="149" height="13" forecolor="#000000" uuid="7be2c362-4b51-4fe7-9d64-c2b126f782ba">
+				<reportElement positionType="Float" x="420" y="261" width="149" height="13" forecolor="#000000" uuid="7be2c362-4b51-4fe7-9d64-c2b126f782ba">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Bottom">
@@ -413,7 +413,7 @@ WHERE tb.idtrasl=$P{idTrasl_param}]]>
 				<reportElement x="0" y="310" width="570" height="1" uuid="2b8a684d-620a-4584-ad91-2185eefd7e07"/>
 			</line>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="312" width="159" height="13" forecolor="#000000" uuid="4350eba2-611a-432b-b055-3b5a49763717">
+				<reportElement positionType="Float" x="0" y="312" width="159" height="13" forecolor="#000000" uuid="4350eba2-611a-432b-b055-3b5a49763717">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Bottom">
@@ -422,7 +422,7 @@ WHERE tb.idtrasl=$P{idTrasl_param}]]>
 				<text><![CDATA[Fecha de Conversión]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="224" y="312" width="145" height="13" forecolor="#000000" uuid="ab0b07e6-0f43-4f85-830f-54a22833fb44">
+				<reportElement positionType="Float" x="224" y="312" width="145" height="13" forecolor="#000000" uuid="ab0b07e6-0f43-4f85-830f-54a22833fb44">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Bottom">
@@ -431,7 +431,7 @@ WHERE tb.idtrasl=$P{idTrasl_param}]]>
 				<text><![CDATA[Fecha de Instalación]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="420" y="312" width="149" height="13" forecolor="#000000" uuid="17c0a318-c4e8-4b27-b0ae-f6394ba99e2e">
+				<reportElement positionType="Float" x="420" y="312" width="149" height="13" forecolor="#000000" uuid="17c0a318-c4e8-4b27-b0ae-f6394ba99e2e">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Bottom">
@@ -440,7 +440,7 @@ WHERE tb.idtrasl=$P{idTrasl_param}]]>
 				<text><![CDATA[Costo de Conversión (Bs.)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="342" width="159" height="13" forecolor="#000000" uuid="b7d81b46-629a-40ba-90af-59ccd8c68b5a">
+				<reportElement positionType="Float" x="0" y="342" width="159" height="13" forecolor="#000000" uuid="b7d81b46-629a-40ba-90af-59ccd8c68b5a">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left" verticalAlignment="Bottom">
@@ -449,7 +449,7 @@ WHERE tb.idtrasl=$P{idTrasl_param}]]>
 				<text><![CDATA[Tipo de Tecnología]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="224" y="342" width="145" height="13" forecolor="#000000" uuid="2908860c-7eee-4446-a4c5-368d37181f5a">
+				<reportElement positionType="Float" x="224" y="342" width="145" height="13" forecolor="#000000" uuid="2908860c-7eee-4446-a4c5-368d37181f5a">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Bottom">
@@ -458,7 +458,7 @@ WHERE tb.idtrasl=$P{idTrasl_param}]]>
 				<text><![CDATA[Marca Regulador]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="420" y="342" width="149" height="13" forecolor="#000000" uuid="c7f40e79-6d6f-4df0-a919-aaeffa00eca4">
+				<reportElement positionType="Float" x="420" y="342" width="149" height="13" forecolor="#000000" uuid="c7f40e79-6d6f-4df0-a919-aaeffa00eca4">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement verticalAlignment="Bottom">

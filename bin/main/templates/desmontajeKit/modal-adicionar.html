@@ -377,7 +377,8 @@
               </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
-    </form> 
+    </form>
+
 
 <script type="" src="../bower_components/jquery.nicescroll/dist/jquery.nicescroll.js"></script>
 
@@ -442,7 +443,7 @@
             console.log('tex: ',texto)
     
             var DTable='';
-            $.getJSON('../RestDesmontajeKit/FiltroActaRecepcion',{texto:texto},function(resp){
+            $.getJSON('../RestDesmontajeKit/FiltroRegistroKit',{texto:texto},function(resp){
                 console.log('ListaFiltro:',resp)
                 $(resp).each(function(i,data){
                     $('#js_table_filtro tbody').append(`
@@ -526,6 +527,7 @@
             })
             $('#display').show()
         })  
+    
     })
 </script> 
 </body>

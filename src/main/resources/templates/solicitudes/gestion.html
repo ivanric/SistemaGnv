@@ -56,12 +56,10 @@
 					<table id="table-solicitudes" class="table table-vmiddle nowrap" style="width:100%">
 						<thead>
 							<tr>
-<!-- 								<th class="text-center" style="width: 10px">#</th> -->
 								<th class="text-center" width="40px"># solt</th>
 								<th class="text-center" width="80px">fecha</th>
 								<th class="text-center" width="80px">placa</th>
 								<th class="text-center">beneficiario</th>
-								<!--<th class="text-center">solicitante</th> -->
 								<th class="text-center" width="15px" >Estado</th>
 								<th class="text-center" width="15px">Aprobado</th>
 								<th class="text-center">Opciones</th>
@@ -120,7 +118,6 @@
         })
         var DTSolicitudes='';
         function listar(){
-//         	alert('listar')
             $.ajax({
                 url:'../RestSolicitudes/listar',
                 type:'post',
@@ -328,7 +325,7 @@
                                                 })
                                                 $('.dt-veh').attr('disabled','disabled')
 												$('.dt-veh').val('').trigger('chosen:updated');			
-												
+												/*
 												$("#div-mod-veh").html(`
 													<a class="btn btn-xs bgm-purple href="#"   waves-effect" id="btn_modVehS" disabled="disabled">
 														<span class="zmdi zmdi-edit"> Modificar Vehiculo</span>
@@ -342,8 +339,7 @@
                                                         })
                                                     $('#btn_modVehS').removeAttr("disabled ").focus().val("Ahora si lo puedes utilizar")
                                                 }
-
-                                                //$("#div-mod-veh").show()
+                                                */
                                                 return true
                                             }else{
                                             	padreNode.removeClass('fg-toggled'); 
@@ -503,13 +499,6 @@
                     }
                 }
                 
-            }, 
-            modificarVehiculo:function(a){
-              // alert('modificar el vehiculo') 
-              // $('.dt-veh').parent().removeClass('fg-toggled'); 
-              $('.dt-veh').removeAttr('disabled')
-              $('.dt-veh').trigger('chosen:updated');
-                  
             },
             anular:function(a){
                 var idsolt=$(a).attr('accesskey');

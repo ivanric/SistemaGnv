@@ -115,7 +115,7 @@ public class RestOrdenPago {
 		return respuesta;
 	}
 	@RequestMapping(value="Ver")
-	public ResponseEntity<List<?>> VerSolicitud(HttpServletRequest req,HttpServletResponse res){
+	public ResponseEntity<List<?>> VerOP(HttpServletRequest req,HttpServletResponse res){
 //		Persona us=(Persona)req.getSession(true).getAttribute("xusuario");
 		List<Object> lista=new ArrayList<>();
 //		String Tramitador=us.getAp().toUpperCase()+" "+us.getAm().toUpperCase()+" "+us.getNombres().toUpperCase();

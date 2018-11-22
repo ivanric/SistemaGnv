@@ -135,6 +135,7 @@ public class RestSolicitudes {
 		Map<String, Object> respuesta=new HashMap<String, Object>();
 		try {
 			boolean solicitud=this.manejadorSolicitudes.anular(Integer.parseInt(idsolt));
+			
 			respuesta.put("estado", solicitud);
 		} catch (Exception e) {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();

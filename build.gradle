@@ -24,6 +24,9 @@ repositories {
 	maven {
         url "https://www.mvnrepository.com/"
     }
+	maven {
+        url "http://jaspersoft.artifactoryonline.com/jaspersoft/third-party-ce-artifacts/"
+    }
 }
 
 

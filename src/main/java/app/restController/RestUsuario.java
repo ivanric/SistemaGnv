@@ -160,7 +160,7 @@ public class RestUsuario {
 		System.out.println("newRol: "+Roles);
 		return new ResponseEntity<List<Rol>>(Roles,HttpStatus.OK);
 	}
-	@ResponseBody 
+
 	@RequestMapping(value="getUserSession")
 	public ResponseEntity<Map<String,Object>> getUserSession(HttpServletRequest request,HttpServletResponse response){
 		System.out.println("llegue ObtenerRoles");
@@ -177,6 +177,36 @@ public class RestUsuario {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println("USER: "+resp.toString());
+
+		return new ResponseEntity<Map<String,Object>>(resp,HttpStatus.OK);
+	}
+	@RequestMapping(value="ChangePassword")
+	public ResponseEntity<Map<String,Object>> ChangePassword(HttpServletRequest request,HttpServletResponse response){
+		System.out.println("llegue ObtenerRoles");
+		HttpSession sesion=request.getSession(true);
+		Persona xuser=(Persona) sesion.getAttribute("xusuario");
+		Map<String, Object> resp=new HashMap<>();
+		String password=request.getParameter("password");
+	
+		try {
+			if (xuser!=null) {
+				System.out.println("pass: "+password);
+				this.manejadorUsuarios.ChangePassword(password, xuser.getUsuario().getLogin());
+				resp.put("msg","Usuario Activo");
+				resp.put("status",true);
+			}else {
+				System.out.println(" usuarui nullo");
+				response.sendRedirect("/index");
+			}
+	
+		} catch (Exception e) {
+			e.printStackTrace();
+			resp.put("msg","Usuario no esta activo");
+			resp.put("status",false);
+		}
+	
+		System.out.println("USER: "+resp.toString());
 
 		return new ResponseEntity<Map<String,Object>>(resp,HttpStatus.OK);
 	}

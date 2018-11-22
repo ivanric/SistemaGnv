@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
+<!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.0.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="actaRecepcion" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0db58696-8310-43ba-9985-a8a72a6e2428">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="conect"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MiConnect"/>
 	<parameter name="idRecep_param" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[new Integer(1)]]></defaultValueExpression>
 	</parameter>
 	<parameter name="escudo_param" class="java.io.InputStream"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT ar.*,tall.nombretall,per.nombres,per.ap,per.am,p.nombres as nombreBen,p.ap as apBen,p.am as amBen,p.ci as ciBen,os.numords,cil.capacidad,veh.placa,serv.precioBolivianos,serv.precioDolares 
+		<![CDATA[SELECT ar.*,tall.nombretall,concat(per.nombres,' ',per.ap,' ',per.am) as personaTall ,concat(p.nombres,' ',p.ap,' ',p.am) as beneficiario,p.ci as ciBen,os.numords,cil.capacidad,veh.placa,serv.precioBolivianos,serv.precioDolares 
 FROM actaRecepcion ar JOIN ordenServicio os ON os.idordserv=ar.idordserv JOIN taller tall ON tall.idtall=os.idtall JOIN persona per ON per.idper=tall.idper JOIN  solicitud sol ON sol.idsolt=os.idsolt JOIN benVehSolt bvs ON bvs.idsolt=sol.idsolt JOIN vehiculo veh ON bvs.placa=veh.placa JOIN beneficiario ben ON ben.idben=bvs.idben AND ben.estado=1 JOIN persona p ON p.idper=ben.idper JOIN servicio serv ON os.idserv=serv.idserv JOIN reductor red on red.idreduc=serv.idreduc JOIN cilindro cil ON cil.idcil=serv.idcil 
 WHERE ar.idrecep=$P{idRecep_param}]]>
 	</queryString>
@@ -39,23 +39,11 @@ WHERE ar.idrecep=$P{idRecep_param}]]>
 	<field name="nombretall" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="nombretall"/>
 	</field>
-	<field name="nombres" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="nombres"/>
+	<field name="personaTall" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="personaTall"/>
 	</field>
-	<field name="ap" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="ap"/>
-	</field>
-	<field name="am" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="am"/>
-	</field>
-	<field name="nombreBen" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="nombreBen"/>
-	</field>
-	<field name="apBen" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="apBen"/>
-	</field>
-	<field name="amBen" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="amBen"/>
+	<field name="beneficiario" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="beneficiario"/>
 	</field>
 	<field name="ciBen" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="ciBen"/>
@@ -326,32 +314,9 @@ WHERE ar.idrecep=$P{idRecep_param}]]>
 				<textField>
 					<reportElement x="59" y="55" width="211" height="16" uuid="a187faab-c038-49af-bd23-0b33111e1c6f"/>
 					<textElement textAlignment="Left" verticalAlignment="Top">
-						<font size="12"/>
+						<font size="12" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{nombretall}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="209" y="71" width="39" height="16" uuid="3a22aab1-6190-4035-9585-59a52ad68285"/>
-					<textElement>
-						<font size="12"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{ap}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="138" y="71" width="70" height="16" uuid="3b57bf53-deaf-4365-9392-41e5280473a7">
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					</reportElement>
-					<textElement>
-						<font size="12"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{nombres}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="250" y="71" width="53" height="16" uuid="d9739798-5d6d-4bd5-ac9c-ee06208e224a"/>
-					<textElement>
-						<font size="12"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{am}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="174" y="88" width="100" height="16" uuid="9f70333c-db3f-4d29-85b5-619517d4d6a5">
@@ -380,6 +345,13 @@ WHERE ar.idrecep=$P{idRecep_param}]]>
 						<font size="12" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{numords}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="138" y="72" width="236" height="14" uuid="93037ce7-265d-4b5a-9eb4-8988e87bfe0b"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{personaTall}]]></textFieldExpression>
 				</textField>
 			</frame>
 			<rectangle>
@@ -597,54 +569,6 @@ WHERE ar.idrecep=$P{idRecep_param}]]>
 				<textFieldExpression><![CDATA[$F{precioBolivianos}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="337" y="260" width="94" height="20" uuid="87c4d1cc-0eb6-49c4-b6bd-322fe92e536c"/>
-				<textElement>
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{nombreBen}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="439" y="260" width="57" height="20" uuid="bb81db08-e154-4754-ba88-7c52568b289b">
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-				<textElement>
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{apBen}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="499" y="260" width="60" height="20" uuid="c984234a-84c2-4881-9b73-2ecc75e610ef">
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-				<textElement>
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{amBen}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="463" y="468" width="47" height="20" uuid="db7fbd6a-2f8d-406d-8615-e0f2f41ea459"/>
-				<textElement>
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{apBen}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="368" y="468" width="94" height="20" uuid="143bf927-5ed3-46e3-ae89-fb556e8984af">
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-				<textElement>
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{nombreBen}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="510" y="468" width="49" height="20" uuid="e60d5162-027a-4a40-8c1b-da1e8f140034"/>
-				<textElement>
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{amBen}]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement x="395" y="488" width="104" height="20" uuid="9aa0f117-0518-4920-9ab5-839dc2e201bf"/>
 				<textElement>
 					<font size="12"/>
@@ -657,6 +581,20 @@ WHERE ar.idrecep=$P{idRecep_param}]]>
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{placa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="339" y="260" width="209" height="20" uuid="02a2d79d-115b-47ec-84a7-776bbffaa938"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{beneficiario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="368" y="470" width="181" height="18" uuid="7236b56f-b20d-4bbf-b431-c75ad078024c"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{beneficiario}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>

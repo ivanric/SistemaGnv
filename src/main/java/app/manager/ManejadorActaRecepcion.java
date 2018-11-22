@@ -131,13 +131,14 @@ public class ManejadorActaRecepcion {
 		int idOrdPago=idOrdPago();
 		String numOrdPago=req.getParameter("numOrdPago");
 		int idrecep=Integer.parseInt(req.getParameter("idrecep"));
-		String precio=req.getParameter("precio");
+//		String precio=req.getParameter("precio");
 
-		System.out.println("numOrdPago: "+numOrdPago+" :idrecep:"+idrecep+" precio:"+precio);
+		System.out.println("numOrdPago: "+numOrdPago+" :idrecep:"+idrecep);
  
 		try {
-			sql="INSERT INTO ordenPago(idOrdPago,numOrdPago,precio,idrecep,login) VALUES(?,?,?,?,?)";
-			this.db.update(sql,idOrdPago,numOrdPago,precio,idrecep,login);
+//			sql="INSERT INTO ordenPago(idOrdPago,numOrdPago,precio,idrecep,login) VALUES(?,?,?,?,?)";
+			sql="INSERT INTO ordenPago(idOrdPago,numOrdPago,idrecep,login) VALUES(?,?,?,?)";
+			this.db.update(sql,idOrdPago,numOrdPago,idrecep,login);
 			
 			sql="UPDATE solicitud SET idacc=? WHERE idsolt=?";
 			this.db.update(sql,getAccionOP(),getIdSoltByOP(idrecep));
@@ -180,7 +181,7 @@ public class ManejadorActaRecepcion {
 		return this.db.query(sql, new objOrdenPago(),"%"+filtro+"%","%"+filtro+"%","%"+filtro+"%");
 	}
 	public List<ActaRecepcion> FiltroActaRecepcionOP(String cadena){
-		String sql="SELECT ar.* FROM actaRecepcion ar,ordenServicio os,solicitud s,vehiculo veh,beneficiario b,persona p,benVehSolt bvs WHERE ar.idordserv=os.idordserv AND os.idsolt=s.idsolt AND os.instaladoSiNo=1 AND bvs.idben=b.idben AND b.estado=1 AND bvs.placa=veh.placa AND bvs.idsolt=s.idsolt and b.idper=p.idper and (os.numords LIKE ? or s.numSolt LIKE ? or p.ci LIKE ?) ";
+		String sql="SELECT ar.* FROM actaRecepcion ar,ordenServicio os,solicitud s,vehiculo veh,beneficiario b,persona p,benVehSolt bvs WHERE ar.idordserv=os.idordserv AND os.idsolt=s.idsolt AND os.instaladoSiNo=1 AND bvs.idben=b.idben AND b.estado=1 AND bvs.placa=veh.placa AND bvs.idsolt=s.idsolt and b.idper=p.idper and (os.numords LIKE ? or s.numSolt LIKE ? or p.ci LIKE ?) AND ar.idrecep NOT IN (SELECT op.idrecep FROM ordenPago op WHERE op.idrecep=ar.idrecep)";
 		return this.db.query(sql, new objActaRecepcion(),'%'+cadena+'%','%'+cadena+'%','%'+cadena+'%');
 	}
 	public int getIdRegistroKit(int id){

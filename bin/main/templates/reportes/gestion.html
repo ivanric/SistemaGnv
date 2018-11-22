@@ -22,7 +22,6 @@
                 <div class="col-md-8">
                     <select name="reportes" id="select-reportes" >
                         <option value="-1">Seleccione Reporte</option>
-                        <option value="10">liston</option>
                     </select>
                 </div>
             </div>
@@ -55,12 +54,16 @@
     var tipo;
     // var enlace="../RestResports/solicitudF";
     var enlace="";
+    var fecha_inicial="";
+    var fecha_final="";
+    $('select[name="reportes"]').chosen()
     $.getJSON('../RestResports/allReport',function(datos){
         console.log(datos)
-        item=datos[0]
-        $('select[name="reportes"]').append(`<option value="${item.idreport}" accesskey="${item.enlace}" data-id="${item.fechaSiNo}">${item.nombre}</option>`)
-        $('select[name="reportes"]').chosen()
-        // $('#select-comb').trigger('chosen:updated');
+        // item=datos[0]
+        $(datos).each(function(index,item){
+            $('select[name="reportes"]').append(`<option value="${item.idreport}" accesskey="${item.enlace}" data-id="${item.fechaSiNo}">${item.nombre}</option>`)
+            $('select[name="reportes"]').trigger('chosen:updated');
+        })
 
     })
 
@@ -104,13 +107,17 @@
 
     function enviar(){
         // alert(tipo)
+        fecha_inicial=$('input[name="fecha_inicial"]').val()
+        fecha_final=$('input[name="fecha_final"]').val()
+        console.log('fecha_inicial:',fecha_inicial,' fecha_final:',fecha_final)
+
         if( enlace!=""){
             console.log('e:',enlace)
             if(tipo=="pdf"){
-               $("#frameReportes").attr("src",enlace+'?tipo='+tipo);
+               $("#frameReportes").attr("src",enlace+'?tipo='+tipo+'&fecha_inicial='+fecha_inicial+'&fecha_final='+fecha_final);
                $("#reportes").modal('show'); 
             }else{
-                $("#frameReportes").attr("src",enlace+'?tipo='+tipo);
+                $("#frameReportes").attr("src",enlace+'?tipo='+tipo+'&fecha_inicial='+fecha_inicial+'&fecha_final='+fecha_final);
             }
         }
     }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
+<!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.0.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="getOrdenPago" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="88b60c84-f9f3-4414-9453-62a852acb22b">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="conect"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MiConnect"/>
 	<subDataset name="ListaCol" uuid="4d7b28ca-ca88-4007-bbe7-a4c918ea8be3">
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="conect"/>
@@ -559,7 +559,7 @@ WHERE op.idOrdPago=$P{idOrdPago_param}]]>
 				<reportElement x="421" y="225" width="140" height="13" uuid="bef85ecd-5c93-4697-9115-eb0b26cc35b4">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<textFieldExpression><![CDATA[$F{pagoConversion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{costoConversion}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="275" width="159" height="13" uuid="0589d931-6ddb-49bf-8558-359889f521a8">
@@ -582,9 +582,11 @@ WHERE op.idOrdPago=$P{idOrdPago_param}]]>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="50">
+		<band height="40">
 			<componentElement>
-				<reportElement x="69" y="20" width="400" height="20" uuid="92602b52-3903-4737-8b1f-1fed141a568b"/>
+				<reportElement x="69" y="20" width="400" height="18" uuid="92602b52-3903-4737-8b1f-1fed141a568b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="ListaCol" uuid="bed4b3f7-e851-4c3b-a00d-fdd540144b64">
 						<datasetParameter name="idRegistroKit_param">
@@ -592,34 +594,46 @@ WHERE op.idOrdPago=$P{idOrdPago_param}]]>
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
-					<jr:listContents height="20" width="400">
+					<jr:listContents height="18" width="400">
 						<staticText>
-							<reportElement x="0" y="0" width="60" height="20" uuid="2e83464e-f876-4e28-a37c-89b46fd14aab"/>
+							<reportElement x="0" y="0" width="60" height="18" uuid="2e83464e-f876-4e28-a37c-89b46fd14aab">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
 							<textElement textAlignment="Left" verticalAlignment="Middle"/>
 							<text><![CDATA[CILINDROS]]></text>
 						</staticText>
 						<textField>
-							<reportElement x="60" y="0" width="40" height="20" uuid="56c946b2-cb78-4d2c-b93b-eb33fe0ac91e"/>
+							<reportElement x="60" y="0" width="40" height="18" uuid="56c946b2-cb78-4d2c-b93b-eb33fe0ac91e">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
 							<textElement textAlignment="Left" verticalAlignment="Middle"/>
 							<textFieldExpression><![CDATA[$F{incremento}]]></textFieldExpression>
 						</textField>
 						<textField>
-							<reportElement x="119" y="0" width="30" height="20" uuid="34f7c390-e719-4060-826f-525c021506fb"/>
+							<reportElement x="119" y="0" width="30" height="18" uuid="34f7c390-e719-4060-826f-525c021506fb">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
 							<textElement textAlignment="Right" verticalAlignment="Middle"/>
 							<textFieldExpression><![CDATA[$F{capacidad}]]></textFieldExpression>
 						</textField>
 						<textField>
-							<reportElement x="200" y="0" width="100" height="20" uuid="5d9676df-f69c-4871-a75f-8821256c116e"/>
+							<reportElement x="200" y="0" width="100" height="18" uuid="5d9676df-f69c-4871-a75f-8821256c116e">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
 							<textElement textAlignment="Center" verticalAlignment="Middle"/>
 							<textFieldExpression><![CDATA[$F{marcaCil}]]></textFieldExpression>
 						</textField>
 						<textField>
-							<reportElement x="300" y="0" width="100" height="20" uuid="f0e4b4eb-88ca-44ac-81ef-9df0e8109c9b"/>
+							<reportElement x="300" y="0" width="100" height="18" uuid="f0e4b4eb-88ca-44ac-81ef-9df0e8109c9b">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
 							<textElement textAlignment="Center" verticalAlignment="Middle"/>
 							<textFieldExpression><![CDATA[$F{serie}]]></textFieldExpression>
 						</textField>
 						<staticText>
-							<reportElement x="149" y="0" width="30" height="20" uuid="de582ad8-64ff-4699-8a38-9c62dd43f418"/>
+							<reportElement x="149" y="0" width="30" height="18" uuid="de582ad8-64ff-4699-8a38-9c62dd43f418">
+								<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							</reportElement>
 							<textElement textAlignment="Left" verticalAlignment="Middle"/>
 							<text><![CDATA[ M3]]></text>
 						</staticText>

@@ -66,7 +66,7 @@ ORDER BY s.fechaCreacion ASC]]>
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
-		<band height="99" splitType="Stretch">
+		<band height="98" splitType="Stretch">
 			<staticText>
 				<reportElement x="290" y="2" width="182" height="18" uuid="47db3dee-a518-4741-bdd4-c95b80d59b37">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -147,7 +147,7 @@ ORDER BY s.fechaCreacion ASC]]>
 				<text><![CDATA[Beneficiario]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="372" y="76" width="78" height="16" uuid="042763a6-cfb7-4f9c-a3e1-f523dba3aef4">
+				<reportElement x="372" y="76" width="99" height="16" uuid="042763a6-cfb7-4f9c-a3e1-f523dba3aef4">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
@@ -157,7 +157,7 @@ ORDER BY s.fechaCreacion ASC]]>
 				<text><![CDATA[Estado Proceso]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="500" y="76" width="30" height="16" uuid="5ca428e0-a27b-456e-9a54-3d7a895dc281">
+				<reportElement x="500" y="76" width="59" height="16" uuid="5ca428e0-a27b-456e-9a54-3d7a895dc281">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
@@ -312,7 +312,7 @@ ORDER BY s.fechaCreacion ASC]]>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="19" splitType="Stretch">
+		<band height="23" splitType="Stretch">
 			<line>
 				<reportElement x="0" y="0" width="752" height="1" uuid="5e02d453-5346-4bb2-95fe-501d13e4acb8">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -338,6 +338,37 @@ ORDER BY s.fechaCreacion ASC]]>
 				</textElement>
 				<text><![CDATA[Gran Total:]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="700" y="0" width="20" height="11" uuid="12306717-a7f1-4d03-9aaa-ae5d9d724b14"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="720" y="0" width="10" height="11" uuid="662b2e8b-38d1-4113-8702-e215c1086018"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="730" y="0" width="20" height="11" uuid="e70a7546-a730-47cc-8623-6d9ad018bea7"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="1" width="60" height="11" uuid="c5eb4284-972f-4da7-bf7c-17fff98f2f80">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 </jasperReport>

@@ -1,3 +1,8 @@
+
+INSERT INTO persona] (idper,nombres,ap,genero,direccion,estado,am,email,ci,foto,ciCod) VALUES ('1', 'IVAN', 'MAMANI', 'f', 'TEJAR', '1', 'CORZO', 'ivan_27_33_27@hotmail.com', '10585402', 'modify_codper-1.png', 'TJ');
+
+INSERT INTO usuario(login,password,idper,estado) VALUES('admin','1MtuSdJ/7Fc=','1','1');
+
 --Pais
 INSERT INTO pais(idpais,codigo,nombre,estado) VALUES('1',NULL,'BOLIVIA','1');
 
@@ -99,7 +104,6 @@ INSERT INTO procopc(idproc,idopc) VALUES('7','1');
 INSERT INTO procopc(idproc,idopc) VALUES('7','5');
 
 INSERT INTO procopc(idproc,idopc) VALUES('8','1');
-INSERT INTO procopc(idproc,idopc) VALUES('8','2');
 INSERT INTO procopc(idproc,idopc) VALUES('8','3');
 INSERT INTO procopc(idproc,idopc) VALUES('8','4');
 
@@ -126,6 +130,8 @@ INSERT INTO procopc(idproc,idopc) VALUES('13','5');
 INSERT INTO procopc(idproc,idopc) VALUES('14','13');
 
 INSERT INTO procopc(idproc,idopc) VALUES('15','1');
+INSERT INTO procopc(idproc,idopc) VALUES('16','1');
+INSERT INTO procopc(idproc,idopc) VALUES('16','5');
 
 
 

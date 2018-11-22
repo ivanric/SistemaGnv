@@ -512,8 +512,21 @@ private JdbcTemplate db;
 			return false;
 		}
 	}
-	
-	
+	/************************ANULAR SOLICITUD POR DESMONTAJE***********************/
+	public boolean anularSoltDesmontaje(Integer idsolt){
+		String sql="";
+		try {
+			sql="UPDATE solicitud SET estado=0 WHERE idsolt=?";
+			int a=this.db.update(sql,idsolt);
+			System.out.println("sql_anulo: "+a);
+			sql="UPDATE v SET v.estado=0 FROM vehiculo v JOIN benVehSolt bvs ON  bvs.placa=v.placa JOIN solicitud s ON s.idsolt=bvs.idsolt WHERE s.idsolt=?";
+			this.db.update(sql,idsolt);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 	/***************************************************APROBACIONES****************************************************/
 	public Accion metTipoAprobador(int idTipoAp){
 		String sql="SELECT acc.* FROM accion acc,aprobacion a WHERE acc.idacc=a.idacc AND a.idacc=?";
@@ -655,6 +668,11 @@ private JdbcTemplate db;
 	
 	public Solicitud getSoltByOrdServ(int id) {
 		return this.db.queryForObject("select s.* from solicitud s,ordenServicio os where os.idsolt=s.idsolt and os.idordserv=?", new objSolicitud(),id);
+	}
+	
+	/*TRASLADO KIT VEHICULO*/
+	public Solicitud getSoltByTraslVeh(int id) {
+		return this.db.queryForObject("select s.* from solicitud s,trasladoKitVehiculo tvk where tvk.idsoltNueva=s.idsolt and tvk.idtraslv=?", new objSolicitud(),id);
 	}
 	
 	/*REPORTES*/

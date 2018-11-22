@@ -66,7 +66,7 @@ public class RestDesmontajeKit{
 		System.out.println("Lista: "+lista.toString());
 		return new ResponseEntity<List<Object>>(lista,HttpStatus.OK);
 	}
-	@RequestMapping(value="FiltroActaRecepcion")
+	@RequestMapping(value="FiltroRegistroKit")
 	public ResponseEntity<List<RegistroKit>> FiltroSolicitud(HttpServletRequest req,HttpServletResponse res){
 //		HttpSession sesion=req.getSession(true);
 //		Persona xuser=(Persona) sesion.getAttribute("xusuario");
@@ -100,7 +100,15 @@ public class RestDesmontajeKit{
 		Map<String, Object> respuesta=new HashMap<String, Object>();
 		try{
 			Object[] consulta=this.manejadorInstalacionKit.registrarDesmontaje(req,xuser);
-			System.out.println("resp: "+consulta);
+			System.out.println("resp: "+consulta[0]);
+			
+			int idregistroKit=Integer.parseInt(req.getParameter("idregistroKit"));
+			System.out.println("idregistroKit: "+idregistroKit);
+			int getIdsolt=this.manejadorInstalacionKit.getIdSoltByIdRegKit(idregistroKit);
+			System.out.println("getIdsolt: "+getIdsolt);
+			boolean solicitud=this.manejadorSolicitudes.anularSoltDesmontaje(getIdsolt);
+			System.out.println("anulado? "+solicitud);
+		
 			respuesta.put("estado", consulta[0]);
 //			respuesta.put("idRecep",Integer.parseInt(consulta[1].toString()));
 		}catch (Exception e){

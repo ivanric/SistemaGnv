@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title></title>
+</head>
+<body>
+		<form id="formulario-ver" action="#" method="post" data-fv-excluded="disabled">
+			<div class="modal fade" id="modal-ver" tabindex="-1" role="dialog"
+				data-backdrop="static" data-keyboard="false" 
+				style="padding-left: 0;display: none;">
+				<div class="modal-dialog modal-lg" role="document"
+					style="">
+					<div class="modal-content">
+						<div class="card">
+							<div class="card-header">
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								
+								<div class="row">
+									<div class="col-md-4">
+			                           	<h2><b>TRASLADO KIT VEHICULO</b><small>Datos de transferencia de Kit Vehiculo</small></h2>
+			                        </div>
+			                      <!--   <div class="col-md-8">
+			                            <b>NÃšMERO DE ACTA DE RECEPCIÃ“N: </b><span id="numRecep"></span> 
+			                            <b style="margin-left: 5em;">FECHA: </b><span id="fechaRecep"></span> 
+			                        </div> -->
+								</div>
+							</div>
+							<div class="modal-body">
+	                            <fieldset>
+	                            	<legend><strong>DESMONTAJE KIT GNV</strong></legend>
+		                            <fieldset>
+		                                <legend>DATOS BÁSICOS
+		                                </legend>
+		                                <div class="row" id="js_DatosBasicos">
+		                                    <div class="col-md-6">
+		                                        <div class="form-group">
+		                                            <label for="" class="col-md-6 control-label"><b>Núm. de Ord. Servicio:</b></label>
+		                                            <div class="col-md-6">
+		                                                <div class="fg-line"><input type="text" class="form-control mcss_input" disabled="disabled" name="numords"> </div>
+		                                            </div>
+		                                        </div>
+		                                    </div>
+		                                    <div class="col-md-6">
+		                                        <div class="form-group">
+		                                            <label for="" class="col-md-6 control-label"><b>Fecha de Orden Servicio:</b></label>
+		                                            <div class="col-md-6">
+		                                                <div class="fg-line"><input type="text" class="form-control mcss_input" disabled="disabled" name="fechaords"> </div>
+		                                            </div>
+		                                        </div>
+		                                    </div>
+		                                    <div class="col-md-6">
+		                                        <div class="form-group">
+		                                            <label for="" class="col-md-6 control-label"><b>Número de  Solicitud:</b></label>
+		                                            <div class="col-md-6">
+		                                                <div class="fg-line"><input type="text" class="form-control mcss_input" disabled="disabled" name="numSoltActual"> </div>
+		                                            </div>
+		                                        </div>
+		                                    </div>
+		                                    <div class="col-md-6">
+		                                        <div class="form-group">
+		                                            <label for="" class="col-md-6 control-label"><b>Fecha Solicitud:</b></label>
+		                                            <div class="col-md-6">
+		                                                <div class="fg-line"><input type="text" class="form-control mcss_input" disabled="disabled" name="fechaSoltActual"> </div>
+		                                            </div>
+		                                        </div>
+		                                    </div>
+		                                    <div class="col-md-6">
+		                                        <div class="form-group">
+		                                            <label for="" class="col-md-6 control-label"><b>Cédula:</b></label>
+		                                            <div class="col-md-6">
+		                                                <div class="fg-line"><input type="text" class="form-control mcss_input" disabled="disabled" name="ciActual"></div>
+		                                            </div>
+		                                        </div>
+		                                    </div>
+		                                    <div class="col-md-6">
+		                                        <div class="form-group">
+		                                            <label for="" class="col-md-6 control-label"><b>Beneficiario:</b></label>
+		                                            <div class="col-md-6">
+		                                                <div class="fg-line"><input type="text" value="" class="form-control mcss_input" disabled="disabled" name="beneficiarioActual"></div>
+		                                            </div>
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                            </fieldset>
+		                            <fieldset>
+		                                <legend>VEHÍCULO</legend>
+		                                <div class="row Data_Vehiculo">
+		                                    <div class="col-md-6">
+		                                        <div class="form-group">
+		                                            <label for="" class="col-md-4 control-label"><b>Placa:</b></label>
+		                                            <div class="col-md-8">
+		                                                <div class="fg-line"><input type="text" class="form-control mcss_input" disabled="disabled" name="placa_a"></div>
+		                                            </div>
+		                                        </div>
+		                                    </div>
+		                                    <div class="col-md-6">
+		                                        <div class="form-group">
+		                                            <label for="" class="col-md-4 control-label"><b>Color:</b></label>
+		                                            <div class="col-md-8">
+		                                                <div class="fg-line"><input type="text" value="" class="form-control mcss_input" disabled="disabled" name="color_a"></div>
+		                                            </div>
+		                                        </div>
+		                                    </div>
+		                                    <div class="col-md-6">
+		                                        <div class="form-group">
+		                                            <label for="" class="col-md-4 control-label"><b>Marca:</b></label>
+		                                            <div class="col-md-8">
+		                                                <div class="fg-line"><input type="text" class="form-control mcss_input" disabled="disabled" name="marca_a"></div>
+		                                            </div>
+		                                        </div>
+		                                    </div>
+		                                    <div class="col-md-6">
+		                                        <div class="form-group">
+		                                            <label for="" class="col-md-4 control-label"><b>Modelo:</b></label>
+		                                            <div class="col-md-8">
+		                                                <div class="fg-line"><input type="text" class="form-control mcss_input" disabled="disabled" name="modelo_a"></div>
+		                                            </div>
+		                                        </div>
+		                                    </div>
+		                                    <div class="col-md-6">
+		                                        <div class="form-group">
+		                                            <label for="" class="col-md-4 control-label"><b>Tipo Vehiculo:</b></label>
+		                                            <div class="col-md-8">
+		                                                <div class="fg-line"><input type="text" class="form-control mcss_input" disabled="disabled" name="tipoVeh_a"></div>
+		                                            </div>
+		                                        </div>
+		                                    </div>
+		                                    <div class="col-md-6">
+		                                        <div class="form-group">
+		                                            <label for="" class="col-md-4 control-label"><b>Tipo Servicio:</b></label>
+		                                            <div class="col-md-8">
+		                                                <div class="fg-line"><input type="text" class="form-control mcss_input" disabled="disabled" name="tipServ_a"></div>
+		                                            </div>
+		                                        </div>
+		                                    </div>
+		                                    <div class="col-md-6">
+		                                        <div class="form-group">
+		                                            <label for="" class="col-md-4 control-label"><b>Sistema Motor:</b></label>
+		                                            <div class="col-md-8">
+		                                                <div class="fg-line"><input type="text" class="form-control mcss_input" disabled="disabled" name="SistemaMotor_a"></div>
+		                                            </div>
+		                                        </div>
+		                                    </div>
+
+		                                    <div class="col-md-6">
+		                                        <div class="form-group">
+		                                            <label for="" class="col-md-4 control-label"><b>Num. Motor:</b></label>
+		                                            <div class="col-md-8">
+		                                                <div class="fg-line"><input type="text" class="form-control mcss_input" disabled="disabled" name="num_motor_a"></div>
+		                                            </div>
+		                                        </div>
+		                                    </div>
+		                                    <div class="col-md-6">
+		                                        <div class="form-group">
+		                                            <label for="" class="col-md-4 control-label"><b>Num. Chasis:</b></label>
+		                                            <div class="col-md-8">
+		                                                <div class="fg-line"><input type="text" class="form-control mcss_input" disabled="disabled" name="num_chasis_a"></div>
+		                                            </div>
+		                                        </div>
+		                                    </div>
+		                                    <div class="col-md-6">
+		                                        <div class="form-group">
+		                                            <label for="" class="col-md-4 control-label"><b>Targta. Prioridad:</b></label>
+		                                            <div class="col-md-8">
+		                                                <div class="fg-line"><input type="text" class="form-control mcss_input" disabled="disabled" name="tjeta_prioridad_a"></div>
+		                                            </div>
+		                                        </div>
+		                                    </div>
+		                                    <div class="col-md-6">
+		                                        <div class="form-group">
+		                                            <label for="" class="col-md-4 control-label"><b>Cilindrada:</b></label>
+		                                            <div class="col-md-8">
+		                                                <div class="fg-line"><input type="text" class="form-control mcss_input" disabled="disabled" name="cilindrada_a"></div>
+		                                            </div>
+		                                        </div>
+		                                    </div>
+		                                
+		                                </div>              
+		                            </fieldset>
+		                            <fieldset>
+		                                <legend>KIT INSTALADO</legend>
+		                                    <div class="row">
+		                                        <div class="col-md-6">
+		                                            <div class="form-group">
+		                                                <label for="" class="col-md-6 control-label"><b>Fecha Conversión:</b></label>
+		                                                <div class="col-md-6">
+		                                                    <div class="fg-line"><input type="text" class="form-control mcss_input"  name="fechaConversion" disabled="disabled"></div>
+		                                                </div>
+		                                            </div>
+		                                        </div>
+		                                        <div class="col-md-6">
+		                                            <div class="form-group">
+		                                                <label for="" class="col-md-6 control-label"><b>Fecha Instalacón:</b></label>
+		                                                <div class="col-md-6">
+		                                                    <div class="fg-line"><input type="text" class="form-control mcss_input"  name="fechaInstalacion" disabled="disabled"></div>
+		                                                </div>
+		                                            </div>
+		                                        </div>
+		                                        <h3 style="text-align: center;"><b><ins>REDUCTOR (REGULADOR)</ins></b></h3>
+		                                    </div>
+		                                    <div class="row">
+		                                        <div class="col-md-6">
+		                                            <div class="form-group">
+		                                                <label for="" class="col-md-6 control-label"><b>Tipo Tecnología:</b></label>
+		                                                <div class="col-md-6">
+		                                                    <div class="fg-line"><input type="text" class="form-control mcss_input"  name="tipoTecnologia" disabled="disabled"> </div>
+		                                                </div>
+		                                            </div>
+		                                        </div>
+		                                        <div class="col-md-6">
+		                                            <div class="form-group">
+		                                                <label for="" class="col-md-6 control-label"><b>Marca Regulador:</b></label>
+		                                                <div class="col-md-6">
+		                                                    <div class="fg-line"><input type="text" class="form-control mcss_input"  name="marcaReductor" disabled="disabled"> </div>
+		                                                </div>
+		                                            </div>
+		                                        </div>
+
+		                                    </div>
+		                                    <div class="row">
+		                                        <div class="col-md-6">
+		                                            <div class="form-group">
+		                                                <label for="" class="col-md-6 control-label"><b>Serie Regulador:</b></label>
+		                                                <div class="col-md-6">
+		                                                    <div class="fg-line"><input type="text" class="form-control mcss_input"  name="serieRegulador" disabled="disabled"></div>
+		                                                </div>
+		                                            </div>
+		                                        </div>
+		                                        <div class="col-md-6">
+		                                            <div class="form-group">
+		                                                <label for="" class="col-md-6 control-label"><b>Certificado Regulador:</b></label>
+		                                                <div class="col-md-6">
+		                                                    <div class="fg-line"><input type="text" class="form-control mcss_input"  name="certificadoRegulador" disabled="disabled"></div>
+		                                                </div>
+		                                            </div>
+		                                        </div>
+		                                    </div>
+		                                        <h3 style="text-align: center; margin-top: 0px"><b><ins>CILINDROS</ins></b></h3>
+		                                    <div class="row">
+		                                        <div class="col-xs-2"></div>
+		                                        <div class="col-md-8">
+		                                            <div id="js-cilindros"></div>
+		                                        </div>
+		                                    </div>
+		                            </fieldset>
+	                            </fieldset>
+	                            <fieldset>
+	                            	<legend><strong>REINSTALACION KIT GNV A VEHICULO</strong></legend>
+									<fieldset>
+										<legend>BENEFICIARIO</legend>
+										<div class="beneficiario-data">
+											<!-- .col-md-6*6>.form-group>(label.col-md-4.control-label>b{campo})+.col-md-6>.fg-line>input[type=text].form-control.mcss_input -->
+											<div class="row">
+												<div class="col-md-6">
+													<div class="form-group">
+														<label for="" class="col-md-4 control-label"><b>Nombre</b></label>
+														<div class="col-md-6">
+															<div class="fg-line"><input disabled="disabled" type="text" class="form-control mcss_input" name="nombreCompleto" id="nombreCompleto"></div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														<label for="" class="col-md-4 control-label"><b>Cédula</b></label>
+														<div class="col-md-6">
+															<div class="fg-line"><input disabled="disabled" type="text" class="form-control mcss_input" name="ci"></div>
+														</div>
+													</div>
+												</div>
+											</div>	
+											<div class="row">
+												<div class="col-md-6">
+													<div class="form-group">
+														<label for="" class="col-md-4 control-label"><b>Dirección</b></label>
+														<div class="col-md-6">
+															<div class="fg-line"><input disabled="disabled" type="text" class="form-control mcss_input" name="direccion"></div>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="form-group">
+														<label for="" class="col-md-4 control-label"><b>Institución</b></label>
+														<div class="col-md-6">
+															<div class="fg-line"><input disabled="disabled" type="text" class="form-control mcss_input" name="institucion" id="institucion"></div>
+														</div>
+													</div>
+												</div>
+											</div>
+			
+											<div class="row">
+												<div class="col-md-3"></div>		
+												<div class="col-md-6">
+													<label for="" class="col-md-12 control-label text-center"><b>Documentación Recepcionada</b></label>
+													<div class="col-md-12 documentacion">
+														
+													</div>
+												</div>
+												<div class="col-md-3"></div>		
+												
+											</div>
+							
+										</div>
+									</fieldset>							
+									<fieldset>
+										<legend>VEHÍCULO</legend>
+									  	<div class="vehiculo-data">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label for="" class="col-md-4 control-label"><b>Placa</b></label>
+													<div class="col-md-6">
+														<div class="fg-line"><input disabled="disabled" type="text" class="form-control mcss_input" name="placa"></div>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label for="" class="col-md-4 control-label"><b>Marca</b></label>
+													<div class="col-md-6">
+														<div class="fg-line"><input disabled="disabled" type="text" class="form-control mcss_input" name="marcaVeh" id="marcaVeh"></div>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label for="" class="col-md-4 control-label"><b>Modelo</b></label>
+													<div class="col-md-6">
+														<div class="fg-line"><input disabled="disabled" type="text" class="form-control mcss_input" name="modeloVeh" id="modeloVeh"></div>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label for="" class="col-md-4 control-label"><b>Tipo Vehículo</b></label>
+													<div class="col-md-6">
+														<div class="fg-line"><input disabled="disabled" type="text" class="form-control mcss_input" name="tipoVeh" id="tipoVeh"></div>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label for="" class="col-md-4 control-label"><b>Tipo Servicio</b></label>
+													<div class="col-md-6">
+														<div class="fg-line"><input disabled="disabled" type="text" class="form-control mcss_input" name="tipoServ" id="tipoServ"></div>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label for="" class="col-md-4 control-label"><b>Sistema Motor</b></label>
+													<div class="col-md-6">
+														<div class="fg-line"><input disabled="disabled" type="text" class="form-control mcss_input" name="sistemaMotor" id="sistemaMotor"></div>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label for="" class="col-md-4 control-label"><b>numeroMotor</b></label>
+													<div class="col-md-6">
+														<div class="fg-line"><input disabled="disabled" type="text" class="form-control mcss_input" name="num_motor" id="numeroMotor"></div>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label for="" class="col-md-4 control-label"><b>numeroChasis</b></label>
+													<div class="col-md-6">
+														<div class="fg-line"><input disabled="disabled" type="text" class="form-control mcss_input" name="num_chasis" id="numeroChasis"></div>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label for="" class="col-md-4 control-label"><b>targetaPrioridad</b></label>
+													<div class="col-md-6">
+														<div class="fg-line"><input disabled="disabled" type="text" class="form-control mcss_input" name="tjeta_prioridad" id="targetaPrioridad"></div>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label for="" class="col-md-4 control-label"><b>Cilindrada</b></label>
+													<div class="col-md-6">
+														<div class="fg-line"><input disabled="disabled" type="text" class="form-control mcss_input" name="cilindrada" id="cilindrada"></div>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label for="" class="col-md-12 control-label text-center"><b>Combustible</b></label>
+													<div class="col-md-12">
+				                                        <div class="row">
+				                                            <div id="js-comb"> 
+				                                               
+				                                            </div>
+				                                        </div>
+				                                    </div>
+													<!--<div class="col-md-6">
+														<div class="fg-line"><input disabled="disabled" type="text" class="form-control mcss_input" name="combustible" id="combustible"></div>
+													</div> -->
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label for="" class="col-md-4 control-label"><b>Color</b></label>
+													<div class="col-md-6">
+														<div class="fg-line"><input disabled="disabled" type="text" class="form-control mcss_input" name="color" id="color"></div>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<div class="col-md-12">
+														
+													</div>
+												</div>
+											</div>
+
+									 	</div>
+									</fieldset>
+	                            </fieldset>
+							</div>
+							<div class="modal-footer">
+								<!-- <button type="submit" id="btnAdicionarConfirmacion" lass="btn btn-primary waves-effect">Imprimir</button> -->
+								<button type="button" class="btn btn-danger waves-effect"
+									data-dismiss="modal">Cerrar</button>
+							</div>
+						</div>
+					</div>
+				
+				</div>
+			</div>	
+		</form>
+
+
+	<script type="text/javascript">
+		$.getJSON('../RestTKitsVehiculos/Ver',{idtraslv:idTv},function(datos){
+			console.log('data:',datos)
+
+			// $('#numRecep').html(datos[0].numrecep)
+			// $('#fechaRecep').html(datos[0].fechaActaRecepcion)
+
+			var objetoFiltro=datos[0].desmontajeKit;
+
+		   //DATOS BASICOS
+
+                $('input[name="numords"]').val(objetoFiltro.registroKit.ordenServicio.numords)
+                $('input[name="fechaords"]').val(objetoFiltro.registroKit.ordenServicio.fechaords)
+                $('input[name="numSoltActual"]').val(objetoFiltro.registroKit.ordenServicio.solicitud.numSolt)
+                $('input[name="fechaSoltActual"]').val(objetoFiltro.registroKit.ordenServicio.solicitud.fecha)
+                $('input[name="beneficiarioActual"]').val(objetoFiltro.registroKit.ordenServicio.solicitud.persona.nombres+' '+objetoFiltro.registroKit.ordenServicio.solicitud.persona.ap+' '+objetoFiltro.registroKit.ordenServicio.solicitud.persona.am)
+                $('input[name="ciActual"]').val(objetoFiltro.registroKit.ordenServicio.solicitud.persona.ci)
+                $('#js_DatosBasicos').loadJSON(objetoFiltro.registroKit)
+
+                //VEHICULO
+                $('#js_Vehiculo').loadJSON(objetoFiltro.registroKit.ordenServicio.solicitud.vehiculo)
+                $('input[name="placa_a"]').val(objetoFiltro.registroKit.ordenServicio.solicitud.vehiculo.placa)
+                $('input[name="color_a"]').val(objetoFiltro.registroKit.ordenServicio.solicitud.vehiculo.color)
+                $('input[name="marca_a"]').val(objetoFiltro.registroKit.ordenServicio.solicitud.vehiculo.marcaVehiculo.nombre)
+                $('input[name="modelo_a"]').val(objetoFiltro.registroKit.ordenServicio.solicitud.vehiculo.modeloVehiculo.nombre)
+                $('input[name="tipoVeh_a"]').val(objetoFiltro.registroKit.ordenServicio.solicitud.vehiculo.tipoVehiculo.nombre)
+                $('input[name="tipServ_a"]').val(objetoFiltro.registroKit.ordenServicio.solicitud.vehiculo.tipoServicio.nombre)
+                $('input[name="SistemaMotor_a"]').val(objetoFiltro.registroKit.ordenServicio.solicitud.vehiculo.tipoMotor.nombre)
+                $('input[name="num_motor_a"]').val(objetoFiltro.registroKit.ordenServicio.solicitud.vehiculo.num_motor)
+                $('input[name="num_chasis_a"]').val(objetoFiltro.registroKit.ordenServicio.solicitud.vehiculo.num_chasis)
+                $('input[name="tjeta_prioridad_a"]').val(objetoFiltro.registroKit.ordenServicio.solicitud.vehiculo.tjeta_prioridad)
+                $('input[name="cilindrada_a"]').val(objetoFiltro.registroKit.ordenServicio.solicitud.vehiculo.cilindrada)
+
+
+                //TIPO TECNOLOGIA
+
+                $('input[name="fechaConversion"]').val(objetoFiltro.registroKit.fechaConversion)
+                $('input[name="fechaInstalacion"]').val(objetoFiltro.registroKit.fechaInstalacion)
+                $('input[name="tipoTecnologia"]').val(objetoFiltro.registroKit.reductor.tipoTecnologia)
+                $('input[name="marcaReductor"]').val(objetoFiltro.registroKit.reductor.marcaReductor.nombre)
+                $('input[name="serieRegulador"]').val(objetoFiltro.registroKit.numSerieRegulador)
+                $('input[name="certificadoRegulador"]').val(objetoFiltro.registroKit.certificadoKit)
+                
+                $('input[name="costoConversion"]').val(objetoFiltro.registroKit.ordenServicio.servicio.precioTotal)
+                $('#js-cilindros').html('')
+                $(objetoFiltro.registroKit.cilindros).each(function(i,tg){
+                    $('#js-cilindros').append(`
+                        <div class="row">
+                            <div class="col-xs-1"><b><ins>Cilindro:${i+1}</ins></b></div>
+                            <div class="col-xs-1"></div>
+                            <div class="col-xs-3"><b>Capacidad:</b> ${tg.cilindro.capacidad}</div>
+                            <div class="col-xs-3"><b>Serie:</b> ${tg.serie}</div>
+                            <div class="col-xs-4"><b>Marca Cilindro:</b> ${tg.cilindro.marcaCilindro.nombre}</div>
+                            
+                        </div>
+                    `)  
+                })
+
+
+
+                /*****************************************NUEVA SOLICITUD*/
+			listaDoc=datos[1]
+			listaComb=datos[2]
+			var SOLICITUDNUEVA=datos[0].solicitudNueva;
+			$('#numSolt').html(SOLICITUDNUEVA.numSolt)
+			$('#fechaCreacion').html(SOLICITUDNUEVA.fecha)
+			$('#nombreCompleto').val(SOLICITUDNUEVA.persona.nombres+" "+SOLICITUDNUEVA.persona.ap+" "+SOLICITUDNUEVA.persona.am)
+			$('.beneficiario-data').loadJSON(SOLICITUDNUEVA.persona)
+			$('#institucion').val(SOLICITUDNUEVA.persona.beneficiario.institucion)
+			// $('#telefono').val(datos[1].listaTelefonos)
+			$('.documentacion').html('')
+			$(listaDoc).each(function(i,t){
+				var check="",checkf=""
+				$(SOLICITUDNUEVA.persona.beneficiario.documentos).each(function(i,y){
+					if(t.iddocb==y.iddocb){
+						check="checked"
+					}
+					// return false
+				})
+				if(check==""){
+					checkf="checked"
+				}
+				$('.documentacion').append(
+					`<div class="row">
+						<div class="col-md-6">
+								${t.nombre}
+						</div>
+						<div class="col-md-6">
+							SI <input type="checkbox" ${check} disabled="disabled">
+							NO <input type="checkbox" ${checkf} disabled="disabled">	
+						</div>
+					</div>`
+				);
+			})
+			$('.vehiculo-data').loadJSON(SOLICITUDNUEVA.vehiculo)
+			$('#modeloVeh').val(SOLICITUDNUEVA.vehiculo.modeloVehiculo.nombre)
+			$('#marcaVeh').val(SOLICITUDNUEVA.vehiculo.marcaVehiculo.nombre)
+			$('#tipoVeh').val(SOLICITUDNUEVA.vehiculo.tipoVehiculo.nombre)
+			$('#tipoServ').val(SOLICITUDNUEVA.vehiculo.tipoServicio.nombre)
+			$('#sistemaMotor').val(SOLICITUDNUEVA.vehiculo.tipoMotor.nombre)
+
+			$(listaComb).each(function(i,tg){
+                var checked1="",checked2="";
+                $(SOLICITUDNUEVA.vehiculo.combustibleVehiculo).each(function(j,item){
+                    if (tg.idcomb==item.idcomb) {
+                        checked1="checked";
+                    }
+                })
+                if(checked1==""){
+					checked2="checked"
+				}
+                $('#js-comb').append(`
+                    <div class="col-md-6" style="margin-top: 4px;">
+                        <div class="fg-line">${tg.nombre}</div>
+                    </div>
+                    <div class="col-md-6">
+                        <span style="">SI</span> 
+                        <input type="checkbox" disabled="disabled" class="" ${checked1}>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span style="">NO</span> 
+                        <input type="checkbox" disabled="disabled" class="" ${checked2}>
+                    </div>
+                `)
+            })
+        })
+	</script>
+</body>
+</html>

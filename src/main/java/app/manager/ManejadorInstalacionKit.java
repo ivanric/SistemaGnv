@@ -29,6 +29,7 @@ import app.models.Reductor;
 import app.models.RegistroKit;
 import app.models.Solicitud;
 import app.models.Taller;
+import app.models.TrasladoKitVehiculo;
 
 @Service
 public class ManejadorInstalacionKit {
@@ -59,6 +60,25 @@ public class ManejadorInstalacionKit {
 			return d;
 	    }
 	}
+	public class objTrasladorKitVehiculo implements RowMapper<TrasladoKitVehiculo>{
+		@Override
+		public TrasladoKitVehiculo mapRow(ResultSet rs, int arg1) throws SQLException {
+			TrasladoKitVehiculo t= new TrasladoKitVehiculo();
+			t.setIdtraslv(rs.getInt("idtraslv"));
+			t.setIddes(rs.getInt("iddes"));
+			t.setIdsoltNueva(rs.getInt("idsoltNueva"));
+			t.setFechaTraslado(rs.getString("fechaTraslado"));
+			t.setLogin(rs.getString("login"));
+			try {
+				t.setDesmontajeKit(metDesmontajeKit(rs.getInt("iddes")));
+			} catch (Exception e) {
+				t.setDesmontajeKit(null);
+			}
+			return t;
+	    }
+	}
+	
+	
 	//@aui empieza los objetos
 	public class objTaller implements RowMapper<Taller>{
 		@Override
@@ -324,6 +344,7 @@ public class ManejadorInstalacionKit {
 		int iddes=idDesmontaje();
 		int idtall=Integer.parseInt(req.getParameter("idtall"));
 		int idregistroKit=Integer.parseInt(req.getParameter("idregistroKit"));
+	
 		String login=xuser.getUsuario().getLogin();
 		System.out.println("iddes: "+iddes+" login: "+login+" idtall: "+idtall+" idregistroKit: "+idregistroKit);
 		try {
@@ -339,5 +360,53 @@ public class ManejadorInstalacionKit {
 			return resp;
 		}
 	}
-
+	public int getIdSoltByIdRegKit(int idRegistroKit) {
+		return this.db.queryForObject("SELECT s.idsolt FROM solicitud s,ordenServicio os,registroKit rk WHERE rk.idordserv=os.idordserv AND os.idsolt=s.idsolt AND rk.idregistroKit=?",Integer.class,idRegistroKit);
+	}
+	
+	/*TRASLADO KIT VEHICULO*/
+	public List<TrasladoKitVehiculo> ListarTrasladoKitVehiculo(HttpServletRequest req){
+		String filtro=req.getParameter("filtro");
+		String sql="select tkv.* from trasladoKitVehiculo tkv JOIN  desmontajeKit d ON d.iddes=tkv.iddes join registroKit rk on rk.idregistroKit=d.idregistroKit JOIN ordenServicio os ON os.idordserv=rk.idordserv join solicitud s on s.idsolt=os.idsolt JOIN benVehSolt bvs ON bvs.idsolt=s.idsolt JOIN beneficiario b ON b.idben=bvs.idben AND b.estado=1 JOIN vehiculo veh on veh.placa=bvs.placa JOIN persona per ON per.idper=b.idper\r\n" + 
+				"where (concat(per.ap,' ',per.am,' ',per.nombres) LIKE ? or veh.placa LIKE ? ) ORDER BY tkv.idtraslv ASC";
+		return this.db.query(sql, new objTrasladorKitVehiculo(),"%"+filtro+"%","%"+filtro+"%");
+	}
+	public DesmontajeKit metDesmontajeKit(int id){
+		return this.db.queryForObject("select * from desmontajeKit where iddes=?", new objDesmontajeKit(),id);
+	}
+	public List<DesmontajeKit> FiltroDesmontajeKit(String cadena){
+		String sql="SELECT dk.* FROM desmontajeKit dk,registroKit r,ordenServicio os,solicitud s,vehiculo veh,beneficiario b,persona p,benVehSolt bvs \r\n" + 
+				"WHERE dk.idregistroKit=r.idregistroKit AND r.idordserv=os.idordserv AND os.idsolt=s.idsolt AND os.instaladoSiNo=1 AND bvs.idben=b.idben AND b.estado=1 AND bvs.placa=veh.placa AND bvs.idsolt=s.idsolt and b.idper=p.idper and (os.numords LIKE ? or s.numSolt LIKE ? or p.ci LIKE ?) and dk.iddes not in (SELECT tk.iddes FROM trasladoKitVehiculo tk WHERE tk.iddes=dk.iddes)";
+		return this.db.query(sql, new objDesmontajeKit(),'%'+cadena+'%','%'+cadena+'%','%'+cadena+'%');
+	}
+	public Object[] registrarTKitVehiculo(HttpServletRequest req,Persona xuser,int idsolt) {
+		String sql="";
+		Object [] resp=new Object[2];
+		
+		int idtraslv=idTKitVehiculo();
+		int iddes=Integer.parseInt(req.getParameter("iddes"));
+	
+		String login=xuser.getUsuario().getLogin();
+		try {
+			sql="INSERT INTO trasladoKitVehiculo(idtraslv,iddes,idsoltNueva,login) VALUES(?,?,?,?)";
+			this.db.update(sql,idtraslv,iddes,idsolt,login);				
+			resp[0]=true;
+			//resp[1]=idrecep;
+			return resp;
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			resp[0]=false;
+			return resp;
+		}
+	}
+	public int idTKitVehiculo(){
+		String sql="select COALESCE(max(idtraslv),0)+1 as idtraslv from trasladoKitVehiculo";
+		return db.queryForObject(sql, Integer.class);
+	}
+	public TrasladoKitVehiculo  verTrasladoKitVehiculo(int id) {
+		String sql="select * from trasladoKitVehiculo where idtraslv=?";
+		return this.db.queryForObject(sql,new objTrasladorKitVehiculo(),id);
+	}
+	
 }

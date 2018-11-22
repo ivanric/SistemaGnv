@@ -560,6 +560,8 @@
 		console.log('date:',fecha)
 	    document.getElementById('fechaCreacion').innerHTML=fecha;
 	    document.getElementById('fechaHidden').value=fecha;
+
+		
 	    $.getJSON('../RestSolicitudes/opcionesVehiculo',function(datos){
             console.log('opcionesVehiculo: ',datos)
             var numS=datos.numSolt;

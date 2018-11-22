@@ -1,0 +1,4 @@
+gradle build --refresh-dependencies
+gradle build //compila un war
+gradle clean //borra los compilados
+gradle bootRun

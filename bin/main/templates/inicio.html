@@ -56,15 +56,35 @@
 						</select>
 					</li>
 					<li>
-						<p>Conectado: <i class="fa fa-circle conectado" ></i>&nbsp; <strong ><h5 class="conectado_user"> Ivan Mamani Corzo</h5></strong></p>
+						<p>Conectado: <i class="fa fa-circle conectado" ></i>&nbsp; <strong ><h5 class="conectado_user"></h5></strong></p>
 					</li>
 					<li>
-						<img class="avatar" src="../static/img/user.png" th:src="@{/img/user.png}" alt="logo">
+						<img class="avatar" id="avatar" src="../static/img/user.png" th:src="@{/img/user.png}" alt="logo">
 					</li>
 					<li>
-						<a href="#" class="salir">
+					<!-- 	<a href="#" class="salir">
 							<i class="fa fa-sign-out btn-logout" id="btn-desc"></i>
 						</a>
+ -->
+						<div class="dropdown">
+						  <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						    <!-- Dropdown -->
+						    <span class="caret"></span>
+						  </button>
+						  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="left: -120px !important">
+						    <li><a href="#" onclick="changePassword()">USUARIO
+						    		<i class="fa fa-user"></i>
+						    	</a>
+						    </li>
+						     <!-- <li><a href="#"></a></li> -->
+						    <!-- <li role="separator" class="divider"></li> -->
+						    <li>
+						    	<a href="#" class="salir text-center" id="btn-desc">DESCONECAR
+									<i class="fa fa-sign-out btn-logout" ></i>
+								</a>>
+							</li>
+						  </ul>
+						</div>
 					</li>
 				</ul>
 			</nav>
@@ -121,7 +141,7 @@
     <script src="../static/js/myscript.js" th:src="@{/js/myscript.js}"></script>
     
     <script type="text/javascript">
-    	
+    	var GIDPER;
     	var urlServer='http://localhost:8080';
 		
 	// $(function () {
@@ -129,6 +149,15 @@
 	    Waves.init();
 		
 		$.post('/RestUsuario/getUserSession', function(result){
+			console.log(result)
+			var USERSE=result.user;
+			GIDPER=USERSE.idper
+			if(USERSE.foto!=null || USERSE.foto!=""){
+				$('#avatar').removeAttr('src')
+				$('#avatar').attr('src','../archivos/fotos/'+USERSE.foto+'')
+					
+			}
+			
 			$('.conectado_user').html(result.user.nombres+" "+result.user.ap+" "+result.user.am)
 		},'json');
 
@@ -276,6 +305,146 @@
             });
 
 		})
+		function changePassword(){
+			$.ajax({
+				url:"../Usuarios/modal-password",
+				type:"post",
+				success:function(resp){
+					$('#cont-modales').html(resp);
+					$.post('../RestUser/dataModify/'+GIDPER,function(resp){
+						console.log('respuestaDatosModificarPost: ',resp)
+                        GImg=resp[0].foto;
+
+                        $('#formulario-password').find('.fg-line').addClass('fg-toggled'); 
+                        $('#formulario-password').loadJSON(resp[0])
+                        $('#formulario-password').find('#user-avatar').prop('src','../archivos/fotos/'+resp[0].foto)
+                        $('#formulario-password').find('input[name="ci"]').val(resp[0].ci)
+                        $('#formulario-password').find('input[name="usuario"]').val(resp[0].usuario.login)
+                        // $('#formulario-password').find('input[name="password"]').val(resp[0].usuario.password)
+                        $('#ciCod').chosen()
+                        $('#select-genero').chosen()
+                        $('#modal-password').modal('show')
+
+
+                        var form=$('#formulario-password')
+						.formValidation({
+							framework: 'bootstrap',
+							fields: {
+								// usuario: {
+								// 	message: 'The username is not valid',
+								// 	validators: {
+								// 		notEmpty: {
+								// 			message: 'ingrese un usuario'
+								// 		},
+								// 		stringLength: {
+								// 			min: 4,
+								// 			max: 20,
+								// 			message: 'El login deve ser 4 caracteres y menor que 20 caracteres'
+								// 		},
+								// 		regexp: {
+								// 			regexp: /^[a-zA-Z0-9_\.]+$/,
+								// 			message: 'El login no acepta caracteres especiales'
+								// 		}
+								// 	}
+								// },
+								password:{
+					        		validators:{
+					        			notEmpty:{
+					        				message:'Ingrese una contrasenia'
+					        			},
+					        			identical:{
+					        				field:'repassword',
+					        				message:'La contrasenia deve ser identica'
+					        			}
+					        		}
+					        	},
+					        	repassword:{
+					        		validators:{
+					        			notEmpty:{
+					        				message:'Repita la contrasenia para confirmar'
+					        			}
+					        			,
+					        			identical:{
+					        				field:'xpassword',
+					        				message:'La contrasenia deve ser identica ,repita la anterior'
+					        			}
+
+					        		}
+					        	}
+							}
+						}).on('success.form.fv', function(e){
+							e.preventDefault();
+									// alert('estoy dentro')
+							CambiarPassword(e);
+						})
+						function CambiarPassword(){
+
+							 swal({   
+                                title: "Seguro de cambiar contrasenia?",   
+                                text: "Usted modificara los datos del Usuario",   
+                                type: "warning",   
+                                showCancelButton: true,   
+                                confirmButtonColor: "#DD6B55",   
+                                confirmButtonText: "Si, Continuar!",   
+                                cancelButtonText: "No, Cancelar!",   
+                                closeOnConfirm: false,   
+                                closeOnCancel: false 
+                                }, function(isConfirm){  
+                                    $('.doc-mod').removeAttr('disabled') 
+                                    if (isConfirm) {
+                                    	// $('#formulario-mod').find('input[name=ci]').removeAttr("disabled")
+                                    	// $('#formulario-mod').find('#ciCod').removeAttr("disabled")
+										
+										$('#formulario-password').ajaxSubmit({
+											// url:'/RestUsuario/validar',
+											dataType:"json",
+											// async:false,
+											success:function(respuesta){
+													console.log(respuesta);
+													// $('#mensaje').html(respuesta.msg);
+													if(respuesta.status==true){
+														window.location.href='/inicio';
+
+														// $.getJSON(urlServer+'/RestUsuario/salir',function(){
+														//     console.log('autorize: ',resp)
+														//     if(resp.autorize==true){
+														//         window.location.href=urlClient+'/inicio';
+														//         window.location.href=urlServer+'/RestUsuario/salir';
+														//     }else{
+														//      alert('no se ha podido iniciar session')
+														//     }
+														// })
+														// alert('si')
+													}else{
+														$('#mensaje').html(respuesta.msg);
+														
+													}   
+											},
+											error:function(e){
+												alert('Sin respuesta del servidor server');
+											}
+										});
+
+
+                                    } else {     
+                                        swal({
+                                            title:"Cancelado",
+                                            text:"Se ha cancelado operacion",
+                                            type:"error",
+                                            timer:2000,
+                                            showCancelButton:false,
+                                            showConfirmButton:false
+
+                                        })
+                                        $('#modal-mod').modal('hide')
+                                    } 
+                            });
+						
+						}
+					})
+				}
+			})	
+		}
     </script>
 	<script>
 		$(function() {
@@ -308,6 +477,9 @@
 				$('.flecha_menu').css("background","blue")
 			}
 		})
+	
 	</script>
 </body>
 </html>
+
+<!-- 1MtuSdJ/7Fc= --> 

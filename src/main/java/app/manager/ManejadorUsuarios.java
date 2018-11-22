@@ -75,40 +75,55 @@ public class ManejadorUsuarios {
 	public Usuario obtenerUsuario(int codper){
 		return this.db.queryForObject("select * from usuario where idper=?", new objUsuario(),codper);
 	}
-	public Persona iniciarSession(String xlogin, String xpassword){
-		System.out.println("entro consulta--> "+"xlogin: "+xlogin+ " xpassword:"+xpassword);
-		String xsql="";
-		try {
-			xsql="select p.*,u.* FROM usuario u, persona p WHERE u.login=? and u.password=? and u.idper=p.idper and u.estado=1";
-			return this.db.queryForObject(xsql, new objPersona() ,xlogin,xpassword);
-		} catch (Exception e) {
-			System.out.println("error iniciar_sesion="+e.toString());
-			return null;
-		}	
-	}
 //	public Persona iniciarSession(String xlogin, String xpassword){
 //		System.out.println("entro consulta--> "+"xlogin: "+xlogin+ " xpassword:"+xpassword);
-//		ALGORITMO3DES_Ecript_Desencript des=new ALGORITMO3DES_Ecript_Desencript();
 //		String xsql="";
-//		Persona p=null;
 //		try {
-//			Usuario user=this.db.queryForObject("select * from usuario where login=?", new objUsuario() ,xlogin);
-//			if(user!=null) {
-//				System.out.println("contraseña: "+des.Desencriptar(user.getPassword()));
-//				if(des.Desencriptar(user.getPassword()).equals(xpassword)) {
-//					xsql="select p.*,u.* FROM usuario u, persona p WHERE u.login=? and u.idper=p.idper and u.estado=1";
-//					p=this.db.queryForObject(xsql, new objPersona() ,xlogin);
-//					
-//				}
-//			}
-//		
-//
+//			xsql="select p.*,u.* FROM usuario u, persona p WHERE u.login=? and u.password=? and u.idper=p.idper and u.estado=1";
+//			return this.db.queryForObject(xsql, new objPersona() ,xlogin,xpassword);
 //		} catch (Exception e) {
 //			System.out.println("error iniciar_sesion="+e.toString());
+//			return null;
 //		}	
-//		return p;
 //	}
+	public Persona iniciarSession(String xlogin, String xpassword){
+		System.out.println("entro consulta--> "+"xlogin: "+xlogin+ " xpassword:"+xpassword);
+		ALGORITMO3DES_Ecript_Desencript des=new ALGORITMO3DES_Ecript_Desencript();
+		String xsql="";
+		Persona p=null;
+		try {
+			Usuario user=this.db.queryForObject("select * from usuario where login=?", new objUsuario() ,xlogin);
+			if(user!=null) {
+				System.out.println("contraseña: "+des.Desencriptar(user.getPassword()));
+				if(des.Desencriptar(user.getPassword()).equals(xpassword)) {
+					xsql="select p.*,u.* FROM usuario u, persona p WHERE u.login=? and u.idper=p.idper and u.estado=1";
+					p=this.db.queryForObject(xsql, new objPersona() ,xlogin);
+					
+				}
+			}
+		
+
+		} catch (Exception e) {
+			System.out.println("error iniciar_sesion="+e.toString());
+		}	
+		return p;
+	}
 	
+	
+	public boolean ChangePassword(String password,String user){
+		ALGORITMO3DES_Ecript_Desencript des=new ALGORITMO3DES_Ecript_Desencript();
+		String xsql="";
+		try {
+			xsql="update usuario set password=? where login=?";
+			this.db.update(xsql ,"",user);
+			xsql="update usuario set password=? where login=?";
+			this.db.update(xsql ,des.Encriptar(password),user);
+			return true;
+		} catch (Exception e) {
+		
+			return false;
+		}	
+	}
 	public boolean registrar(HttpServletRequest req,String tel[],String nombreFoto){
 		ALGORITMO3DES_Ecript_Desencript des=new ALGORITMO3DES_Ecript_Desencript();
 		int idper= generarIdPer();
@@ -125,7 +140,8 @@ public class ManejadorUsuarios {
 		String sql="";
 		try {
 			sql="INSERT INTO persona(idper,ci,ciCod,nombres,ap,am,genero,direccion,email,foto,estado) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
-			this.db.update(sql,idper,des.Encriptar(ci),ciCod,nombres.toUpperCase(),ap.toUpperCase(),am.toUpperCase(),genero,direccion.toUpperCase(),email,nombreFoto,1);
+//			this.db.update(sql,idper,des.Encriptar(ci),ciCod,nombres.toUpperCase(),ap.toUpperCase(),am.toUpperCase(),genero,direccion.toUpperCase(),email,nombreFoto,1);
+			this.db.update(sql,idper,ci,ciCod,nombres.toUpperCase(),ap.toUpperCase(),am.toUpperCase(),genero,direccion.toUpperCase(),email,nombreFoto,1);
 			sql="insert into telefono(numero,idper) values(?,?)";
 			for (int i = 0; i < tel.length; i++) {
 				if(!tel[i].equals("")) {

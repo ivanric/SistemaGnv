@@ -69,6 +69,25 @@ public class ControladorUsuarios {
 		}
 		return "usuarios/modal-modificar";
 	}
+	@RequestMapping({"modal-password"})
+	public String modal_password(HttpServletRequest request,Model m){
+		HttpSession sesion=request.getSession(true);
+		Persona xuser=(Persona) sesion.getAttribute("xusuario");
+		try {
+			if (xuser==null) {
+				m.addAttribute("mensaje","Usuario no Autorizado..");
+				return "principal/cerrarSession";
+			} else {
+				
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			m.addAttribute("mensaje","Usuario no Autorizado..");
+			return "principal/cerrarSession";
+		}
+		return "usuarios/modal-password";
+	}
 	@RequestMapping({"modal-addRoles"})
 	public String modal_addRoles(HttpServletRequest request,Model m){
 		HttpSession sesion=request.getSession(true);
