@@ -25,7 +25,7 @@ import app.manager.ManejadorServicios;
 import app.manager.ManejadorSolicitudes;
 import app.models.Accion;
 import app.models.Aprobacion;
-import app.models.Documento;
+import app.models.DocumentoBeneficiario;
 import app.models.Persona;
 import app.models.RegistroKit;
 import app.models.Solicitud;
@@ -62,9 +62,9 @@ public class RestTBeneficiarios {
 		return new ResponseEntity<List<TransferenciaBeneficiario>>(Tbeneficiarios,HttpStatus.OK);
 	}
 	@RequestMapping(value="documentosBeneficiario")
-	public ResponseEntity<List<Documento>> docuemtosBeneficiario(HttpServletRequest req,HttpServletResponse res){	
-		List<Documento> listaDocumentos=this.manejadorBeneficiarios.listaDocumentosTB();
-		return new ResponseEntity<List<Documento>>(listaDocumentos,HttpStatus.OK);
+	public ResponseEntity<List<DocumentoBeneficiario>> docuemtosBeneficiario(HttpServletRequest req,HttpServletResponse res){	
+		List<DocumentoBeneficiario> listaDocumentos=this.manejadorBeneficiarios.listaDocumentosTB();
+		return new ResponseEntity<List<DocumentoBeneficiario>>(listaDocumentos,HttpStatus.OK);
 	}
 	@RequestMapping(value="FiltroInstalacionKit")
 	public ResponseEntity<List<RegistroKit>> FiltroSolicitud(HttpServletRequest req,HttpServletResponse res){

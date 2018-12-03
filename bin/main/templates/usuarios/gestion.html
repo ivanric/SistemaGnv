@@ -186,6 +186,12 @@
                     }else{
                         $('td',row).eq(7).append('<button id="btn-mod" class="btn btn-info btn-sm waves-effect btn-espacio" disabled="disabled"><span class="zmdi zmdi-edit"></span> Asignar Roles</button>') 
                     }
+                    if(ExisteOpcion('ma')){
+                        $('td',row).eq(7).append('<button id="btn-mod" class="btn btn-info btn-sm waves-effect btn-espacio" accesskey="'+data.idper+'" data-href="'+data.idper+'" onclick="(Gestion.modAcceso(this))"><span class="zmdi zmdi-edit"></span> Modificar Accesso</button>')
+                        // $('td',row).eq(7).append('<button>hola</button>')
+                    }else{
+                        $('td',row).eq(7).append('<button id="btn-mod" class="btn btn-info btn-sm waves-effect btn-espacio" disabled="disabled"><span class="zmdi zmdi-edit"></span>Modificar Accesso</button>') 
+                    }
 
                 }
                 ,
@@ -894,6 +900,127 @@
                     error:function(err){
                         alert('sin respuesta del servido1r')
                         location.href="../principal/index"
+                    }
+                })
+            },
+            modAcceso:function(a){
+                var idper=$(a).attr('accesskey');
+                $.ajax({
+                    url:"../Usuarios/modal-password",
+                    type:"post",
+                    success:function(resp){
+                        $('#cont-modales').html(resp);
+                        $.post('../RestUser/dataModify/'+idper,function(resp){
+                            console.log('respuestaDatosModificarPost: ',resp)
+                            GImg=resp[0].foto;
+
+                            $('#formulario-password').find('.fg-line').addClass('fg-toggled'); 
+                            $('#formulario-password').loadJSON(resp[0])
+                            $('#formulario-password').find('#user-avatar').prop('src','../archivos/fotos/'+resp[0].foto)
+                            $('#formulario-password').find('input[name="ci"]').val(resp[0].ci)
+                            $('#formulario-password').find('input[name="usuario"]').val(resp[0].usuario.login)
+                            // $('#formulario-password').find('input[name="password"]').val(resp[0].usuario.password)
+                            $('#ciCod').chosen()
+                            $('#select-genero').chosen()
+                            $('#modal-password').modal('show')
+
+
+                            var form=$('#formulario-password')
+                            .formValidation({
+                                framework: 'bootstrap',
+                                fields: {
+                                    password:{
+                                        validators:{
+                                            notEmpty:{
+                                                message:'Ingrese una contrasenia'
+                                            },
+                                            identical:{
+                                                field:'repassword',
+                                                message:'La contrasenia deve ser identica'
+                                            }
+                                        }
+                                    },
+                                    repassword:{
+                                        validators:{
+                                            notEmpty:{
+                                                message:'Repita la contrasenia para confirmar'
+                                            }
+                                            ,
+                                            identical:{
+                                                field:'xpassword',
+                                                message:'La contrasenia deve ser identica ,repita la anterior'
+                                            }
+
+                                        }
+                                    }
+                                }
+                            }).on('success.form.fv', function(e){
+                                e.preventDefault();
+                                        // alert('estoy dentro')
+                                CambiarPassword(e);
+                            })
+                            function CambiarPassword(){
+
+                                 swal({   
+                                    title: "Seguro de cambiar contrasenia?",   
+                                    text: "Usted modificara los datos del Usuario",   
+                                    type: "warning",   
+                                    showCancelButton: true,   
+                                    confirmButtonColor: "#DD6B55",   
+                                    confirmButtonText: "Si, Continuar!",   
+                                    cancelButtonText: "No, Cancelar!",   
+                                    closeOnConfirm: false,   
+                                    closeOnCancel: false 
+                                    }, function(isConfirm){  
+                                        $('.doc-mod').removeAttr('disabled') 
+                                        if (isConfirm) {
+                                            $('#formulario-password').ajaxSubmit({
+                                                // url:'/RestUsuario/validar',
+                                                dataType:"json",
+                                                data:{
+                                                    idper:idper
+                                                },
+                                                // async:false,
+                                                success:function(respuesta){
+                                                        console.log(respuesta);
+                                                        // $('#mensaje').html(respuesta.msg);
+                                                        if(respuesta.status==true){
+                                                            swal({
+                                                                title:"Modificado",
+                                                                text:"Se ha modificado contrasenia de  Usuario exitosamente",
+                                                                type:"success",
+                                                                timer: 2000,   
+                                                                showConfirmButton: false 
+                                                            });
+                                                        }else{
+                                                            $('#mensaje').html(respuesta.msg);
+                                                            
+                                                        }
+                                                        $('#modal-password').modal('hide')
+
+                                                },
+                                                error:function(e){
+                                                    alert('Sin respuesta del servidor server');
+                                                }
+                                            });
+
+
+                                        } else {     
+                                            swal({
+                                                title:"Cancelado",
+                                                text:"Se ha cancelado operacion",
+                                                type:"error",
+                                                timer:2000,
+                                                showCancelButton:false,
+                                                showConfirmButton:false
+
+                                            })
+                                            $('#modal-mod').modal('hide')
+                                        } 
+                                });
+                            
+                            }
+                        })
                     }
                 })
             }

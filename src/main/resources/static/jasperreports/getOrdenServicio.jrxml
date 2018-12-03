@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
+<!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.0.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="getOrdenServicio" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="842b4756-fd04-449d-b146-233deeb77efc">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="conect"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MiConnect"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
@@ -19,8 +19,9 @@
 	<parameter name="telefonosTall_param" class="java.lang.String"/>
 	<parameter name="telefonosBenf_param" class="java.lang.String"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT ors.numords,inst.*,ors.fechaords,tall.nombretall,tall.direccion as direccionTall,solt.numSolt,solt.fechaCreacion as fechaSolt,per.nombres as nombreBen,per.ci as ciBen,per.ciCod,per.direccion as direccionBen,veh.*,mrVeh.nombre as marcaVeh,modVeh.nombre as modeloVeh,tipVeh.nombre as tipoVeh,tpServVeh.nombre as tipoServVeh,tpMVeh.nombre as SistemaMotorVeh,veh.cilindrada,veh.color,veh.num_chasis,veh.num_motor,serv.numPistones,cil.capacidad,red.tipoTecnologia,serv.precioTotal,comb.nombre as combustibleServ 
-FROM ordenServicio ors JOIN institucion inst ON inst.idinst=ors.idinst JOIN taller tall ON ors.idtall=tall.idtall JOIN servicio serv ON ors.idserv=serv.idserv  JOIN cilindro cil ON cil.idcil=serv.idcil JOIN reductor red ON red.idreduc=serv.idreduc JOIN combustible comb ON comb.idcomb=serv.idcomb JOIN solicitud solt ON solt.idsolt=ors.idsolt  JOIN benVehSolt bvs ON bvs.idsolt=solt.idsolt JOIN beneficiario b ON bvs.idben=b.idben AND b.estado=1 JOIN persona per ON per.idper=b.idper JOIN vehiculo veh ON bvs.placa=veh.placa  JOIN marcaVehiculo mrVeh ON mrVeh.idmarcv=veh.idmarcv JOIN modeloVehiculo modVeh ON modVeh.idmodv=veh.idmodv JOIN tipoVehiculo tipVeh ON tipVeh.idtipv=veh.idtipv JOIN tipoServicioVehiculo tpServVeh ON tpServVeh.idTipSv=veh.idTipSv JOIN tipoMotorVehiculo tpMVeh ON tpMVeh.idtipoMotorVeh=veh.idtipoMotorVeh 
+		<![CDATA[SELECT ors.numords,inst.*,ors.fechaords,tall.nombretall,tall.direccion as direccionTall,solt.numSolt,solt.fechaCreacion as fechaSolt,per.nombres as nombreBen,per.ci as ciBen,per.ciCod,per.direccion as direccionBen,veh.*,mrVeh.nombre as marcaVeh,modVeh.nombre as modeloVeh,tipVeh.nombre as tipoVeh,tpServVeh.nombre as tipoServVeh,tpMVeh.nombre as SistemaMotorVeh,veh.cilindrada,veh.color,veh.num_chasis,veh.num_motor,serv.numPistones,cil.capacidad,red.tipoTecnologia,serv.precioTotal,comb.nombre as combustibleServ,concat(p1.nombres,' ',p1.ap,' ',p1.am) as firma1,concat(p2.nombres,' ',p2.ap,' ',p2.am) as firma2,concat(p3.nombres,' ',p3.ap,' ',p3.am) as firma3 
+FROM ordenServicio ors JOIN taller tall ON ors.idtall=tall.idtall JOIN servicio serv ON ors.idserv=serv.idserv  JOIN cilindro cil ON cil.idcil=serv.idcil JOIN reductor red ON red.idreduc=serv.idreduc JOIN combustible comb ON comb.idcomb=serv.idcomb JOIN solicitud solt ON solt.idsolt=ors.idsolt  JOIN benVehSolt bvs ON bvs.idsolt=solt.idsolt JOIN beneficiario b ON bvs.idben=b.idben AND b.estado=1 JOIN persona per ON per.idper=b.idper JOIN vehiculo veh ON bvs.placa=veh.placa  JOIN marcaVehiculo mrVeh ON mrVeh.idmarcv=veh.idmarcv JOIN modeloVehiculo modVeh ON modVeh.idmodv=veh.idmodv JOIN tipoVehiculo tipVeh ON tipVeh.idtipv=veh.idtipv JOIN tipoServicioVehiculo tpServVeh ON tpServVeh.idTipSv=veh.idTipSv JOIN tipoMotorVehiculo tpMVeh ON tpMVeh.idtipoMotorVeh=veh.idtipoMotorVeh JOIN institucion inst ON inst.idinst=ors.idinst 
+JOIN firmasOS fr ON ors.idfirm=fr.idfirm JOIN persona p1 ON p1.idper=fr.firma1 JOIN persona p2 ON p2.idper=fr.firma2 JOIN persona p3 ON p3.idper=fr.firma3
 WHERE ors.idordserv=$P{idOrdServ_param}]]>
 	</queryString>
 	<field name="numords" class="java.lang.Integer">
@@ -29,8 +30,8 @@ WHERE ors.idordserv=$P{idOrdServ_param}]]>
 	<field name="idinst" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="idinst"/>
 	</field>
-	<field name="nombreCompañia" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="nombreCompañia"/>
+	<field name="nombreCompania" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nombreCompania"/>
 	</field>
 	<field name="nombreInstitucion" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="nombreInstitucion"/>
@@ -47,17 +48,11 @@ WHERE ors.idordserv=$P{idOrdServ_param}]]>
 	<field name="nitInst" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="nitInst"/>
 	</field>
-	<field name="firma1" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="firma1"/>
-	</field>
-	<field name="firma2" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="firma2"/>
-	</field>
-	<field name="firma3" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="firma3"/>
-	</field>
 	<field name="fax" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="fax"/>
+	</field>
+	<field name="estado" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="estado"/>
 	</field>
 	<field name="fechaords" class="java.sql.Timestamp">
 		<property name="com.jaspersoft.studio.field.label" value="fechaords"/>
@@ -119,8 +114,11 @@ WHERE ors.idordserv=$P{idOrdServ_param}]]>
 	<field name="idmodv" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="idmodv"/>
 	</field>
-	<field name="estado" class="java.lang.Integer">
+	<field name="COLUMN_31" class="java.lang.Integer">
 		<property name="com.jaspersoft.studio.field.label" value="estado"/>
+	</field>
+	<field name="kitGlp" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="kitGlp"/>
 	</field>
 	<field name="marcaVeh" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="marcaVeh"/>
@@ -137,16 +135,16 @@ WHERE ors.idordserv=$P{idOrdServ_param}]]>
 	<field name="SistemaMotorVeh" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="SistemaMotorVeh"/>
 	</field>
-	<field name="COLUMN_39" class="java.lang.String">
+	<field name="COLUMN_38" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="cilindrada"/>
 	</field>
-	<field name="COLUMN_40" class="java.lang.String">
+	<field name="COLUMN_39" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="color"/>
 	</field>
-	<field name="COLUMN_41" class="java.lang.String">
+	<field name="COLUMN_40" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="num_chasis"/>
 	</field>
-	<field name="COLUMN_42" class="java.lang.String">
+	<field name="COLUMN_41" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="num_motor"/>
 	</field>
 	<field name="numPistones" class="java.lang.Integer">
@@ -163,6 +161,15 @@ WHERE ors.idordserv=$P{idOrdServ_param}]]>
 	</field>
 	<field name="combustibleServ" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="combustibleServ"/>
+	</field>
+	<field name="firma1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="firma1"/>
+	</field>
+	<field name="firma2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="firma2"/>
+	</field>
+	<field name="firma3" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="firma3"/>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -235,6 +242,20 @@ WHERE ors.idordserv=$P{idOrdServ_param}]]>
 				</textElement>
 				<text><![CDATA[ORDEN DE SERVICIO]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="383" y="43" width="40" height="20" uuid="8fc25b73-5e91-41e1-95fa-3b7ba6a87cc5"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="381" y="60" width="122" height="20" uuid="d46be099-524a-4117-826d-ae9b6b6b4dca"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>

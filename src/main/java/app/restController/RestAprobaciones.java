@@ -21,8 +21,11 @@ import app.manager.ManejadorAprobaciones;
 import app.manager.ManejadorServicios;
 import app.manager.ManejadorSolicitudes;
 import app.models.Aprobacion;
+import app.models.Aseguradora;
 import app.models.Persona;
+import app.models.Poliza;
 import app.models.Solicitud;
+import app.models.Vehiculo;
 import app.models.Accion;
 import app.utilidades.GeneradorReportes;
 import app.utilidades.URIS;
@@ -81,6 +84,35 @@ public class RestAprobaciones {
 		lista.add(Mapa);
 		return new ResponseEntity<List<Object>>(lista,HttpStatus.OK);
 	}
+	@RequestMapping({"getAseguradoras"})
+	public ResponseEntity<List<Aseguradora>> DatosVeh(HttpServletRequest req){
+//		String placa=req.getParameter("placa");
+//		System.out.println("la placa es : "+placa);
+		List<Aseguradora> aseg=this.manejadorSolicitudes.getAseguradoras();
+		return new ResponseEntity<List<Aseguradora>>(aseg,HttpStatus.OK);
+	}
+	
+	@RequestMapping ({"existePolizaByPlaca"})
+	public ResponseEntity<Map<String, Object>> existe(HttpServletRequest req){
+		Map<String, Object> mapa=new HashMap<String, Object>();
+		String placa=req.getParameter("placa");
+		System.out.println("Placa: "+placa);
+		int existe;
+		System.out.println("tam_"+placa.length());
+		//VERIFICA PRIMERO SI EXISTE LA PLACA QUE ESTE DISPONIBLE 
+		existe=this.manejadorAprobaciones.verificarPolizaByPlaca(placa);
+		System.out.println("existe: "+existe);
+		mapa.put("estado", existe);
+		return new ResponseEntity<Map<String,Object>>(mapa,HttpStatus.OK);
+	}
+	@RequestMapping({"PolizaDatos"})
+	public ResponseEntity<Poliza> PolizaDatos(HttpServletRequest req){
+		String placa=req.getParameter("placa");
+		System.out.println("la placa es : "+placa);
+		Poliza resp=this.manejadorSolicitudes.DatosPoliza(placa);
+		return new ResponseEntity<Poliza>(resp,HttpStatus.OK);
+	}
+	
 	@Transactional
 	@RequestMapping({"adicionar"})
 	public ResponseEntity<Map<String, Object>> add(HttpServletRequest req){
@@ -98,9 +130,12 @@ public class RestAprobaciones {
 		int idTipoFinal=this.manejadorAprobaciones.getTipoFinal();
 		System.out.println("Aprob final: "+idTipoFinal);
 		int aprobarSolt=0;
-		for (String string : ListaAprobaciones) {
-			System.out.println("Aprob: "+string);
-		}
+
+		String numeroPol=req.getParameter("numeroPol");	
+		String idaseg=req.getParameter("idaseg");	
+		String placa=req.getParameter("placa");	
+		
+		System.out.println("numeroPol:"+numeroPol+" idaseg:"+idaseg+" Placa:"+placa);
 		try {
 
 			if(ListaAprobaciones!=null) {
@@ -112,11 +147,11 @@ public class RestAprobaciones {
 				}else{
 					aprobarSolt=0;
 				}
-				int statusApro=this.manejadorAprobaciones.insertarAprobacion(xuser.getUsuario().getLogin(), Integer.parseInt(idsolt),ListaAprobaciones,aprobarSolt);
+				int statusApro=this.manejadorAprobaciones.insertarAprobacion(req,xuser.getUsuario().getLogin(), Integer.parseInt(idsolt),ListaAprobaciones,aprobarSolt);
 				System.out.println("statusApro: "+statusApro);
 				if(!descripcionPausa.equals("") && idtipoPausa!=null) {
 					this.manejadorAprobaciones.insertarPausaAprobacion(Integer.parseInt(idsolt), Integer.parseInt(idtipoPausa), descripcionPausa,xuser.getUsuario().getLogin());
-				}
+				} 
 			}else {
 				if((!descripcionPausa.equals("")) && (idtipoPausa!=null)) {
 					System.out.println("entro sin aprobacions a pause");

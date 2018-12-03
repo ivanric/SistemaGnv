@@ -312,7 +312,7 @@ public class ManejadorInstalacionKit {
 	}
 	public List<RegistroKit> FiltroRegistroKitTB(String cadena){
 		String sql="SELECT rk.* FROM registroKit rk,ordenServicio os,solicitud s,vehiculo veh,beneficiario b,persona p, benVehSolt bvs \r\n" + 
-				"WHERE rk.idordserv=os.idordserv AND os.idsolt=s.idsolt AND os.instaladoSiNo=1 AND bvs.idben=b.idben AND b.estado=1 AND bvs.placa=veh.placa AND bvs.idsolt=s.idsolt and b.idper=p.idper and (os.numords LIKE ? or s.numSolt LIKE ? or p.ci LIKE ?) ";
+				"WHERE rk.idordserv=os.idordserv AND os.idsolt=s.idsolt AND s.estado=1 AND os.instaladoSiNo=1 AND bvs.idben=b.idben AND b.estado=1 AND bvs.placa=veh.placa AND bvs.idsolt=s.idsolt and b.idper=p.idper and (os.numords LIKE ? or s.numSolt LIKE ? or p.ci LIKE ?) ";
 		return this.db.query(sql, new objRegistroKit(),'%'+cadena+'%','%'+cadena+'%','%'+cadena+'%');
 	}
 	public RegistroKit getRegistroKitTBbyIdTrasl(int id) {

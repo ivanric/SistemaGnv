@@ -21,6 +21,7 @@ public class ControladorSolicitudes{
 		Persona xuser=(Persona) sesion.getAttribute("xusuario");
 		try {
 			if (xuser==null) {
+				System.out.println("Entro");
 				m.addAttribute("mensaje","Usuario no Autorizado..");
 				return "principal/cerrarSession";
 			} else {
@@ -28,11 +29,12 @@ public class ControladorSolicitudes{
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
+			System.out.println("err");
 			e.printStackTrace();
 			m.addAttribute("mensaje","Usuario no Autorizado..");
 			return "principal/cerrarSession";
 		}
-		return "solicitudes/gestion";
+		return "solicitudes/gestion1";
 	}
 	@RequestMapping({"modal-add"})
 	public String modal_add(HttpServletRequest request,Model m){
@@ -53,6 +55,26 @@ public class ControladorSolicitudes{
 		}
 		return "solicitudes/modal-adicionar";
 	}
+	@RequestMapping({"modal-add1"})
+	public String modal_add1(HttpServletRequest request,Model m){
+		HttpSession sesion=request.getSession(true);
+		Persona xuser=(Persona) sesion.getAttribute("xusuario");
+		try {
+			if (xuser==null) {
+				m.addAttribute("mensaje","Usuario no Autorizado..");
+				return "principal/cerrarSession";
+			} else {
+
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			m.addAttribute("mensaje","Usuario no Autorizado..");
+			return "principal/cerrarSession";
+		}
+		return "solicitudes/modal-adicionar1";
+	}
+	
 	@RequestMapping({"modal-mod"})
 	public String modal_mod(HttpServletRequest request,Model m){
 		HttpSession sesion=request.getSession(true);

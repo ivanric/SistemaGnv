@@ -63,6 +63,15 @@
      	var GClickBotton=false;
         var GAprobFinal=0;
         var idsolt;
+        var GJerarquiaApLegal;//Acicionado para Piliza
+
+        //TRAIDOS DEL MODAL ADD PARA POLIZA
+        var GTipoAprob;
+        var GTiposPausa;
+        var GtamComp;
+        var respPoliza=0;
+
+
         var result=Get_Opciones(null);
         console.log('GESTION_LIST: ',result)
      
@@ -254,9 +263,21 @@
                                         var mensaje='';
                                         var data_id=$('#'+id_check).data('id');
 
+                                        //ADD POLIZA
+
+                                        var padreNode=$('.dt-pol').parent(); 
+
+                                        var data_codigo=$fields[0].attributes[4].nodeValue;
+                                        console.log('data_codigo: ',data_codigo)
+                                        var estadoCheck;
+                                        //FIN 
                                         console.log('fields_:',$fields)
                                         console.log('accesskey_:',accesskey)
                                         var check_actual=$('#'+Field_Id+$fields[0].accessKey);
+
+                                        GClickBotton=false
+
+                                        console.log('GClickBotton: ',GClickBotton)
                                         if(GClickBotton==false){
                                             if(check_actual.is(':checked')){
                                                 PausaAprob(parseInt(accesskey)+1,data_id)
@@ -280,10 +301,19 @@
                                                 ServerCheck_ant=$('#'+Field_Id+id_ant+'').attr('servcheck')
 
                                                 if(ServerCheck_ant=="true"){
+                                                    // alert('entra1')
                                                     PausaAprob(-1,0)
+                                                    console.log('Tamanio pausa: ',GTiposPausa.length)
+                                                    if(GTiposPausa.length>0){
+                                                    }else{
+                                                        PausaAprob(parseInt(ck_an),0)
+                                                    }
                                                 }else{
+                                                    // alert('entra2')
                                                     PausaAprob(parseInt(ck_an),0)
                                                 }
+                                                // PausaAprob(parseInt(ck_an),0)
+
                                             }
                                         }
                                         if(accesskey>1){
@@ -294,6 +324,8 @@
                                                     Loc_estado=false;
                                                 }
                                             }
+
+
                                         }
                                         console.log('GTamAprob: ',GTamAprob)
                                         var iter=parseInt(accesskey)+1;
@@ -305,14 +337,77 @@
                                                 console.log('check_before: '+check_before)
                                                 $(check_before).prop('checked',false)
                                             }
-                                        }    
+                                        }
+
+                                        //ASEGURADORA
+                                        $('#formulario-add-aprob').formValidation('removeField','numeroPol');      
+                                        $('#formulario-add-aprob').formValidation('removeField','idaseg');     
+                                        $('#formulario-add-aprob').data('formValidation').resetField($('#numeroPol'),true);     
+                                        $('#formulario-add-aprob').data('formValidation').resetField($('#select-aseg'),true);
+
+
+
+
+                                        if (data_codigo=='al') {
+                                            $.ajax({
+                                                url:"../RestAprobaciones/existePolizaByPlaca",
+                                                data:{
+                                                    placa:$('input[name="placa"]').val()
+                                                },
+                                                type:"post",
+                                                dataType:"json",
+                                                async:false,
+                                                // cache:false,
+                                                success:function(resp){
+                                                    console.log('existe: ',resp) 
+                                                    respPoliza=resp.estado
+                                                },  
+                                                error:function(err){
+                                                    alert('sin respuesta del servidor')
+                                                }
+
+                                            })
+
+                                            if(respPoliza==1){
+                                                // $('#mensaje-placa').html('se encontro placa registrada').show()
+                                                var poliza;
+                                                $.post('../RestAprobaciones/PolizaDatos',{placa:$('input[name="placa"]').val()},function(resp){
+                                                    poliza=resp;
+                                                    console.log('Poliza: ',poliza)
+                                                    padreNode.addClass('fg-toggled');
+                                                    // $('#select-aseg').val(poliza.aseguradora.idaseg).trigger('chosen:updated');
+                                                    $('#select-aseg option').each(function(){
+                                                        // alert('value'+$(this).val())
+                                                        if($(this).val()==poliza.aseguradora.idaseg){
+                                                            document.getElementById("select-aseg").value=""+poliza.aseguradora.idaseg+""
+                                                        }
+                                                    })
+                                                    $('input[name="numeroPol"]').val(poliza.numeroPol);                                                                                
+                                                })
+                                                
+                                                // return true
+                                            }
+                                            GJerarquiaApLegal=accesskey;
+                                            
+                                        }
+                                        if(accesskey<GJerarquiaApLegal){
+                                            $('.poliza-data').hide() 
+
+                                        }
+                                        //FIM ASEGURADORA
+
+
                                         if(!Loc_estado){
+                                            console.log('entro')
+
                                             if(check_actual.is(':checked')){
                                                 invalidate=false;
                                                 mensaje="Debe Seguir las Aprobaciones segun su orden"
                                             }else{
                                                 invalidate=true;
                                             }
+                                            // console.log('Loc_estadof: ',Loc_estado)
+
                                         }else{
                                             if(accesskey==1){
                                                 var checkOne=$('#'+Field_Id+accesskey);
@@ -321,8 +416,49 @@
 
                                                 }
                                             }
+
+                                            //AQUI SE CONTROLA PARA HACER LA POLIZA
+
+                                            if (data_codigo=='al') {
+
+                                                estadoCheck=$('#'+Field_Id+accesskey+'').is(':checked');
+                                                console.log('esta:',estadoCheck)    
+                                                
+                                                if(estadoCheck){
+                                                    // alert('apr')
+                                                    // $('#select-aseg').html('')
+                                                    // $('#select-aseg').append('<option value="">Seleccione Aseguradora</option>')
+                                                   
+
+                                                     $('.poliza-data').slideDown( "slow" );
+
+                                                    $('#formulario-add-aprob').formValidation('addField','numeroPol');      
+                                                    $('#formulario-add-aprob').formValidation('addField','idaseg');      
+                                                }else{
+                                                    // alert('cerrando')
+                                                    $('.poliza-data').hide()  
+                                                    $('#formulario-add-aprob').data('formValidation').resetField($('#numeroPol'),true);     
+                                                    $('#formulario-add-aprob').data('formValidation').resetField($('#select-aseg'),true);     
+                                                    $('#formulario-add-aprob').formValidation('removeField','numeroPol');      
+                                                    $('#formulario-add-aprob').formValidation('removeField','idaseg');     
+                                                    
+                                                }
+
+
+                                            }else{
+                                                if (accesskey>GJerarquiaApLegal) {
+                                                    // alert('GJerarquiaApLegal'+ GJerarquiaApLegal)
+                                                    $('#formulario-add-aprob').formValidation('addField','numeroPol');      
+                                                    $('#formulario-add-aprob').formValidation('addField','idaseg');  
+                                                }
+                                            }    
+                                            //FIN POLIZA
+
+                                            
+                                            console.log('Loc_estado1: ',Loc_estado)
+
                                         }
-                                        GClickBotton=false
+                                        // GClickBotton=false
                                         return{
                                             valid:invalidate,
                                             message:mensaje

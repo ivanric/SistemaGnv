@@ -70,12 +70,16 @@ public class RestUsuario {
 		String xpassword=request.getParameter("password");
 		Map<String, Object> Data=new HashMap<>();
 		try {
-			Persona xusuario=this.manejadorUsuarios.iniciarSession(xlogin,xpassword);
-			System.out.println(xusuario);
-			List<Rol> ListaRoles=this.manejadorRoles.ControlRoles(xusuario.getIdper());
-			System.out.println("RolesFuera: "+ListaRoles.toString());
-			if(xusuario!=null){
-				if(xusuario.getUsuario().getEstado()!=1){
+			Persona persona=this.manejadorUsuarios.iniciarSession(xlogin,xpassword);
+			
+			if(persona!=null){
+				System.out.println("per:"+persona);
+//				persona.setUsuario(this.manejadorUsuarios.obtenerUsuario(persona.getIdper()));
+//				System.out.println("user:"+persona);
+				List<Rol> ListaRoles=this.manejadorRoles.ControlRoles(persona.getIdper());
+				System.out.println("RolesFuera: "+ListaRoles.toString());
+				
+				if(persona.getUsuario().getEstado()!=1){
 					Data.put("msg","Usuario no esta activo");
 					Data.put("status",false);
 				}else {
@@ -85,19 +89,20 @@ public class RestUsuario {
 					}
 					else{
 						System.out.println("sessionooo");
-						session.setAttribute("xusuario",xusuario);
+						session.setAttribute("xusuario",persona);
 						Data.put("msg","Usuario registrado con Exito");
 						Data.put("status",true);
 					}
 				}
 
 			}
-//			else{
-//				Data.put("msg","error serv");
-//				Data.put("status",false);
-//			}
+			else{
+				Data.put("msg","Usuario incorrecto, por favor verifique login y clave.");
+				Data.put("status",false);
+			}
 		} catch (Exception e) {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			e.printStackTrace();
 			System.out.println(e.getMessage());
 			Data.put("msg","Usuario incorrecto, por favor verifique login y clave.");
 			Data.put("status",false);
@@ -188,11 +193,12 @@ public class RestUsuario {
 		Persona xuser=(Persona) sesion.getAttribute("xusuario");
 		Map<String, Object> resp=new HashMap<>();
 		String password=request.getParameter("password");
+		Integer idper=Integer.parseInt(request.getParameter("idper"));
 	
 		try {
 			if (xuser!=null) {
 				System.out.println("pass: "+password);
-				this.manejadorUsuarios.ChangePassword(password, xuser.getUsuario().getLogin());
+				this.manejadorUsuarios.ChangePassword(password,idper);
 				resp.put("msg","Usuario Activo");
 				resp.put("status",true);
 			}else {

@@ -8,20 +8,20 @@ public class Beneficiario {
 	protected String descripcion;
 	protected Integer estado;
 	protected Integer idper;
-	protected List<Documento> documentos;
+	protected List<DocumentoBeneficiario> documentoBeneficiarios;
 	public Beneficiario() {
 //		super();
 		// TODO Auto-generated constructor stub
 	}
 	public Beneficiario(Integer idben, String institucion, String descripcion, Integer estado, Integer idper,
-			List<Documento> documentos) {
+			List<DocumentoBeneficiario> documentoBeneficiarios) {
 		super();
 		this.idben = idben;
 		this.institucion = institucion;
 		this.descripcion = descripcion;
 		this.estado = estado;
 		this.idper = idper;
-		this.documentos = documentos;
+		this.documentoBeneficiarios = documentoBeneficiarios;
 	}
 	public Integer getIdben() {
 		return idben;
@@ -53,16 +53,16 @@ public class Beneficiario {
 	public void setIdper(Integer idper) {
 		this.idper = idper;
 	}
-	public List<Documento> getDocumentos() {
-		return documentos;
+	public List<DocumentoBeneficiario> getDocumentos() {
+		return documentoBeneficiarios;
 	}
-	public void setDocumentos(List<Documento> documentos) {
-		this.documentos = documentos;
+	public void setDocumentos(List<DocumentoBeneficiario> documentoBeneficiarios) {
+		this.documentoBeneficiarios = documentoBeneficiarios;
 	}
 	@Override
 	public String toString() {
 		return "Beneficiario [idben=" + idben + ", institucion=" + institucion + ", descripcion=" + descripcion
-				+ ", estado=" + estado + ", idper=" + idper + ", documentos=" + documentos + "]";
+				+ ", estado=" + estado + ", idper=" + idper + ", documentos=" + documentoBeneficiarios + "]";
 	}
 	
 	

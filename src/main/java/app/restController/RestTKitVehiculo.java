@@ -24,7 +24,7 @@ import app.manager.ManejadorServicios;
 import app.manager.ManejadorSolicitudes;
 import app.models.CombustibleVehiculo;
 import app.models.DesmontajeKit;
-import app.models.Documento;
+import app.models.DocumentoBeneficiario;
 import app.models.InstalacionCilindro;
 import app.models.OrdenServicio;
 import app.models.Persona;
@@ -129,7 +129,7 @@ public class RestTKitVehiculo {
 		tk.setSolicitudNueva(this.manejadorSolicitudes.getSoltByTraslVeh(tk.getIdtraslv()));
 		
 		
-		List<Documento> listaDoc=this.manejadorBeneficiarios.listaDocumentos();
+		List<DocumentoBeneficiario> listaDoc=this.manejadorBeneficiarios.listaDocumentos();
 		List<CombustibleVehiculo> listaComb=this.manejadorSolicitudes.listaCombustible();
 		
 		lista.add(tk);

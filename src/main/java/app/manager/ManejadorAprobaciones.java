@@ -1,5 +1,6 @@
 package app.manager;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,36 @@ public class ManejadorAprobaciones {
 		return this.db.queryForObject(sql,Integer.class);
 	}
 	
-	public int insertarAprobacion(String login,int idSolt,String aprob[],int aprobarFinal){
-		int estado=0;
+	public int verificarPolizaByPlaca(String placa){
+		System.out.println("entro sql_placa:"+placa);
 		String sql="";
+		try {
+			sql="SELECT COUNT(numeroPol) FROM  poliza WHERE placa=?";
+			int data=this.db.queryForObject(sql,Integer.class,placa);
+			System.out.println("ver????:"+data);
+			if(data!=0){
+				return data;	
+			}else{
+				return 0;
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			System.out.println("entro catch");	
+			return 0;
+		}
+		
+	}
+	
+	
+	public int insertarAprobacion(HttpServletRequest req,String login,int idSolt,String aprob[],int aprobarFinal){
+		int estado=0;
+		int idpol= generarIdPol();
+		String sql="";
+		String numeroPol=req.getParameter("numeroPol");	
+		String idaseg=req.getParameter("idaseg");	
+		String placa=req.getParameter("placa");	
+		
 		try {
 			sql="INSERT INTO aprobacion(login,idsolt,idacc,tipoAcc) VALUES(?,?,?,?)";
 			for (int i = 0; i < aprob.length; i++) {
@@ -38,6 +66,19 @@ public class ManejadorAprobaciones {
 				sql="UPDATE solicitud SET aprobadoSiNo=? WHERE idsolt=?";
 				estado=this.db.update(sql,1,idSolt);
 			}
+
+			
+			//POLIZA
+			if(verificarPolizaByPlaca(placa)==1) {
+				sql="UPDATE poliza SET numeroPol=?,idaseg=?,login=? WHERE placa=?";
+				this.db.update(sql,numeroPol,Integer.parseInt(idaseg),login,placa);
+			}else {
+				System.out.println("poliza nueva");
+				sql="INSERT INTO poliza(idpol,numeroPol,idaseg,placa,login) VALUES(?,?,?,?,?)";
+				this.db.update(sql,idpol,numeroPol,Integer.parseInt(idaseg),placa,login);	
+			
+			}
+			
 			sql="UPDATE solicitud SET idacc=? WHERE idsolt=?";
 			estado=this.db.update(sql,aprob[aprob.length-1],idSolt);
 			
@@ -117,8 +158,17 @@ public class ManejadorAprobaciones {
 //		}
 //		return pEstado;
 //	}
+	
+	//POLIZA
+	
+	
+	
 	public int generarIdpausa(){
 		String sql="select COALESCE(max(idpaAp),0)+1 as idpaAp from pausaAprobacion";
+		return db.queryForObject(sql, Integer.class);
+	}
+	public int generarIdPol(){
+		String sql="select COALESCE(max(idpol),0)+1 as idpol from poliza";
 		return db.queryForObject(sql, Integer.class);
 	}
 //	public int generarIdpausaTB(){

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.0.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="getIContrato" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ded495f1-a63a-4cb8-9d1c-3dd34cf0903e">
+	<property name="com.jaspersoft.studio.data.sql.tables" value="ZGJvLiJpbmN1bXBsaW1pZW50b0NvbnRyYXRvIiBBUyAsMTk1LDEwMyxhOGRlOTAyYi00ZTk3LTRl&#xA;NGQtYmU5ZC1hNzc3MDhhZmQwYTc7&#xA;"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MiConnect"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT dbo."incumplimientoContrato".idincl
+FROM dbo."incumplimientoContrato"]]>
+	</queryString>
+	<field name="idincl" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="idincl"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="132" splitType="Stretch">
+			<image>
+				<reportElement x="-1" y="31" width="60" height="54" uuid="40bda24f-392d-413e-a97a-7b34596d4bd4"/>
+				<imageExpression><![CDATA[$P{logo_param}]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="-1" y="30" width="570" height="1" uuid="47d70c41-609d-4a9e-a176-ad2b03eba386">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="210" y="30" width="148" height="20" uuid="fcf30ad2-ce26-4485-b710-8c59df7daf8b"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GOB. DPTAL DE TARIJA]]></text>
+			</staticText>
+			<image vAlign="Bottom">
+				<reportElement key="" x="522" y="33" width="50" height="54" uuid="70b09b49-b684-4733-9327-5507f3cfba42">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{logoGob_param}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="269" y="42" width="90" height="16" uuid="12d7053d-2593-4125-bacc-d2be8081f83d">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{nit_param}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="92" width="570" height="1" uuid="53630f1a-a908-4911-807a-d9a4cb822c70"/>
+			</line>
+			<staticText>
+				<reportElement x="249" y="42" width="24" height="16" uuid="93d6c432-4ae0-4f5f-9843-61826574d43d">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NIT:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="219" y="58" width="128" height="24" uuid="a99434a3-457d-4062-af7f-e5b653e56d15">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ORDEN DE SERVICIO]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="-38" width="69" height="20" uuid="42555e2d-4266-4c83-92fe-fa24793271bd">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SOLICITUD]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="-18" width="570" height="1" uuid="a5c4566a-9f9c-4c48-8299-a431c14824b9">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

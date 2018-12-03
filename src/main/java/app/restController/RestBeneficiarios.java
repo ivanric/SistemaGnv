@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import app.manager.ManejadorBeneficiarios;
-import app.models.Documento;
+import app.models.DocumentoBeneficiario;
 import app.models.Persona;
 
 @RequestMapping("/RestBeneficiarios/")
@@ -34,9 +34,9 @@ public class RestBeneficiarios {
 		return new ResponseEntity<List<Persona>>(beneficiarios,HttpStatus.OK);
 	}
 	@RequestMapping(value="documentosBeneficiario")
-	public ResponseEntity<List<Documento>> docuemtosBeneficiario(HttpServletRequest req,HttpServletResponse res){	
-		List<Documento> listaDocumentos=this.manejadorBeneficiarios.listaDocumentos();
-		return new ResponseEntity<List<Documento>>(listaDocumentos,HttpStatus.OK);
+	public ResponseEntity<List<DocumentoBeneficiario>> docuemtosBeneficiario(HttpServletRequest req,HttpServletResponse res){	
+		List<DocumentoBeneficiario> listaDocumentos=this.manejadorBeneficiarios.listaDocumentos();
+		return new ResponseEntity<List<DocumentoBeneficiario>>(listaDocumentos,HttpStatus.OK);
 	}
 	
 	@RequestMapping({"existeCi"})
@@ -93,7 +93,7 @@ public class RestBeneficiarios {
 		List<Object> lista=new ArrayList<Object>();
 		Persona BeneficiarioDatos=this.manejadorBeneficiarios.datosModificar(req);
 		List<?> ListaTelefono=this.manejadorBeneficiarios.ListaTelefonos(BeneficiarioDatos.getIdper());
-		List<Documento> listaDocumentos=this.manejadorBeneficiarios.getDocumentos(Integer.parseInt(req.getParameter("idben")));
+		List<DocumentoBeneficiario> listaDocumentos=this.manejadorBeneficiarios.getDocumentos(Integer.parseInt(req.getParameter("idben")));
 		lista.add(BeneficiarioDatos);
 		lista.add(ListaTelefono);
 		lista.add(listaDocumentos);

@@ -52,11 +52,21 @@
 			<nav>
 				<ul class="menu_navegacion">
 					<li>
+						<!-- <button class="avatar btn btn-danger" style="border-radius: 50%;" onclick="window.open('/helpChm/AYUDA_SISTEMA-web/index.html')"> <span class="fa fa-question-circle fa-2x"></span></button> -->
+						<!-- <button class="avatar btn btn-danger" style="border-radius: 50%;" >  -->
+							<span class="fa fa-question-circle fa-2x" onclick="AYUDACHM()"></span>
+						</button>
+					</li>
+					<li>
 						<select class="tipe form-control" name="roles" id="select-Roles" onchange="GetMenus(this)">	
 						</select>
 					</li>
 					<li>
-						<p>Conectado: <i class="fa fa-circle conectado" ></i>&nbsp; <strong ><h5 class="conectado_user"></h5></strong></p>
+						<p>Conectado: <i class="fa fa-circle conectado" ></i>&nbsp; 
+						
+					</li>
+						<strong ><h5 class="conectado_user"></h5></strong></p>
+					<li>
 					</li>
 					<li>
 						<img class="avatar" id="avatar" src="../static/img/user.png" th:src="@{/img/user.png}" alt="logo">
@@ -144,6 +154,15 @@
     	var GIDPER;
     	var urlServer='http://localhost:8080';
 		
+    	function AYUDAWEB(){
+    		window.open('/helpChm/AYUDA_SISTEMA-web/index.html')
+    	}
+    	function AYUDACHM(){
+    		window.open('/helpChm/AYUDA_SISTEMA.chm')
+
+    	}
+
+
 	// $(function () {
 	    Waves.attach('.btn',['waves-button']);
 	    Waves.init();
@@ -398,6 +417,9 @@
 										$('#formulario-password').ajaxSubmit({
 											// url:'/RestUsuario/validar',
 											dataType:"json",
+											data:{
+												idper:GIDPER
+											},
 											// async:false,
 											success:function(respuesta){
 													console.log(respuesta);

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta http-equiv="Content-Type" content="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title>gestion</title>
+</head>
+<body> 
+	<!-- <h2 style="text-align: center;">GESTION Novedades</h2> -->
+	<div class="card z-depth-2">
+		<div class="card-header">
+			<h2 class="panel-title">
+				GESTION NOVEDADES <small>Administre Novedades de Beneficiarios o Vehiculos
+					registradas en el Sistema</small>
+			</h2>
+		</div>
+		<div class="panel-body" style="margin-top: -30px"> 
+			<div class="row">
+				<div class="col-md-12" style="text-align: right;margin-bottom: 15px">			
+					<button id="btn-add" class="btn btn-default waves-effect" disabled="disabled">NUEVO NOVEDAD</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-3 col-xs-12" style="margin-bottom: 10px;">
+							<input type="text" id="js-filtro" name=""
+								class="form-control_filtro unput-sm"
+								placeholder=" Buscar placa o número de Solt..">
+						</div>
+						<div class="col-md-3 col-xs-12"></div>
+						<div class="col-md-6 col-xs-12 navbar-right" style="text-align: right; margin-top: 10px">
+							<label class="radio radio-inline m-r-20"> <input
+								type="radio" name="iestado" id="activos" value="1"> <i
+								class="input-helper"></i>Solt. activas
+							</label> <label class="radio radio-inline m-r-20"> <input
+								type="radio" name="iestado" id="bajas" value="0"> <i
+								class="input-helper"></i>Solt. Anuladas
+							</label> <label class="radio radio-inline m-r-20"> <input
+								type="radio" name="iestado" id="todos" value="-1"
+								checked="checked"> <i class="input-helper"></i>todos
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-12 t">
+					<table id="table-Novedades" class="table table-vmiddle  table-striped nowrap"
+						width="100%">
+						<thead>
+							<tr>
+								<th class="text-center">#</th>
+                                <th class="text-center"># Solt</th>
+                                <th class="text-center">Placa</th>
+                                <th class="text-center">Beneficiario</th>
+                                <th class="text-center">Fecha Novedad</th>
+                                <th class="text-center">Motivo</th>
+								<th class="text-center">Fecha Incial</th>
+                                <th class="text-center">Fecha Final</th>
+								<th class="text-center">Solt. Anulada</th>
+								<th class="text-center">Opciones</th>
+
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+        var result=Get_Opciones(null);
+        // console.log('GESTION_LIST: ',result)
+        // console.log('tam: ',result.AccionesUser.length)
+        if(ExisteOpcion('adicionar')){
+            $('#btn-add').attr({
+                onclick:"(Novedad.add())",
+                // accesskey:""
+                })
+            $('#btn-add').removeAttr("disabled ").focus().val("Ahora si lo puedes utilizar")
+        }
+
+        function ExisteOpcion(opc){
+            // alert('entro comparar')
+            var resultado=false;
+            for (var i = 0; i < result.AccionesUser.length; i++) {
+                console.log('for_: ',result.AccionesUser[i]);
+                if(result.AccionesUser[i].codigo==opc){
+                    resultado=true;         
+                }
+            }
+            // console.log('result_dentro:',resultado)              
+            return resultado;
+        }
+
+        var filtro=$('#js-filtro').val();
+        var estado=$('input[name="iestado"]:checked').val();
+        listar();
+
+        $('#js-filtro').on('keyup',function(){
+            filtro=$(this).val();
+            listar();
+        })
+
+        $('input[name="iestado"]').on('change',function(){
+            estado=$(this).val();
+            listar();
+        })
+        var DTNovedad='';
+        function listar(){
+            $.ajax({
+                url:'../RestNovedades/listar',
+                type:'post',
+                dataType:'json',
+                data:{
+                    filtro:filtro,
+                    estado:estado,
+                },
+                success:function(resp){
+                    console.log('icont_')
+                    if ($.fn.DataTable.isDataTable('#table-Novedades')) {
+                        DTNovedad.destroy();
+                        iniciarDatable(resp);       
+                    } else {
+                        iniciarDatable(resp);
+                    }   
+                },
+                error:function(err){
+                    alert('sin respuesta del servidor')
+                }
+            })
+        }
+
+     
+      
+        function iniciarDatable(lista){
+            // alert('iniciar dataTables')
+            console.log('respuestaAjax: ',lista);
+            DTNovedad=$('#table-Novedades').DataTable({
+                "oLanguage": {
+                    "sUrl": "/js/dataTables/Spanish.lang"
+                },
+                 responsive:true,
+                "dom":'rt<button>ip',
+                "pageLength":5,
+                data:lista,
+                columns:[
+                    {data:'idnov'},
+                    {data:'idnov'},
+                    {data:'idnov'},
+                    {data:'idnov'},
+                    {data:'idnov'},
+                    {data:'idnov'},
+                    {data:'idnov'},
+                    {data:'idnov'},
+                    {data:'idnov'},
+                    {data:'idnov'}
+                ]
+                ,
+                "createdRow":function(row,data,index){
+                    $('td',row).eq(0).html(index+1).addClass('text-center');
+                    $('td',row).eq(1).html(data.solicitud.numSolt)
+                    $('td',row).eq(2).html(data.solicitud.vehiculo.placa)
+                    $('td',row).eq(3).html(data.solicitud.persona.ap+" "+data.solicitud.persona.am+" "+data.solicitud.persona.nombres)
+                    $('td',row).eq(4).html(data.fechaNovedad)
+                    $('td',row).eq(5).html(data.tipoNovedad.nombre)
+                    $('td',row).eq(6).html(data.fechaInicial)
+                    $('td',row).eq(7).html(data.fechaFinal)
+                    if (data.solicitud.estado==0) {
+                        $('td',row).eq(8).html('<input type="checkbox" class=""  checked disabled="disabled">').addClass('text-center').addClass('text-center');
+                    } else {
+                        $('td',row).eq(8).html('<input type="checkbox" class=""  disabled="disabled">').addClass('text-center').addClass('text-center');
+                    }   
+                    if (data.solicitud.estado==0) {
+                        if(ExisteOpcion('hs')){
+                            $('td',row).eq(9).html('<button id="btn-hab" class="btn btn-success btn-sm waves-effect btn-espacio" accesskey="'+data.solicitud.idsolt+'" data-href="'+data.solicitud.vehiculo.placa+'" onclick="(Novedad.hab(this))"><span class="zmdi zmdi-time-restore-setting"></span> Habilitar solicitud</button>');
+                        }else{
+                            $('td',row).eq(9).html('<button id="btn-hab" class="btn btn-success btn-sm waves-effect btn-espacio" disabled="disabled"><span class="zmdi zmdi-time-restore-setting"></span> Habilitar Solicitud</button>');   
+                        }                       
+                    }else{
+                            $('td',row).eq(9).html('');   
+
+                    }
+  
+
+                } 
+                ,
+                "fnDrawCallback":function(oSetttings){
+                    //terminando la dataTable
+                    destruir(DTNovedad);
+                }
+            });
+        }
+
+        function destruir(dt){
+            // alert('destroy')
+            dt.destroy();
+            DTNovedad=$('#table-Novedades').DataTable({
+                "oLanguage": { 
+                    "sUrl": "/js/dataTables/Spanish.lang"
+                },
+                "dom":'rt<button>ip',
+                "pageLength":5,
+                 responsive:true
+                // "scrollCollapse":true,
+                // "paging":false
+            })
+        }
+            // $(function () {
+
+        var Novedad={
+            add:function(){
+ 
+                $.ajax({
+                    url:'../Novedades/modal-add',
+                    type:'post',
+                    success:function(resp){
+                        $('#cont-modales').html(resp);
+                        $('#text-desc').val('');
+                        $('#modal-add').modal('show')
+                        var respCi="";
+                        $('#formulario-add').formValidation()
+                        .on('success.form.fv', function(e){
+                           e.preventDefault();
+                           
+                           Registrar();
+                        })
+                        function Registrar(){
+                            // $('#modal-add').modal('hide')
+                            swal({   
+                                title: "Seguro de registrar Novedad?",   
+                                text: "Usted registrara nuevo Novedad, y se dara de baja la solicitud selecciona",   
+                                type: "warning",   
+                                showCancelButton: true,   
+                                confirmButtonColor: "#DD6B55",   
+                                confirmButtonText: "Si, Continuar!",   
+                                cancelButtonText: "No, Cancelar!",   
+                                closeOnConfirm: false,   
+                                closeOnCancel: false 
+                                }, function(isConfirm){   
+                                    if (isConfirm) {     
+                                        $('#formulario-add').ajaxSubmit({
+                                            success:function(res){
+                                                console.log('registrado',res)
+                                                if(res.estado){
+                                                    $.ajax({
+                                                        url:"../Novedades/Gestion",
+                                                        success:function(gestion){
+                                                            $('#contenedor-gestion').html(gestion); 
+                                                            swal({
+                                                                title:"Registrado",
+                                                                text:"Se ha registrado Novedad exitosamente",
+                                                                type:"success",
+                                                                timer: 2000,   
+                                                                showConfirmButton: false 
+                                                            });
+                                                            $('#modal-add').modal('hide')
+                                                        }
+                                                    })      
+                                                }
+                                            }
+                                        })
+
+                                    } else {     
+                                        // swal("Cancelled", "Your imaginary file is safe :)", "error");   
+                                        swal({
+                                            title:"Cancelado",
+                                            text:"Se ha cancelado operacion",
+                                            type:"error",
+                                            timer:2000,
+                                            showCancelButton:false,
+                                            showConfirmButton:false
+
+                                        })
+                                        $('#modal-add').modal('hide')
+                                    } 
+                                });
+
+                        }
+                    },  
+                    error:function(err){
+                        alert('sin respuesta del servidor')
+                        location.href="../principal/index"
+                    }
+                })
+            },
+
+            hab:function(a){
+                var idsolt=$(a).attr('accesskey')
+                var placa=$(a).data('href')
+                swal({   
+                    title: "Seguro de dar alta la Novedad?",   
+                    text: "Usted dara de alta la solicitud selecciona",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Si, Continuar!",   
+                    cancelButtonText: "No, Cancelar!",   
+                    closeOnConfirm: false,   
+                    closeOnCancel: false 
+                    }, function(isConfirm){
+                        if (isConfirm) {
+                            $.post('/RestNovedades/habilitarSolicitud',{idsolt:idsolt,placa:placa},function(resp){
+                                console.log(resp)
+                                if (resp.estado) {
+                                    $.ajax({
+                                        url:"/Novedades/Gestion",
+                                        success:function(gestion){
+                                            $('#contenedor-gestion').html(gestion); 
+                                                swal({
+                                                    title:"Habilitado",
+                                                    text:"Se ha dado de alta la Novedad exitosamente",
+                                                    type:"success",
+                                                    timer: 2000,   
+                                                    showConfirmButton: false 
+                                                });
+                                        }
+                                    }) 
+                               
+                                } else {
+                                    aler('Sin respuesta del Servidor')
+                                }   
+                            })  
+                        } else {
+                            swal({
+                                title:"Cancelado",
+                                text:"Se ha cancelado operacion",
+                                type:"error",
+                                timer:2000,
+                                showCancelButton:false,
+                                showConfirmButton:false
+
+                            })
+                        } 
+                }); 
+            }
+
+        }
+
+        
+        
+    // })
+        
+    </script>
+</body>
+</html>

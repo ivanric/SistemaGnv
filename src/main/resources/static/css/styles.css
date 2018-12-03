@@ -5,10 +5,13 @@ fieldset{
 legend{
     font-size: 14px;
 }
-select option{
-    font-size: 10px !important;
-
+select{
+	color:black;
 }
+/* select option{ */
+/*     font-size: 12px !important; */
+
+/* } */
 
 .espacio-form{
 	padding-top: 5px;
@@ -66,12 +69,21 @@ select option{
     right: 15px !important;
     color: rgba(6, 6, 6, 0.9) !important;
 }
+
+.help-block {
+    display: block;
+    margin-top: 0px !important;
+    margin-bottom: 10px;
+    color: #9e9e9e;
+}
+
 .date{
 	display: inline;
 }
 .time{
 	display: inline;
 }
+
 
 
 .mcss_input{

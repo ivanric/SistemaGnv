@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/html;UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<title></title>
+<link rel="stylesheet" href="../css/buscador.css">
+
+</head>	
+<body>
+	<form id="formulario-add" action="../RestSolicitudes/adicionar"
+		method="post" data-fv-excluded="disabled"
+		>
+		<div class="modal fade" id="modal-add" tabindex="-1" role="dialog"
+			data-backdrop="static" data-keyboard="false" aria-hidden="true"
+			style="display: none; padding-left: 0">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="card">
+						<div class="card-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<div class="row">
+								<div class="col-md-4">
+		                           	<h2>Nueva Solicitud<small>Complete el formulario por
+										favor</small></h2>
+		                        </div>
+		                        <div class="col-md-8">
+		                            <b>NUMERO DE SOLICITUD: </b><span id="numSolt"></span> 
+		                            <b style="margin-left: 5em;">FECHA DE CREACION: </b><span id="fechaCreacion"></span> 
+		                        </div>
+							</div>
+	
+						</div>
+						<div class="modal-body">
+							<input id="fechaHidden" name="fecha" type="hidden" value="" >
+							<input  id="numSoltHidden" name="numSolt" type="hidden"  value="" >
+							
+
+							<input type="text" name="idben">
+							<fieldset>
+							  <legend>BENEFICIARIO</legend>
+
+								<div class="beneficiario-data">
+				                    <div class="row">
+				                        <div class="col-md-4">
+				                            <div class="form-group fg-float">
+				                                <div class="fg-line">
+				                                    <input class="form-control fg-input" minlength="7" maxlength="8" data-fv-stringlength-message="La Cedula debe ser entre 7 u 8 caracteres" id="cedula" name="ci" type="text"  data-fv-notempty="true" data-fv-message="Requiere Cedula" data-fv-integer="true" data-fv-integer-message="El valor de este campo debe ser numerico y sin espacios en blanco">
+				                                </div>
+				                                <label class="fg-label">Cedula</label>
+				                            </div>
+				                        </div>
+				                        <div class="col-md-2">
+				                            <div class="form-group">
+				                                <div class="fg-line">
+				                                    <select data-placeholder="n" name="ciCod" class="form-control " data-fv-notempty='true' data-fv-message="Requiere Ciudadania" id="ciCod">
+				                                        <option value="TJ">TJ</option>
+				                                        <option value="PT">PT</option>
+				                                        <option value="PA">PA</option>
+				                                        <option value="LP">LP</option>
+				                                        <option value="OR">OR</option>
+				                                        <option value="CB">CB</option>
+				                                        <option value="BN">BN</option>
+				                                        <option value="CH">CH</option>
+				                                        <option value="SC">SC</option>
+				                                    </select>
+				                                </div>
+				                            </div>
+				                        </div>
+				                        <div class="col-md-6">
+				                            <div class="form-group fg-float">
+				                                <div class="fg-line">
+				                                    <input class="form-control fg-input" name="nombres" type="text" data-fv-notempty="true" data-fv-message="Requiere Nombres"  maxlength="12" data-fv-stringlength-message="Solo 12 caracteres">
+				                                </div>
+				                                <label class="fg-label">Nombres</label>
+				                            </div>
+				                        </div>
+				                     </div>
+				                     <div class="row">
+				                        <div class="col-md-6">
+				                            <div class="form-group fg-float">
+				                                <div class="fg-line">
+				                                    <input class="form-control fg-input " maxlength="12" name="ap" type="text" data-fv-notempty="true" data-fv-message="Requiere Apellido Paterno" data-fv-stringlength-message="Solo 12 caracteres">
+				                                </div>
+				                                <label class="fg-label">Apellido Paterno</label>
+				                            </div>
+				                        </div>
+				                        <div class="col-md-6">
+				                            <div class="form-group fg-float">
+				                                <div class="fg-line">
+				                                    <input class="form-control fg-input dt-benf" maxlength="12" name="am" type="text"  data-fv-stringlength-message="Solo 12 caracteres">
+				                                </div>
+				                                <label class="fg-label">Apellido Materno</label>
+				                            </div>
+				                        </div>
+				                    </div>
+				                    <div class="row">
+				                        <div class="col-md-6">
+				                            <div class="form-group">
+				                                <div class="fg-line">
+				                                    <select data-placeholder="n" name="genero" class="form-control dt-benf" data-fv-notempty='true' data-fv-message="Requiere Genero" id="select-genero">
+				                                        <option value="">Seleccione Género</option>
+				                                        <option value="m">Masculino</option>
+				                                        <option value="f">Femenino</option>
+				                                    </select>
+				                                </div>
+				                            </div>
+				                        </div>
+				                        <div class="col-md-6">
+				                            <div class="form-group fg-float">
+				                                <div class="fg-line">
+				                                    <input class="form-control fg-input dt-benf"  name="direccion" type="text" data-fv-notempty="true" data-fv-message="Requiere Direccion" maxlength="40">
+				                                </div>
+				                                <label class="fg-label">Dirección</label>
+				                            </div>
+				                        </div>
+				                    </div>
+				                    <div class="row">
+					                    <div class="form-group">
+					                        <div class="col-md-6">
+					                            <div class="form-group fg-float">
+					                                <div class="fg-line">
+					                                    <input class="form-control fg-input dt-benf"  name="email" type="email" maxlength='40'>
+					                                </div>
+					                                <label class="fg-label">Correo</label>
+					                            </div>    
+					                        </div>
+					                        <div class="col-md-6">
+					                            <div class="form-group fg-float">
+					                                <div class="fg-line">
+					                                    <input class="form-control fg-input dt-benf"  name="institucion" type="institucion" maxlength='40' data-fv-stringlength-message='Maximo 40 caracteres'>
+					                                </div>
+					                                <label class="fg-label">Institucion</label>
+					                            </div>    
+					                        </div>
+					                        <div class="col-md-12">
+					                            <div class="form-group fg-float">
+					                                <div class="fg-line">
+					                                    <textarea  class="form-control fg-input dt-benf" id="text-desc" name="descripcion" type="institucion" maxlength="100">                                    
+					                                    </textarea>
+					                                </div>
+					                                <label class="fg-label">Descripcion</label>
+					                            </div>    
+					                        </div>
+					                    </div>
+					                     <div class="form-group">
+									        <label class="col-xs-3 control-label">Telefonos/Celulares</label>
+									        <div class="col-xs-5">
+									            <input type="text"  class="form-control dt-benf" name="telefono[]" placeholder="Ingrese numero" maxlength="10" data-fv-integer="true" data-fv-integer-message="El campo debe ser numerico"/>
+									        </div>
+									        <div class="col-xs-4">
+									            <button type="button" class="btn btn-default addButton" style="margin-bottom: 1px;"><i class="fa fa-plus"></i></button>
+									        </div>
+									    </div>
+									
+									    <div class="form-group hide" id="optionTemplate" >
+									        <div class="col-xs-offset-3 col-xs-5">
+									            <input class="form-control dt-benf" type="text" name="" placeholder="Ingrese numero" maxlength="10" data-fv-integer="true" data-fv-integer-message="El campo debe ser numerico"/>
+									        </div>
+									        <div class="col-xs-4">
+									            <button type="button" class="btn btn-default removeButton"><i class="fa fa-minus"></i></button>
+									        </div>
+									    </div>
+				                    </div>
+									<br><br>
+				                    <div class="row">
+				                        <div class="col-md-12">
+				                            <div class="form-group">
+				                            	<label class="col-md-5 control-label">Documentos Presentados</label>
+				                            	<div class="col-md-7" id="js_doc">
+				    
+				                            	</div>                        
+				                            </div>
+
+				                        </div>
+				                    </div> 
+								</div>	
+							</fieldset>
+							<fieldset>
+							  <legend>VEHICULO</legend>
+							  <div class="vehiculo-data">
+							  	<div class="row" >
+							  		<div class="col-md-12">
+							  			<div class="form-group" id="div-mod-veh" style="display: none;"></div>
+							  		</div>
+							  	</div>	
+								<div class="row" >
+									<div class="col-md-6">
+										<div class="form-group fg-float">
+											<div class="fg-line">
+												<input minlength="6" maxlength="7" data-fv-stringlength-message="Requiere por lo menos 6 caracteres " class="form-control fg-input" id="placa" name="placa" type="text" onclick="resetearPlaca()">
+												<!-- <input class="form-control fg-input" id="placa" name="placa" type="text" data-fv-notempty="true" data-fv-message="Requiere ingresar placa"> -->
+
+											</div>
+											<label class="fg-label">Placa</label>
+											<small class="help-block" id="mensaje-placa" style="display: none;"></small>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group fg-float">
+											<div class="fg-line">
+												<input class="form-control fg-input dt-veh input-veh" id="tg"
+													name="tjeta_prioridad" type="text" data-fv-notempty="true"
+													data-fv-message="Requiere Targeta de Prioridad" maxlength="15">
+											</div>
+											<label class="fg-label">Targeta de Prioridad</label>
+										</div>
+									</div>
+								</div>	
+								<div class="row" >
+									<div class="col-md-6">
+										<div class="form-group fg-float">
+											<div class="fg-line">
+												<input class="form-control fg-input dt-veh input-veh" id="cil"
+													name="cilindrada" type="text" data-fv-notempty="true"
+													data-fv-message="Requiere Cilindrada" data-fv-integer="true" data-fv-integer-message="Requiere solo numero" maxlength="2">
+											</div>
+											<label class="fg-label">Cilindrada (CC)</label>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group fg-float">
+											<div class="fg-line">
+												<input class="form-control fg-input dt-veh input-veh" id="color" name="color" type="text" data-fv-notempty="true" data-fv-message="Requiere Color" maxlength="12">
+											</div>
+											<label class="fg-label">Color</label>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group fg-float">
+											<div class="fg-line">
+												<input class="form-control fg-input dt-veh input-veh" id="numC"
+													name="num_chasis" type="text" data-fv-notempty="true"
+													data-fv-message="Requiere Numero de Chasis" maxlength="20">
+											</div>
+											<label class="fg-label">Numero de Chasis</label>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group fg-float">
+											<div class="fg-line">
+												<input class="form-control fg-input dt-veh input-veh" id="numM"
+													name="num_motor" type="text" data-fv-notempty="true"
+													data-fv-message="Requiere Numero de Motor" maxlength="20">
+											</div>
+											<label class="fg-label">Numero de Motor</label>
+										</div>
+									</div>
+
+								</div>	
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<div class="fg-line">
+												<!-- <label for="">Tipo de Vehiculo</label> -->
+												<select data-placeholder="n" name="idtipv"
+													class="form-control fg-input sel-opcv dt-veh " data-fv-notempty='true'
+													data-fv-message="Seleccione el Tipo de Vehiculo" id="tipv">
+													<option value="" selected="selected">Tipo Vehiculo</option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<div class="fg-line">
+												<!-- <label for="">Tipo de Vehiculo</label> -->
+												<select data-placeholder="n" name="idmarcv"
+													class="form-control fg-input sel-opcv dt-veh" data-fv-notempty='true'
+													data-fv-message="Seleccione la marca del Vehiculo"
+													id="marv">
+													<option value="" selected="selected">Marca Vehiculo</option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<div class="fg-line">
+												<!-- <label for="">Tipo de Vehiculo</label> -->
+												<select data-placeholder="n" name="idmodv"
+													class="form-control fg-input sel-opcv dt-veh" data-fv-notempty='true'
+													data-fv-message="Seleccione el modelo del Vehiculo"
+													id="modv">
+													<option value="" selected="selected">Modelo Vehiculo</option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<div class="fg-line">
+												<!-- <label for="">Tipo de VehÃ­culo</label> -->
+												<select data-placeholder="n" name="idtipoMotorVeh"
+													class="form-control fg-input sel-opcv dt-veh" data-fv-notempty='true'
+													data-fv-message="Seleccione el Sistema de motor del Vehiculo"
+													id="tipmv">
+													<option value="" selected="selected">Sistema Motor Vehiculo</option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<div class="fg-line">
+												<!-- <label for="">Tipo de Vehiculo</label> -->
+												<select data-placeholder="n" name="idTipSv"
+													class="form-control fg-input sel-opcv dt-veh" data-fv-notempty='true'
+													data-fv-message="Seleccione el tipo de servicio del Vehiculo"
+													id="tipserv">
+													<option value="" selected="selected">Tipo de Servicio</option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+			                            <div class="form-group">
+			                                <select multiple="multiple"  data-placeholder="Seleccione combustible"  name="combustible"
+			                                data-fv-notempty='true' 
+			                                data-fv-message="Requiere tipo de Combustible" 
+			                                data-fv-choice="true"
+			                                data-fv-choice-min="1"
+                                			data-fv-choice-max="2"
+			                                data-fv-choice-message="Selecione entre 1 y 2"
+			                                id="select-comb" 
+			                                class="form-control sel-opcv dt-veh">
+			                                </select>                            
+			                            </div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="" class="col-md-6 control-label"><b>KIT GLP :</b></label>
+											<div class="col-md-6">
+												<label class="radio-inline">
+													<input type="radio" style="margin-top: 1px;" id="inlineRadio1"  value="1" name="kitGlpSiNo" maxlength='2' data-fv-stringlength-message='' data-fv-notempty="true" data-fv-message="Seleccione Kit" class="dt-veh"> SI
+												</label>
+												<label class="radio-inline">
+													<input type="radio" style="margin-top: 1px;" id="inlineRadio2"  value="0" name="kitGlpSiNo" maxlength='2' data-fv-stringlength-message='' data-fv-notempty="true" data-fv-message="Seleccione Kit" class="dt-veh"> NO
+												</label>
+											</div>
+										</div>
+									</div>
+									<!-- <br> -->
+									<div class="col-md-6">
+										<div class="form-group fg-float">
+											<div class="fg-line">
+												<textarea  class="form-control fg-input dt-veh" id="text-obs" name="observaciones"  maxlength="120">                                    
+												</textarea>
+											</div>
+											<label class="fg-label">Descripcion de Solicitud</label>
+										</div>    
+									</div>	
+								</div>
+							  </div>
+							</fieldset>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" id="btnAdicionarConfirmacion"
+								class="btn btn-primary waves-effect">Guardar</button>
+							<button type="button" class="btn btn-danger waves-effect"
+								data-dismiss="modal">Cancelar</button>
+						</div>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal-dialog -->
+		</div>
+		<!-- /.modal -->
+	</form>
+
+
+	<!-- <script type="" src="../resources/bower_components/jquery/dist/jquery.js"></script> -->
+	<script type="" src="../bower_components/jquery.nicescroll/dist/jquery.nicescroll.js"></script>
+	<script type="" src="../bower_components/autosize/dist/autosize.js"></script>
+	<script type="" src="../js/tema/js/functions.js"></script>
+	<script type="text/javascript">
+		var JsonListaBen = null;
+
+
+		function mostrar_b(a) {
+			var dato = $(a).data('href')
+			$('input[name=ben]').removeAttr('accesskey');
+			$('input[name=ben]').attr({
+				accessKey : 1
+			})
+			$('#formulario-add').data('formValidation').resetForm(true);
+			var rec_ben = retornarBeneficiario(JsonListaBen, dato);
+			campoCedulaGlobal=rec_ben.ci;
+			$('input[name="ben"]').val(rec_ben.ci)
+			$('input[name="idben"]').val(rec_ben.beneficiario.idben)
+			console.log('Ben_Recuperado: ',rec_ben)
+			$('#formBen').loadJSON(rec_ben)
+			$('#formBen').find('input[name="institucion"]').val(rec_ben.beneficiario.institucion)
+			$('#select-genero').chosen();
+			$('#select-genero').val(rec_ben.genero).trigger('chosen:updated');			
+			// $('#formBen').find('#select-genero').val(rec_ben.genero);			
+			var cloneform = $('#formBen').clone();
+    		// console.log('clonado: ',cloneform)
+    		$('#contenido-ben').html(cloneform)
+			$('#formBen').show()
+			$('#conversion_beneficiario').slideDown(500)
+
+			click_selec = 1;
+			console.log('click_selec: ', click_selec)
+			// console.log('e_: ',e.target)
+			Gestionar.Adicionar.EnviarFormulario();
+		}
+
+
+		var meses = new Array("01", "02", "03","04", "05", "06", "07","08", "09", "10","11", "12");
+		var f= new Date();
+		var fecha= f.getFullYear()+ "-" + meses[f.getMonth()] + "-" +f.getDate();
+		console.log('date:',fecha)
+	    document.getElementById('fechaCreacion').innerHTML=fecha;
+	    document.getElementById('fechaHidden').value=fecha;
+
+		
+	    $.getJSON('../RestSolicitudes/opcionesVehiculo',function(datos){
+            console.log('opcionesVehiculo: ',datos)
+            var numS=datos.numSolt;
+            // alert('numS: '+numS)
+            document.getElementById('numSolt').innerHTML=numS
+            document.getElementById('numSoltHidden').value=numS
+
+            $(datos.tipoVehiculo).each(function(index,item){
+                // console.log('tip: ',item)
+                $('#tipv').append('<option value="'+item.idtipv+'">'+item.nombre+'</option>')
+            })
+            $('#tipv').chosen()
+            $(datos.marcaVehiculo).each(function(index,item){
+                // console.log('tip: ',item)
+                $('#marv').append('<option value="'+item.idmarcv+'">'+item.nombre+'</option>')
+            })
+            $('#marv').chosen()
+            $(datos.modeloVehiculo).each(function(index,item){
+                // console.log('tip: ',item)
+                $('#modv').append('<option value="'+item.idmodv+'">'+item.nombre+'</option>')
+            })
+            $('#modv').chosen()
+            $(datos.tipoMotor).each(function(index,item){
+                // console.log('tip: ',item)
+                $('#tipmv').append('<option value="'+item.idtipoMotorVeh+'">'+item.nombre+'</option>')
+            })
+            $('#tipmv').chosen()
+            $(datos.tipoServicio).each(function(index,item){
+                // console.log('tip: ',item)
+                $('#tipserv').append('<option value="'+item.idTipSv+'">'+item.nombre+'</option>')
+            })
+            $('#tipserv').chosen()
+            $(datos.combustibles).each(function(index,item){
+            	$('#select-comb').append('<option value="'+item.idcomb+'">'+item.nombre+'</option>')
+            })
+            $('#select-comb').chosen()
+        })
+        
+        function resetearPlaca() {
+	    	$('#formulario-add').data('formValidation').resetForm(true);
+	    	console.log('valor_ben:', campoCedulaGlobal)
+	    	$('input[name="ben"]').val(campoCedulaGlobal);
+	    	// $('.dt-veh').parent().removeClass('fg-toggled');
+	    	$('#mensaje-placa').hide();
+	    	$("#div-mod-veh").html("").hide();
+//  			$('#placa').val('')
+//  			$('#mensaje-placa').hide();
+			$(".dt-veh").val($(".dt-veh").find("option:first").val())
+	    	$('.dt-veh ').val('').trigger('chosen:updated');
+// 	    	$('.input-veh').val('')	
+		}
+        
+	</script>
+</body>
+</html>

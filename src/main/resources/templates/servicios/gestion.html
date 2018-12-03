@@ -197,15 +197,15 @@
                     if(data.estado==1){
                         if(ExisteOpcion('eliminar')  ){
                             // if()
-                            $('td',row).eq(13).append('<button id="btn-elim" class="btn btn-danger btn-sm waves-effect btn-espacio" accesskey="'+data.idserv+'" data-href="'+data.idserv+'" onclick="(Servicio.elim(this))"><span class="zmdi zmdi-delete"></span> Eliminar</button>');
+                            $('td',row).eq(13).html('<button id="btn-elim" class="btn btn-danger btn-sm waves-effect btn-espacio" accesskey="'+data.idserv+'" data-href="'+data.idserv+'" onclick="(Servicio.elim(this))"><span class="zmdi zmdi-delete"></span> Eliminar</button>');
                         }else{
-                            $('td',row).eq(13).append('<button id="btn-elim" class="btn btn-danger btn-sm waves-effect btn-espacio" disabled="disabled"><span class="zmdi zmdi-delete"></span> Eliminar</button>');  
+                            $('td',row).eq(13).html('<button id="btn-elim" class="btn btn-danger btn-sm waves-effect btn-espacio" disabled="disabled"><span class="zmdi zmdi-delete"></span> Eliminar</button>');  
                         }
                     }else{
                         if(ExisteOpcion('habilitar')){
-                            $('td',row).eq(13).append('<button id="btn-hab" class="btn btn-success btn-sm waves-effect btn-espacio" accesskey="'+data.idserv+'" data-href="'+data.idserv+'" onclick="(Servicio.hab(this))"><span class="zmdi zmdi-time-restore-setting"></span> Habilitar</button>');
+                            $('td',row).eq(13).html('<button id="btn-hab" class="btn btn-success btn-sm waves-effect btn-espacio" accesskey="'+data.idserv+'" data-href="'+data.idserv+'" onclick="(Servicio.hab(this))"><span class="zmdi zmdi-time-restore-setting"></span> Habilitar</button>');
                         }else{
-                            $('td',row).eq(13).append('<button id="btn-hab" class="btn btn-success btn-sm waves-effect btn-espacio" disabled="disabled"><span class="zmdi zmdi-time-restore-setting"></span> Habilitar</button>');   
+                            $('td',row).eq(13).html('<button id="btn-hab" class="btn btn-success btn-sm waves-effect btn-espacio" disabled="disabled"><span class="zmdi zmdi-time-restore-setting"></span> Habilitar</button>');   
                         }                       
                     }
 

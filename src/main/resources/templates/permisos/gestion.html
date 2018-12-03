@@ -85,6 +85,8 @@
 		$('select').chosen();
 
 		var idRol=-1,idMod=-1,idProc=-1,idOpc=-1;
+
+
 		var disabledProc="",disabledOpc="";
 		$(function(){
 
@@ -114,32 +116,11 @@
 					idRol=-1;
 					init()
 				}else{
+					$('.table-menus tbody').html('') 
 					$('.table-procesos tbody').html('') 
 					$('.table-opciones tbody').html('') 
 					idRol=codRol;
-					$.getJSON('../RestPermisos/dataMenus',{idrol:codRol},function(resp){
-						console.log('respMenus: ',resp);
-
-						$(resp[0]).each(function(i,m){
-							var check="";
-							// alert('check: '+check);
-							$(resp[1]).each(function(j,mr){
-								if(m.idmod==mr.idmod){
-									check="checked";
-								}
-							})
-							$('.table-menus tbody').append(`
-		                        <tr>
-		                            <td>${m.idmod}</td>
-		                            <td>${m.nombre}</td>
-		                            <td>
-		                            <input type="checkbox" id="check_mod" class="check_mod" name="idmodulo${m.idmod}" value="${m.idmod}" ${check}>
-		                            </td>
-		                        </tr>          
-		                    `) 
-						})
-
-					})
+					getMenus(idRol)
 					
 				}
 			})
@@ -215,9 +196,12 @@
 
 			$('.table-menus tbody').on('click','tr',function(e){
 	    		// alert('click')
+	   			$('.table-procesos tbody').html('') 
+				$('.table-opciones tbody').html('') 
 	    		console.log('TARGET: ',e.target.id)
 	    		console.log('TARGET__: ',e.target.id=="",e.target.id==null)
-				if(e.target.id==""){
+				if(e.target.id==""){//Cuando se seleccionar el menu sin importar si esta pintado  o no
+					// alert('entra')
 		    		dato=$(this).find("td:eq(0)").text();
 		    		console.log(dato);
 
@@ -227,24 +211,33 @@
 		            	$(this).removeClass('selected');
 			        } 
 			        else {
+			        	// alert('tiene')
 			            $('.table-menus tr.selected').removeClass('selected');
 			            $(this).addClass('selected');
 			            disabledProc="";
-			            if(!$(`input[name="idmodulo${dato}"]`).is(':checked')){
+			            if(!$(`input[name="idmodulo${dato}"]`).is(':checked')){//SINO ESTA CHEKEADO SE BLOUEA LOS PROCES
 			            	disabledProc="disabled";
 			            	idMod=-1;
-			            }else{
+
+			            }else{//SIS ESTA CHEKEADO SE HABILITA LOS PROCESS
+
 			            	disabledProc="";
 			            	idMod=dato;
 			            }
 			            getSubMenus(idRol,dato)
 			        }
 				}
+				// else{
+		 			 //$('.table-procesos tbody').html('') 
+				// 	$('.table-opciones tbody').html('') 
+				// }
 
 	    	})
 	    	$('.table-procesos tbody').on('click','tr',function(e){
+				$('.table-opciones tbody').html('') 
 	    		// alert('click')
 	    		// console.log(dato);
+
 	    		if(e.target.id==""){
 	    			dato=$(this).find("td:eq(0)").text();
 		    		if ($(this).hasClass('selected')){
@@ -264,12 +257,44 @@
 			            }
 
 			            getOpciones(idRol,idMod,dato)
-			        	// $('.alert').html('')
 			            // $('.alert').html('Debe completar los SubMenús y Opciones para este Menú del Sistema')
 			        }
-	    			// $('.result').html(dato)
 	    		}
+	    		//else{
+					// $('.table-opciones tbody').html('') 
+	    		//}
 	    	})
+	    	function getMenus(idRol){
+	    		$('.table-menus tbody').html('') 
+	    		$('.table-procesos tbody').html('') 
+				$('.table-opciones tbody').html('')
+				$.getJSON('../RestPermisos/dataMenus',{idrol:idRol},function(resp){
+					console.log('respMenus: ',resp);
+
+					$(resp[0]).each(function(i,m){
+						var check="";
+						var server_class="";
+						// alert('check: '+check);
+						$(resp[1]).each(function(j,mr){
+							if(m.idmod==mr.idmod){
+								check="checked";
+								server_class="mod_serv"
+							}
+						})
+						$('.table-menus tbody').append(`
+	                        <tr>
+	                            <td>${m.idmod}</td>
+	                            <td>${m.nombre}</td>
+	                            <td>
+	                            <input type="checkbox" id="check_mod" class="check_mod ${server_class}" name="idmodulo${m.idmod}" value="${m.idmod}" ${check}>
+	                            </td>
+	                        </tr>          
+	                    `) 
+					})
+
+				})
+	    	}
+
 			function getSubMenus(idRol,idMod){
 				$('.table-procesos tbody').html('') 
 				$('.table-opciones tbody').html('') 
@@ -284,17 +309,20 @@
 				    //             } 
 					$(resp[0]).each(function(i,m){
 						var check="";
+						var server_class=""
+
 						// alert('check: '+check);
 						$(resp[1]).each(function(j,mr){
 							if(m.idproc==mr.idproc){
 								check="checked";
+								server_class="proc_serv"
 							}
 						})
 						$('.table-procesos tbody').append(`
 	                        <tr>
 	                            <td>${m.idproc}</td>
 	                            <td>${m.nombre}</td>
-	                            <td><input type="checkbox" class="check_proc" id="check_proc" name="idproceso${m.idproc}" value="${m.idproc}" ${check} ${disabledProc}></td>
+	                            <td><input type="checkbox" class="check_proc ${server_class}" id="check_proc" name="idproceso${m.idproc}" value="${m.idproc}" ${check} ${disabledProc}></td>
 	                        </tr>          
 	                    `) 
 					})
@@ -308,88 +336,302 @@
 
 					$(resp[0]).each(function(i,m){
 						var check="";
+						var server_class=""
 						// alert('check: '+check);
 						$(resp[1]).each(function(j,op){
 							if(m.idopc==op.idopc){
 								check="checked";
+								server_class="opc_serv"
 							}
 						})
 						$('.table-opciones tbody').append(`
 	                        <tr>
 	                            <td>${m.idopc}</td>
 	                            <td>${m.nombre}</td>
-	                            <td><input type="checkbox" name="idopcion${m.idopc}" class="check_opc" id="check_opc" value="${m.idopc}" ${check} ${disabledOpc}></td>
+	                            <td><input type="checkbox" name="idopcion${m.idopc}" class="check_opc ${server_class}" id="check_opc" value="${m.idopc}" ${check} ${disabledOpc}></td>
 	                        </tr>          
 	                    `) 
 					})
 				})
 			}
 
-			// $('.ckeck_mod').on('click',function(){
-			// 	alert('Click')
-			// })
 			$('body').on('change','.check_mod',function(e){
+				$('.table-procesos tbody').html('') 
+				$('.table-opciones tbody').html('') 
+				// alert('ckc_M')
 				// console.log('target_radio: ',e.target)
 				idMod=$(this).val();
 				// alert('idRol: '+idRol+' idMod: '+idMod)
 				var padre=$(this).parent().parent()
 				console.log('padre: ',padre)
-				if($(this).is(':checked')){
-	    			// dato=$(this).val();
-	    			if ($(padre).hasClass('selected')) {
-	    				disabledProc="";
-		        		getSubMenus(idRol,idMod);
-	    			}
-				}else{
-					$.getJSON('../RestPermisos/removeModulo',{idRol:idRol,idMod:idMod},function(resp){
-		        		console.log('removeModulo',resp)
-		        		if(resp.status){
-		        			disabledProc="disabled"
-			        		getSubMenus(idRol,idMod);
-		        		}	
-		        	})
+
+				if ($(padre).hasClass('selected')){//SI ES QUE ESTA SELECCIONADO, es porq ya tiene permisos
+					if($(this).is(':checked')){ //SI YA TIENE PERMISOS
+						$('.table-opciones tbody').html('') 
+		    			
+		    			disabledProc="";
+			        	getSubMenus(idRol,idMod);
+					}else{ //QUITA EL PERMISO
+						if($(this).hasClass('mod_serv')){
+							QuitarMenus();
+						}else{
+							$.getJSON('../RestPermisos/removeModulo',{idRol:idRol,idMod:idMod},function(resp){
+				        		console.log('removeModulo',resp)
+				        		if(resp.status){
+				        			disabledProc="disabled"
+					        		getSubMenus(idRol,idMod);
+				        		}	
+				        	})
+						}
+					}
+				}else{//SI NO ES TA SELECCIONADO
+			        $('.table-menus tr.selected').removeClass('selected');//SE QUITA LO SELECCIONADO A TOOD
+					$('.table-procesos tbody').html('') 
+					$('.table-opciones tbody').html('')
+					if($(this).hasClass('mod_serv')){
+						// alert('entro sin select')
+						QuitarMenus();
+						// $(`input[name="idproceso${idProc}"]`).removeClass('proc_serv');//SE HACER CHECK SERVER
+					} 
 				}
+
 			})
 
 			$('body').on('change','.check_proc',function(e){
+				// $('.table-opciones tbody').html('') 
 				// console.log('target_radio: ',e.target)
 				idProc=$(this).val();
 				// alert('idRol: '+idRol+' idMod: '+idMod+' idProc: '+idProc)
+				console.log($(this))
+				console.log($(this).hasClass('proc_serv'))
+				// alert('entra')
 				var padre=$(this).parent().parent()
-				if($(this).is(':checked')){
-	    			// dato=$(this).val();
-	    			if ($(padre).hasClass('selected')){
-	    				disabledOpc="";
-		        		getOpciones(idRol,idMod,idProc);
-	    			}
-				}else{
-					$.getJSON('../RestPermisos/removeProceso',{idRol:idRol,idMod:idMod,idProc:idProc},function(resp){
-		        		console.log('removeProceso',resp)
-		        		if(resp.status){
-		        			disabledOpc="disabled";
-		        			getOpciones(idRol,idMod,idProc);
-		        		}	
-		        	})
-				}
+	    		if ($(padre).hasClass('selected')){ //SI ESTA SELECCIONADO 
+					
+					if($(this).is(':checked')){// SI ESTA CHEKEADO ,TIENE PERMISOS
+		    				disabledOpc="";
+			        		getOpciones(idRol,idMod,idProc);
+					}else{ //SE QUITA LOS PROCESOS
+							// alert('mens')
+							if($(this).hasClass('proc_serv')){
+								QuitarProcesos();
+							}else{
+								$.getJSON('../RestPermisos/removeProceso',{idRol:idRol,idMod:idMod,idProc:idProc},function(resp){
+					        		console.log('removeProceso',resp)
+					        		if(resp.status){
+					        			disabledOpc="disabled";
+					        			getOpciones(idRol,idMod,idProc);
+					        		}	
+					        	})
+							}
+
+					}
+	    		}else{
+			        $('.table-procesos tr.selected').removeClass('selected');//SE QUITA LO SELECCIONADO A TOOD
+					$('.table-opciones tbody').html('') 
+
+					// SI NO ES SELECCIONADO,PERO ESTA CHEKEADO
+					if($(this).hasClass('proc_serv')){
+						// alert('entro sin select')
+						QuitarProcesos();
+						// $(`input[name="idproceso${idProc}"]`).removeClass('proc_serv');//SE HACER CHECK SERVER
+					}
+	    		}
+		
+
 			})
+			function QuitarMenus(){
+				//INICIO SWALL
+           		swal({   
+                    title: "Seguro de quitar  el menu del Sistema?",   
+                    text: "Usted quitara el menu, y todos sus procesos y opciones del mismo, al rol correspondiente",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Si, Continuar!",   
+                    cancelButtonText: "No, Cancelar!",   
+                    closeOnConfirm: false,   
+                    closeOnCancel: false 
+                }, function(isConfirm){   
+                    if (isConfirm) { 
+							$.getJSON('../RestPermisos/removeModulo',{idRol:idRol,idMod:idMod},function(resp){
+				        		console.log('removeModulo',resp)
+				        		if(resp.status){
+				        	
+				        		}	
+				        	})
+
+    	           		swal({
+                            title:"Registrado",
+                            text:"Se ha quitado el permisos del Sistema exitosamente al rol seleccionado",
+                            type:"success",
+                            timer: 500,   
+                            showConfirmButton: false 
+                        });
+						getMenus(idRol);
+                    } else {     
+                        swal({
+                            title:"Cancelado",
+                            text:"Se ha cancelado operacion",
+                            type:"error",
+                            timer:1000,
+                            showCancelButton:false,
+                            showConfirmButton:false
+
+                        })
+						getMenus(idRol);
+                    } 
+                });
+				//FIN SWALL
+			}
+
+			function QuitarProcesos(){
+				//INICIO SWALL
+           		swal({   
+                    title: "Seguro de quitar el proceso del Sistema?",   
+                    text: "Usted quitara el proceso y todas sus opciones del mismo, al menu seleccionado, y el rol correspondiente",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Si, Continuar!",   
+                    cancelButtonText: "No, Cancelar!",   
+                    closeOnConfirm: false,   
+                    closeOnCancel: false 
+                }, function(isConfirm){   
+                    if (isConfirm) { 
+
+						$.getJSON('../RestPermisos/removeProceso',{idRol:idRol,idMod:idMod,idProc:idProc},function(resp){
+			        		console.log('removeProceso',resp)
+			        		if(resp.status){
+			        		}	
+			        	})
+
+    	           		swal({
+                            title:"Registrado",
+                            text:"Se ha quitado el permisos del Sistema exitosamente al rol seleccionado",
+                            type:"success",
+                            timer: 500,   
+                            showConfirmButton: false 
+                        });
+						getMenus(idRol)
+                    } else {     
+                        swal({
+                            title:"Cancelado",
+                            text:"Se ha cancelado operacion",
+                            type:"error",
+                            timer:1000,
+                            showCancelButton:false,
+                            showConfirmButton:false
+
+                        })
+						getSubMenus(idRol,idMod)
+                    } 
+                });
+				//FIN SWALL
+			}
+
+
 			$('body').on('change','.check_opc',function(e){
 				// console.log('target_radio: ',e.target)
 				idOpc=$(this).val();
 				// alert('idRol: '+idRol+' idMod: '+idMod+' idProc: '+idProc+' idOpc: '+idOpc)
-				if($(this).is(':checked')){
-	    			// dato=$(this).val();
-		        	// getOpciones(idOpc);
-		        	$.getJSON('../RestPermisos/addOpcion',{idRol:idRol,idMod:idMod,idProc:idProc,idOpc:idOpc},function(resp){
-		        		console.log('addOpcion',resp)	
-		        	})
-				}else{
-		        	$.getJSON('../RestPermisos/removeOpcion',{idRol:idRol,idMod:idMod,idProc:idProc,idOpc:idOpc},function(resp){
-		        		console.log('removeOpcion',resp)	
-		        	})
-				}
+
+	    			// alert('se envia')
+					if($(this).is(':checked')){
+			        	$.getJSON('../RestPermisos/addOpcion',{idRol:idRol,idMod:idMod,idProc:idProc,idOpc:idOpc},function(resp){
+			        		console.log('addOpcion',resp)	
+			        	})
+    	                $.growl.notice({
+		                    title:'Concedido', 
+		                    message: "Se ha registrado el permiso al rol seleccionado",
+		                    duration:2000,
+		                    size:'large',
+		                    location:'tc' 
+		                });
+        				$(`input[name="idproceso${idProc}"]`).addClass('proc_serv');//SE HACER CHECK SERVER
+                        $('body').find(`input[name="idmodulo${idMod}"]`).addClass('mod_serv');//SE HACER CHECK SERVER
+				
+
+					}else{
+						//INICIO SWALL
+                   		swal({   
+	                        title: "Seguro de la opcion del Sistema?",   
+	                        text: "Usted quitara la opcion, del proceso y menu seleccionado, al rol correspondiente ",   
+	                        type: "warning",   
+	                        showCancelButton: true,   
+	                        confirmButtonColor: "#DD6B55",   
+	                        confirmButtonText: "Si, Continuar!",   
+	                        cancelButtonText: "No, Cancelar!",   
+	                        closeOnConfirm: false,   
+	                        closeOnCancel: false 
+                        }, function(isConfirm){   
+                            if (isConfirm) {     
+					        	$.getJSON('../RestPermisos/removeOpcion',{idRol:idRol,idMod:idMod,idProc:idProc,idOpc:idOpc},function(resp){
+					        		if(resp.status){
+					        			console.log('removeOpcion',resp)
+	
+					        		}	
+                                	// getSubMenus(idRol,idMod)
+
+					        	})
+            	           		swal({
+		                            title:"Registrado",
+		                            text:"Se ha quitado el permisos del Sistema exitosamente al rol seleccionado",
+		                            type:"success",
+		                            timer: 500,   
+		                            showConfirmButton: false 
+		                        });
+
+                     			//$(`input[name="idproceso${idProc}"]`).removeClass('proc_serv');//SE HACER CHECK SERVER
+                            	getMenus(idRol)
+
+                            } else {     
+                                swal({
+                                    title:"Cancelado",
+                                    text:"Se ha cancelado operacion",
+                                    type:"error",
+                                    timer:1000,
+                                    showCancelButton:false,
+                                    showConfirmButton:false
+
+                                })
+                            	getSubMenus(idRol,idMod)
+                            } 
+                            // ReinciarPermisos();
+                        });
+						//FIN SWALL
+
+					}
+
 			})
+
+			function ReinciarPermisos(){
+                $.ajax({
+                    url:"../Permisos/Gestion",
+                    success:function(gestion){
+                        $('#contenedor-gestion').html(gestion); 
+                        swal({
+                            title:"Registrado",
+                            text:"Se ha concedido permisos del Sistema exitosamente",
+                            type:"success",
+                            timer: 2000,   
+                            showConfirmButton: false 
+                        });
+                    }
+                })
+			}
+
+
 		})
 
+
+        // $.growl.error({
+        //     title:'Advertencia', 
+        //     message: "Usted realizara la aprobacion Final de esta Solicitud!",
+        //     duration:5000,
+        //     size:'large',
+        //     location:'tc' 
+        // });
 	</script>
 </body>
 </html>

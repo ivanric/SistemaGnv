@@ -59,7 +59,7 @@
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
-												<label for="" class="col-md-4 control-label" style=""><b>Nombre Completo:</b></label>
+												<label for="" class="col-md-4 control-label" style=""><b>Nombre:</b></label>
 												<div class="col-md-6">
 													<div class="fg-line"><input  disabled="disabled" type="text" placeholder="" class="form-control mcss_input input-sm" name="nombreCompletoBen"></div>
 												</div>
@@ -125,7 +125,10 @@
 											<div class="form-group">
 												<label for="" class="col-md-6 control-label" style=""><b>Placa</b></label>
 												<div class="col-md-6">
-													<div class="fg-line"><input disabled="disabled" type="text" placeholder="" class="form-control mcss_input input-sm" name="placa"></div>
+													<div class="fg-line">
+														<input disabled="disabled" type="text" placeholder="" class="form-control mcss_input input-sm" name="placa">
+														<input type="hidden" name="placa">
+													</div>
 												</div>
 											</div>
 										</div>
@@ -231,6 +234,38 @@
 								</div>
 							</fieldset>
 							<fieldset>
+								<legend><strong>POLIZA DE SEGURO DEL VEHICULO</strong></legend>
+								<div class="poliza-data" style="display: none">
+									 <div class="row" >
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="" class="col-md-6 control-label" style=""><b>Numero de Poliza</b></label>
+                                                <div class="col-md-6">
+                                                    <div class="fg-line">
+                                                        <input type="text" placeholder="Numero de Poliza" class="form-control mcss_input input-sm dt-pol" name="numeroPol" data-fv-notempty="true" data-fv-message="Requiere numero de Poliza" data-fv-integer="true" data-fv-integer-message="Requiere solo numero" maxlength="10" id="numeroPol">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="" class="col-md-6 control-label">Aseguradora</label>
+                                                <div class="col-md-6">
+                                                    <div class="fg-line">
+                                                        <select data-placeholder="n" name="idaseg" class="form-control mcss_input fg-input dt-pol" data-fv-notempty='true' data-fv-message="Requiere Aseguradora"
+                                                            id="select-aseg">
+                                                            <option value="">Seleccione Aseguradora</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+    
+                                    </div>      
+								</div>
+							</fieldset>
+							<fieldset>
 								<legend><strong>APROBACIONES</strong></legend>
 								<div class="row">
 							        <div class="col-md-2"></div>
@@ -304,9 +339,9 @@
 	<script type="" src="../../static/js/tema/js/functions.js" th:src="@{/js/tema/js/functions.js}"></script>
 	<script type="text/javascript">
 		// alert('idsolt'+idsolt)
-		var GTipoAprob;
-		var GTiposPausa;
-		var GtamComp;
+		// var GTipoAprob;
+		// var GTiposPausa;
+		// var GtamComp;
 
 		$('#btn-guardar-aprob').prop('disabled',true)
 
@@ -323,7 +358,7 @@
         })
 		$.getJSON('../RestAprobaciones/getDatosSolicitud',{idsolt:idsolt},function(resp){
 			
-			console.log('resp',resp)
+			console.log('respuesta',resp)
 			/******Modificacion del usuario creador de solicitud****/
 			GTipoAprob=resp[1].ListaAprobaciones;
 			GTiposPausa=resp[1].ListPausaAprob;
@@ -380,6 +415,7 @@
 				var ReadOnly='';
 				var ServCheck=false;
 				var valueTipoAprob;
+				var codigoAprob;
 
 				if(!ExisteOpcion(aprob.codigo)){
 					SmallPermiso='Sin Permiso para Aprobar'
@@ -387,6 +423,8 @@
 					bloqueo='disabled'
 				}
 				valueTipoAprob=aprob.idacc;
+				codigoAprob=aprob.codigo;
+
 				$(resp[0].aprobaciones).each(function(j,a){
 					if(aprob.idacc==a.idacc){
 						// alert('check')
@@ -394,11 +432,13 @@
 						bloqueo='disabled'
 						ServCheck=true
 						valueTipoAprob=''
+						
 					}
-				})	
-				tipo=`<div class="checkbox">
+				})
+				console.log('codigo:',codigoAprob)	
+				tipo=`<div class="checkbox click_aprob">
 			                <label>
-			                    <input class="css_check" type="checkbox" id="id_aprob${aprob.jerarquia}" data-id="${valueTipoAprob}" name="aprobacion[]" accesskey="${aprob.jerarquia}" value="${valueTipoAprob}" ${check} ${bloqueo} servcheck="${ServCheck}"/>
+			                    <input class="css_check click_aprob" type="checkbox" id="id_aprob${aprob.jerarquia}" data-id="${valueTipoAprob}" data-cod="${codigoAprob}" name="aprobacion[]" accesskey="${aprob.jerarquia}" value="${valueTipoAprob}" ${check} ${bloqueo} servcheck="${ServCheck}"/>
 			                    <i class="input-helper"></i>${aprob.nombre}
 			                </label>
 								
@@ -439,7 +479,7 @@
 				$(GTipoAprob).each(function(i,tp){
 					var mayor=0;
 					var estadoPausa;
-					if(valueTipo==-1){
+					if(valueTipo==-1){ //SI HAT PAUSAS DESDE EL SERIVIDOR
 						// alert('entro -1')
 						// $('#check_pausa').prop('checked',true)
 						$('#check_pausa').attr('disabled','disabled')
@@ -476,7 +516,6 @@
 							$('#cont_pausa').val('')
 						}else{
 							if(tp.idacc==valueTipo){
-// 								alert('entro title')
 								$('#check_pausa').removeAttr('disabled')
 								$('#check_pausa').removeAttr('checked')
 								$('#check_pausa').prop('checked',false)
@@ -489,7 +528,7 @@
 					}
 				})
 			}else{
-// 				alert(idtip)
+			//alert(idtip)
 				GAprobFinal=idtip
 				$('#check_pausa').attr('disabled','disabled')
 				$('#check_pausa').removeAttr('checked')
@@ -500,13 +539,37 @@
 				$('#cont_pausa').val('')
                 $.growl.error({
                     title:'Advertencia', 
-                    message: "Usted realizarÃ¡ la aprobacion Final de esta Solicitud!",
+                    message: "Usted realizara la aprobacion Final de esta Solicitud!",
                     duration:5000,
                     size:'large',
                     location:'tc' 
                 });
 			}
 		}
+
+		$('body').on('.click_aprob','click',function(e){
+			alert('clcik')
+			e.preventDefault()
+ 		})
+		/****************PARA POLIZA************/
+        $.post('../RestAprobaciones/getAseguradoras',function(resp){
+            console.log('Aseguradora: ',resp)
+
+            iniciarCallback(IniciarChosen);
+
+            function iniciarCallback(metodo){
+                $(resp).each(function(index,item){
+
+                    $('#select-aseg').append('<option value="'+item.idaseg+'">'+item.nombre+'</option>')
+                })
+                metodo();    
+            }
+
+            function IniciarChosen(){
+                // $('#select-aseg').chosen()
+            }
+
+        })
 	</script>
 </body>
 </html>

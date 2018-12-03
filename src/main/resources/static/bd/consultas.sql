@@ -14,19 +14,20 @@ INSERT INTO institucion(idinst,nombreCompañia,nombreInstitucion,direccion,telef
 -- INSERT INTO institucion(idinst,nombreCompañia,nombreInstitucion,direccion,telefono,iddep,nitInst,firma1,firma2,firma3,fax) VALUES('1','GOB. DPTAL DE TARIJA','GOB. DPTAL DE TARIJA','AV. DOMINGO PAZ NRO 832','6111416-6111392','1','178928029','LESLY MELANI SIGLE VILLARRUBIA','JOSE NAVARRO ANTELO','ING. MARCO  ANTONIO ORTIZ TAPIA','(591) 6111416');
 
 
--- Acciones
-INSERT INTO accion(idacc,nombre,codigo,jerarquia,tipo,estado) VALUES(1,'APROBADOR INSPECCION','ainsp',1,'a',1) 
-INSERT INTO accion(idacc,nombre,codigo,jerarquia,tipo,estado) VALUES(2,'APROBADOR TECNICO','atec',2,'a',1) 
-INSERT INTO accion(idacc,nombre,codigo,jerarquia,tipo,estado) VALUES(3,'APROBADOR LEGAL','aleg',3,'a',1) 
-INSERT INTO accion(idacc,nombre,codigo,jerarquia,tipo,estado) VALUES(4,'APROBADOR FINAL','afin',4,'a',1)
+-- Acciones  (las solicitudes llegan hasta la accion 9 "ORDEN DE PAGO"); se añadio ahora la accion 13 "INCUMPLIMIENTO de CONTRATO"
+INSERT INTO accion(idacc,nombre,codigo,jerarquia,tipo,estado) VALUES(1,'APROBADOR INSPECCION','ai',1,'a',1) 
+INSERT INTO accion(idacc,nombre,codigo,jerarquia,tipo,estado) VALUES(2,'APROBADOR TECNICO','at',2,'a',1) 
+INSERT INTO accion(idacc,nombre,codigo,jerarquia,tipo,estado) VALUES(3,'APROBADOR LEGAL','al',3,'a',1) 
+INSERT INTO accion(idacc,nombre,codigo,jerarquia,tipo,estado) VALUES(4,'APROBADOR FINAL','af',4,'a',1)
 INSERT INTO accion(idacc,nombre,codigo,jerarquia,tipo,estado) VALUES(5,'SOLICITUD','',1,'s',1)
 INSERT INTO accion(idacc,nombre,codigo,jerarquia,tipo,estado) VALUES(6,'ORDEN DE SERVICIO','',1,'os',1)
 INSERT INTO accion(idacc,nombre,codigo,jerarquia,tipo,estado) VALUES(7,'KIT INSTALADO','',1,'ki',1)
 INSERT INTO accion(idacc,nombre,codigo,jerarquia,tipo,estado) VALUES(8,'ACTA DE RECEPCION','',1,'ar',1)
 INSERT INTO accion(idacc,nombre,codigo,jerarquia,tipo,estado) VALUES(9,'ORDEN DE PAGO','',1,'op',1)
-INSERT INTO accion(idacc,nombre,codigo,jerarquia,estado,tipo) VALUES(10,'APROBACION DE OPERACIONES', 'ao', '1', '1', 'tb');
-INSERT INTO accion(idacc,nombre,codigo,jerarquia,estado,tipo) VALUES(11,'ELABORACION CONTRATO', 'ec', '2', '1', 'tb');
-INSERT INTO accion(idacc,nombre,codigo,jerarquia,estado,tipo) VALUES(12,'APROBACION FINAL', 'af', '3', '1', 'tb');
+INSERT INTO accion(idacc,nombre,codigo,jerarquia,tipo,estado) VALUES(10,'APROBACION DE OPERACIONES', 'ao',1, 'tb',1);
+INSERT INTO accion(idacc,nombre,codigo,jerarquia,tipo,estado) VALUES(11,'ELABORACION CONTRATO', 'ec',2,'tb',1);
+INSERT INTO accion(idacc,nombre,codigo,jerarquia,tipo,estado) VALUES(12,'APROBACION FINAL', 'af',3,'tb',1);
+INSERT INTO accion(idacc,nombre,codigo,jerarquia,tipo,estado) VALUES(13,'INCUMPLIMIENTO CONTRATO', '',1,'ic',1);
 
 
 --Opciones
@@ -36,18 +37,21 @@ INSERT INTO opcion(idopc,nombre,codigo,estado) VALUES(3,'ELIMINAR','eliminar',1)
 INSERT INTO opcion(idopc,nombre,codigo,estado) VALUES(4,'HABILITAR','habilitar',1)
 INSERT INTO opcion(idopc,nombre,codigo,estado) VALUES(5,'VER','ver',1)
 INSERT INTO opcion(idopc,nombre,codigo,estado) VALUES(6,'ANULAR','anular',1)
-INSERT INTO opcion(idopc,nombre,codigo,estado) VALUES(7,'APROBADOR INSPECCION','ainsp',1)
-INSERT INTO opcion(idopc,nombre,codigo,estado) VALUES(8,'APROBADOR TECNICO','atec',1)
-INSERT INTO opcion(idopc,nombre,codigo,estado) VALUES(9,'APROBADOR LEGAL','aleg',1)
-INSERT INTO opcion(idopc,nombre,codigo,estado) VALUES(10,'APROBADOR FINAL','afin',1)
-INSERT INTO opcion(idopc,nombre,codigo,estado) VALUES(11,'MODIFICAR VEHICULO SOLICITUD','mod-veh-solt',1)
+INSERT INTO opcion(idopc,nombre,codigo,estado) VALUES(7,'APROBADOR INSPECCION','ai',1)
+INSERT INTO opcion(idopc,nombre,codigo,estado) VALUES(8,'APROBADOR TECNICO','at',1)
+INSERT INTO opcion(idopc,nombre,codigo,estado) VALUES(9,'APROBADOR LEGAL','al',1)
+INSERT INTO opcion(idopc,nombre,codigo,estado) VALUES(10,'APROBADOR FINAL','af',1)
+INSERT INTO opcion(idopc,nombre,codigo,estado) VALUES(11,'MODIFICAR VEHICULO','mv',1)
 INSERT INTO opcion(idopc,nombre,codigo,estado) VALUES(12,'ASIGNAR ROLES','asigRol',1)
 INSERT INTO opcion(idopc,nombre,codigo,estado) VALUES(13,'REALIZAR REPORTES','addReport',1)
 INSERT INTO opcion(idopc,nombre,codigo,estado) VALUES(14,'REGISTRAR PERMISOS','',1)
-
-INSERT INTO opcion(idopc,nombre,codigo,estado) VALUES(15,'APRBACION DE OPERACIONES','ao',1)
+INSERT INTO opcion(idopc,nombre,codigo,estado) VALUES(15,'APROBACION DE OPERACIONES','ao',1)
 INSERT INTO opcion(idopc,nombre,codigo,estado) VALUES(16,'ELABORACION CONTRATO','ec',1)
 INSERT INTO opcion(idopc,nombre,codigo,estado) VALUES(17,'APROBACION FINAL','af',1)
+INSERT INTO opcion(idopc,nombre,codigo,estado) VALUES(18,'HABILITAR SOLICITUD','hs',1)
+INSERT INTO opcion(idopc,nombre,codigo,estado) VALUES(19,'MODIFICAR ACCESSO','ma',1)
+
+
 
 --Modulos
 INSERT INTO modulo(idmod,nombre,estado,icono) VALUES('1','REGISTROS','1','fa fa-pencil');
@@ -71,6 +75,15 @@ INSERT INTO proceso(idproc,nombre,estado,enlace,icono) VALUES('11','BENEFICIARIO
 INSERT INTO proceso(idproc,nombre,estado,enlace,icono) VALUES('12','CONVERSIONES','1','../InstalacionKit/Gestion',NULL);
 INSERT INTO proceso(idproc,nombre,estado,enlace,icono) VALUES('13','ACTAS RECEPCIÓN','1','../ActasRecepcion/Gestion',NULL);
 INSERT INTO proceso(idproc,nombre,estado,enlace,icono) VALUES('14','REPORTES','1','../Reportes/Gestion',NULL);
+INSERT INTO proceso(idproc,nombre,estado,enlace,icono) VALUES ('15', 'DESMONTAJE KIT', '1', '../DesmontajeKit/Gestion', NULL);
+INSERT INTO proceso(idproc,nombre,estado,enlace,icono) VALUES ('16', 'TRANSFERENCIA KIT VEHICULO', '1', '../TKitVehiculo/Gestion', NULL);
+INSERT INTO proceso(idproc,nombre,estado,enlace,icono) VALUES ('17', 'INCUMPLIMIENTO CONTRATO', '1', '../IContrato/Gestion', NULL);
+INSERT INTO proceso(idproc,nombre,estado,enlace,icono) VALUES ('18', 'PROGRAMA GNV', '1', '../ProgramaGNV/Gestion', NULL);
+INSERT INTO proceso(idproc,nombre,estado,enlace,icono) VALUES ('19', 'VEHICULOS', '1', '../Vehiculos/Gestion', NULL);
+INSERT INTO proceso(idproc,nombre,estado,enlace,icono) VALUES ('20', 'NOVEDADES', '1', '../Novedades/Gestion', NULL);
+INSERT INTO proceso(idproc,nombre,estado,enlace,icono) VALUES ('21', 'ASEGURADORAS', '1', '../Aseguradoras/Gestion', NULL);
+INSERT INTO proceso(idproc,nombre,estado,enlace,icono) VALUES ('22', 'DOCUMENTACION', '1', '../Documentos/Gestion', NULL);
+
 
 
 --Procopc
@@ -89,11 +102,13 @@ INSERT INTO procopc(idproc,idopc) VALUES('3','2');
 INSERT INTO procopc(idproc,idopc) VALUES('3','3');
 INSERT INTO procopc(idproc,idopc) VALUES('3','4');
 INSERT INTO procopc(idproc,idopc) VALUES('3','12');
+INSERT INTO procopc(idproc,idopc) VALUES('3','19');
 
 INSERT INTO procopc(idproc,idopc) VALUES('4','14');
 INSERT INTO procopc(idproc,idopc) VALUES('5','1');
 INSERT INTO procopc(idproc,idopc) VALUES('5','5');
 INSERT INTO procopc(idproc,idopc) VALUES('5','6');
+INSERT INTO procopc(idproc,idopc) VALUES('5','11');
 
 INSERT INTO procopc(idproc,idopc) VALUES('6','7');
 INSERT INTO procopc(idproc,idopc) VALUES('6','8');
@@ -132,6 +147,21 @@ INSERT INTO procopc(idproc,idopc) VALUES('14','13');
 INSERT INTO procopc(idproc,idopc) VALUES('15','1');
 INSERT INTO procopc(idproc,idopc) VALUES('16','1');
 INSERT INTO procopc(idproc,idopc) VALUES('16','5');
+INSERT INTO procopc(idproc,idopc) VALUES('17','1');
+INSERT INTO procopc(idproc,idopc) VALUES('17','5');
+INSERT INTO procopc(idproc,idopc) VALUES('18','2');
+INSERT INTO procopc(idproc,idopc) VALUES('19','2');
+INSERT INTO procopc(idproc,idopc) VALUES('20','1');
+INSERT INTO procopc(idproc,idopc) VALUES('20','18');
+INSERT INTO procopc(idproc,idopc) VALUES('21','1');
+INSERT INTO procopc(idproc,idopc) VALUES('21','2');
+INSERT INTO procopc(idproc,idopc) VALUES('21','3');
+INSERT INTO procopc(idproc,idopc) VALUES('21','4');
+
+INSERT INTO procopc(idproc,idopc) VALUES('22','1');
+INSERT INTO procopc(idproc,idopc) VALUES('22','2');
+INSERT INTO procopc(idproc,idopc) VALUES('22','3');
+INSERT INTO procopc(idproc,idopc) VALUES('22','4');
 
 
 

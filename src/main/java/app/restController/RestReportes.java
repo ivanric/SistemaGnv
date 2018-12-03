@@ -95,7 +95,7 @@ public class RestReportes {
 		SimpleReportFiller simpleReportFiller=new SimpleReportFiller();
 		OpcionesAdicionales oa=new OpcionesAdicionales();
 		URIS uris=new URIS();
-		String url=uris.jasperReport+"getListBeneficiario.jasper"; 
+		String url=uris.jasperReport+"getListSolicitudesF.jasper"; 
 		String escudo=uris.imgJasperReport+"escudobolivia.png";  
 	    Map<String, Object> parameters = new HashMap<>();
 	    

@@ -73,7 +73,7 @@ public class ManejadorUsuarios {
 	
 	
 	public Usuario obtenerUsuario(int codper){
-		return this.db.queryForObject("select * from usuario where idper=?", new objUsuario(),codper);
+		return this.db.queryForObject("select * from usuario where idper=? and estado=1", new objUsuario(),codper);
 	}
 //	public Persona iniciarSession(String xlogin, String xpassword){
 //		System.out.println("entro consulta--> "+"xlogin: "+xlogin+ " xpassword:"+xpassword);
@@ -99,7 +99,11 @@ public class ManejadorUsuarios {
 					xsql="select p.*,u.* FROM usuario u, persona p WHERE u.login=? and u.idper=p.idper and u.estado=1";
 					p=this.db.queryForObject(xsql, new objPersona() ,xlogin);
 					
+				}else {
+					System.out.println("no desemcripta");
 				}
+			}else {
+				p=null;
 			}
 		
 
@@ -110,14 +114,14 @@ public class ManejadorUsuarios {
 	}
 	
 	
-	public boolean ChangePassword(String password,String user){
+	public boolean ChangePassword(String password,Integer idper){
 		ALGORITMO3DES_Ecript_Desencript des=new ALGORITMO3DES_Ecript_Desencript();
 		String xsql="";
 		try {
-			xsql="update usuario set password=? where login=?";
-			this.db.update(xsql ,"",user);
-			xsql="update usuario set password=? where login=?";
-			this.db.update(xsql ,des.Encriptar(password),user);
+			xsql="update usuario set password=? where idper=?";
+			this.db.update(xsql ,"",idper);//PRIMERO SE RESETEA
+			xsql="update usuario set password=? where idper=?";
+			this.db.update(xsql ,des.Encriptar(password),idper);
 			return true;
 		} catch (Exception e) {
 		

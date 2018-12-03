@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import app.models.Beneficiario;
-import app.models.Documento;
+import app.models.DocumentoBeneficiario;
 import app.models.Persona;
 import app.models.Telefono;
 import app.models.TransferenciaBeneficiario;
@@ -76,10 +76,10 @@ private JdbcTemplate db;
 			return b;
 	    }
 	}
-	public class objDocumento implements RowMapper<Documento>{
+	public class objDocumento implements RowMapper<DocumentoBeneficiario>{
 		@Override
-		public Documento mapRow(ResultSet rs, int arg1) throws SQLException {
-			Documento d= new Documento();
+		public DocumentoBeneficiario mapRow(ResultSet rs, int arg1) throws SQLException {
+			DocumentoBeneficiario d= new DocumentoBeneficiario();
 			d.setIddocb(rs.getInt("iddocb"));
 			d.setNombre(rs.getString("nombre"));
 			d.setEstado(rs.getInt("estado"));
@@ -129,7 +129,7 @@ private JdbcTemplate db;
 	public Beneficiario obtenerBeneficiario(int idper){
 		return this.db.queryForObject("select * from beneficiario where idper=?", new objBeneficiario(),idper);
 	}
-	public List<Documento> getDocumentos(int idben){
+	public List<DocumentoBeneficiario> getDocumentos(int idben){
 		return this.db.query("SELECT d.* FROM docBeneficiario d,beneficiario b,bendoc bd WHERE d.iddocb=bd.iddocb and b.idben=bd.idben and b.idben=?", new objDocumento(),idben);
 	}
 	public List<Persona> Lista(HttpServletRequest req){
@@ -139,7 +139,7 @@ private JdbcTemplate db;
 		return this.db.query(sql, new objPersona(),"%"+filtro+"%","%"+filtro+"%",estado,estado);
 	}
 	
-	public List<Documento> listaDocumentos(){
+	public List<DocumentoBeneficiario> listaDocumentos(){
 //		String sql="SELECT * FROM docBeneficiario WHERE estado=1 and tipo='b' ORDER BY iddocb ASC";
 		String sql="SELECT iddocb,UPPER(nombre) as nombre,estado,tipo FROM docBeneficiario WHERE estado=1 and tipo='b' ORDER BY iddocb ASC";
 		return this.db.query(sql,new objDocumento());
@@ -298,7 +298,7 @@ private JdbcTemplate db;
 		String sql="select COALESCE(max(idtrasl),0)+1 as idtrasl from trasladoBeneficiario";
 		return db.queryForObject(sql, Integer.class);
 	}
-	public List<Documento> listaDocumentosTB(){
+	public List<DocumentoBeneficiario> listaDocumentosTB(){
 		String sql="SELECT * FROM docBeneficiario WHERE estado=1  ORDER BY iddocb ASC";
 		return this.db.query(sql,new objDocumento());
 	} 

@@ -1,5 +1,6 @@
 package app.manager;
 
+import java.net.IDN;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,16 +17,25 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
 import app.models.Aprobacion;
+import app.models.Aseguradora;
 import app.models.Beneficiario;
 import app.models.CombustibleVehiculo;
-import app.models.Documento;
+import app.models.DocumentoBeneficiario;
+import app.models.IncumplimientoContrato;
 import app.models.MarcaVehiculo;
 import app.models.ModeloVehiculo;
+import app.models.Novedad;
 import app.models.Persona;
+import app.models.Poliza;
+import app.models.Servicio;
 import app.models.Solicitud;
+import app.models.Taller;
 import app.models.Telefono;
+import app.manager.ManejadorServicios.objPersona;
+import app.manager.ManejadorServicios.objServicios;
 import app.models.Accion;
 import app.models.TipoMotorVehiculo;
+import app.models.TipoNovedad;
 import app.models.TipoServicioVehiculo;
 import app.models.TipoVehiculo;
 import app.models.Vehiculo;
@@ -77,6 +87,7 @@ private JdbcTemplate db;
 			v.setNum_motor(rs.getString("num_motor"));
 			v.setNum_chasis(rs.getString("num_chasis"));
 			v.setKitGlpSiNo(rs.getInt("kitGlp"));
+			v.setEstado(rs.getInt("estado"));
 			try {
 				v.setCombustibleVehiculo(metConmbustibles(rs.getString("placa")));
 			} catch (Exception e) {
@@ -112,6 +123,36 @@ private JdbcTemplate db;
 			return v;
 	    }
 	}
+	
+	public class objPoliza implements RowMapper<Poliza>{
+		@Override
+		public Poliza mapRow(ResultSet rs, int arg1) throws SQLException {
+			Poliza p= new Poliza();
+			p.setIdpol(rs.getInt("idpol"));
+			p.setNumeroPol(rs.getString("numeroPol"));
+			p.setFecha(rs.getString("fecha"));
+			p.setIdaseg(rs.getInt("idaseg"));
+			p.setPlaca(rs.getString("placa"));
+			p.setLogin(rs.getString("login"));
+			try {
+				p.setAseguradora(metAseguradoraPol(rs.getInt("idaseg")));
+			} catch (Exception e) {
+				p.setAseguradora(null);
+			}
+			
+			try {
+				p.setVehiculo(metVehiculoPol(rs.getString("placa")));
+			} catch (Exception e) {
+				p.setVehiculo(null);
+			}
+			try {
+				p.setPersona(metObtPersonaPol(rs.getInt("idpol")));
+			} catch (Exception e) {
+				p.setPersona(null);
+			}
+			return p;
+	    }
+	}
 	public class objetoPersona implements RowMapper<Persona>{
 		@Override
 		public Persona mapRow(ResultSet rs, int arg1) throws SQLException {
@@ -139,6 +180,29 @@ private JdbcTemplate db;
 			return p;
 	    }
 	}
+	public class objetoPersonaN implements RowMapper<Persona>{
+		@Override
+		public Persona mapRow(ResultSet rs, int arg1) throws SQLException {
+			Persona p= new Persona();
+			p.setIdper(rs.getInt("idper"));
+			p.setCi(rs.getString("ci"));
+			p.setNombres(rs.getString("nombres"));
+			p.setAp(rs.getString("ap"));
+			p.setAm(rs.getString("am"));
+			p.setGenero(rs.getString("genero"));
+			p.setDireccion(rs.getString("direccion"));
+			p.setEmail(rs.getString("email"));
+			p.setFoto(rs.getString("foto"));
+			p.setEstado(rs.getInt("estado"));
+
+			try {
+				p.setListaTelf(metListaTelefonos(rs.getInt("idper")));
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			return p;
+	    }
+	}
 	public class objBeneficiario implements RowMapper<Beneficiario>{
 		@Override
 		public Beneficiario mapRow(ResultSet rs, int arg1) throws SQLException {
@@ -157,10 +221,10 @@ private JdbcTemplate db;
 			return b;
 	    }
 	}
-	public class objDocumento implements RowMapper<Documento>{
+	public class objDocumento implements RowMapper<DocumentoBeneficiario>{
 		@Override
-		public Documento mapRow(ResultSet rs, int arg1) throws SQLException {
-			Documento d= new Documento();
+		public DocumentoBeneficiario mapRow(ResultSet rs, int arg1) throws SQLException {
+			DocumentoBeneficiario d= new DocumentoBeneficiario();
 			d.setIddocb(rs.getInt("iddocb"));
 			d.setNombre(rs.getString("nombre"));
 			d.setEstado(rs.getInt("estado"));
@@ -291,6 +355,108 @@ private JdbcTemplate db;
 			return t;
 	    }
 	}
+	
+	
+	/*ASEGURADORA*/
+	public class objAseguradora implements RowMapper<Aseguradora>{
+		@Override
+		public Aseguradora mapRow(ResultSet rs, int arg1) throws SQLException {
+			Aseguradora a= new Aseguradora();
+			a.setIdaseg(rs.getInt("idaseg"));
+			a.setNombre(rs.getString("nombre"));
+			a.setNit(rs.getString("nit"));
+			a.setDireccion(rs.getString("direccion"));
+			a.setTelefono(rs.getString("telefono"));
+			a.setFecha(rs.getString("fecha"));
+			a.setIddep(rs.getInt("iddep"));
+			a.setIdper(rs.getInt("idper"));
+			a.setEstado(rs.getInt("estado"));
+			try {
+				a.setPersona(metPersonaAseg(rs.getInt("idper")));
+			}catch (Exception e){
+				a.setPersona(null);
+			}
+			return a;
+	    }
+	}
+	
+	/*INCUMPLIENTO CONTRATO*/
+	public class objIContrato implements RowMapper<IncumplimientoContrato>{
+		@Override
+		public IncumplimientoContrato mapRow(ResultSet rs, int arg1) throws SQLException {
+			IncumplimientoContrato i= new IncumplimientoContrato();
+			i.setIdincl(rs.getInt("idincl"));
+			i.setFechaIncumplio(rs.getString("fechaIncumplio"));
+			i.setDescripcion(rs.getString("descripcion"));
+			i.setIdsolt(rs.getInt("idsolt"));
+			i.setLogin(rs.getString("login"));
+			
+			try {
+				i.setSolicitud(metSolicitud(rs.getInt("idsolt")));
+			} catch (Exception e) {
+				i.setSolicitud(null);
+			}
+			try {
+				i.setPersona(metPersonaIC("login"));
+			} catch (Exception e) {
+				// TODO: handle exception
+				i.setPersona(null);
+			}
+			
+			return i;
+	    }
+	}
+	
+	//NOVEDADES
+	public class objTipoNovedad implements RowMapper<TipoNovedad>{
+		@Override
+		public TipoNovedad mapRow(ResultSet rs, int arg1) throws SQLException {
+			TipoNovedad tn= new TipoNovedad();
+			tn.setIdtipnv(rs.getInt("idtipnv"));
+			tn.setNombre(rs.getString("nombre"));
+			tn.setEstado(rs.getInt("estado"));
+			return tn;
+	    }
+	}
+	//NOVEDADES
+	public class objNovedad implements RowMapper<Novedad>{
+		@Override
+		public Novedad mapRow(ResultSet rs, int arg1) throws SQLException {
+			Novedad n= new Novedad();
+			n.setIdnov(rs.getInt("idnov"));
+			n.setFechaNovedad(rs.getString("fechaNovedad"));
+			n.setDescripcionNovedad(rs.getString("descripcionNovedad"));
+			n.setFechaInicial(rs.getString("fechaInicial"));
+			n.setFechaFinal(rs.getString("fechaFinal"));
+			n.setIdsolt(rs.getInt("idsolt"));
+			n.setIdtipnv(rs.getInt("idtipnv"));
+			n.setLogin(rs.getString("login"));
+			try {
+				n.setSolicitud(metSolicitud(rs.getInt("idsolt")));
+			} catch (Exception e) {
+				n.setSolicitud(null);
+			}
+			try {
+				n.setTipoNovedad(metTipoNovedad(rs.getInt("idtipnv")));
+			} catch (Exception e) {
+				// TODO: handle exception
+				n.setTipoNovedad(null);
+			}
+			try {
+				n.setPersona(metPersonaIC("login"));
+			} catch (Exception e) {
+				// TODO: handle exception
+				n.setPersona(null);
+			}
+			return n;
+	    }
+	}
+	
+	
+	public Persona metPersonaAseg(int idper){
+		String sql="SELECT p.* FROM persona p JOIN aseguradora a ON a.idper=p.idper and p.idper=?";
+		return this.db.queryForObject(sql,new objetoPersona(),idper);
+	}
 	public Beneficiario metBeneficiario(int idper){
 		return this.db.queryForObject("select * from beneficiario where idper=?", new objBeneficiario(),idper);
 	}
@@ -298,7 +464,7 @@ private JdbcTemplate db;
 		String sql="select * from telefono where idper=?";
 		return this.db.query(sql,new objTelefono(),idper);
 	}
-	public List<Documento> getDocumentos(int idben){
+	public List<DocumentoBeneficiario> getDocumentos(int idben){
 		return this.db.query("SELECT d.* FROM docBeneficiario d,beneficiario b,bendoc bd WHERE d.iddocb=bd.iddocb and b.idben=bd.idben and b.idben=?", new objDocumento(),idben);
 	}
 	
@@ -360,7 +526,14 @@ private JdbcTemplate db;
 		return this.db.query(sql, new objSolicitud(),"%"+filtro+"%",estado,estado);
 	}
 	
-	public List<Documento> listaDocumentos(){
+	public List<Vehiculo> ListarVeh(HttpServletRequest req){
+		String filtro=req.getParameter("filtro");
+		int estado=Integer.parseInt(req.getParameter("estado"));
+		String sql="select v.* from vehiculo v where  (v.placa LIKE ?) and (v.estado=? or ?=-1) ORDER BY v.placa ASC";
+		return this.db.query(sql, new objVehiculo(),"%"+filtro+"%",estado,estado);
+	}
+	
+	public List<DocumentoBeneficiario> listaDocumentos(){
 		String sql="SELECT * FROM docBeneficiario WHERE estado=1 ORDER BY iddocb ASC";
 		return this.db.query(sql,new objDocumento());
 	}
@@ -418,6 +591,27 @@ private JdbcTemplate db;
 		
 	}
 	
+	public boolean verificarPlacaMod(String placa){
+		System.out.println("entro sql_placa:"+placa);
+		String sql="";
+		try {
+			sql="SELECT COUNT(placa) FROM vehiculo WHERE placa=?";
+			int data=this.db.queryForObject(sql,Integer.class,placa);
+			System.out.println("ver????:"+data);
+			if(data!=0){
+				return true;	
+			}else{
+				return false;
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			System.out.println("entro catch");	
+			return false;
+		}
+		
+	}
+	
 	public int EstadoPlaca(String placa){
 		System.out.println("entro sql_placa:"+placa);
 		String sql="";
@@ -454,10 +648,49 @@ private JdbcTemplate db;
 		}
 		
 	}
+	public Vehiculo getDatosVehiculoByPlaca(String placa){
+		System.out.println("placa:"+placa);
+		String sql="";
+		try {
+			sql="SELECT * FROM vehiculo WHERE placa=?";
+			return  this.db.queryForObject(sql,new objVehiculo(),placa);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			System.out.println("entro catch error");	
+			return null;
+		}
+		
+	}
+	
+	public boolean modificarVeh(HttpServletRequest req,Vehiculo v, int [] combustible){
+		String sql="";
+		String placa_ant=req.getParameter("placa_hidden");
+		try {
+			
+			BorrarCombustibles(placa_ant);
+			
+			sql="UPDATE vehiculo SET placa=?,tjeta_prioridad=?,cilindrada=?,color=?,num_motor=?,num_chasis=?,idtipv=?,idmarcv=?,idTipSv=?,idtipoMotorVeh=?,idmodv=? WHERE placa=?";
+			this.db.update(sql,v.getPlaca().toUpperCase(),v.getTjeta_prioridad().toUpperCase(),v.getCilindrada().toUpperCase(),v.getColor().toUpperCase(),v.getNum_motor().toUpperCase(),v.getNum_chasis().toUpperCase(),v.getIdtipv(),v.getIdmarcv(),v.getIdTipSv(),v.getIdtipoMotorVeh(),v.getIdmodv(),placa_ant);
+			
+			sql="INSERT INTO combveh(placa,idcomb) VALUES(?,?)";
+			for (int i = 0; i <combustible.length; i++){
+				this.db.update(sql,v.getPlaca().toUpperCase(),combustible[i]);	
+			}	
+			return true;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 	public void BorrarCombustibles(String placa){
 		String sql=" delete from combveh where placa= ?";
 		this.db.update(sql,new Object[]{placa});
 	}
+
+	
 	public Object[] registrar(HttpServletRequest req,Persona xuser,Vehiculo v,Solicitud s,int [] combustible,int idacc){
 		int idsolt= generarIdSol();
 		int idben=Integer.parseInt(req.getParameter("idben"));
@@ -558,6 +791,75 @@ private JdbcTemplate db;
 		}
 		
 	}
+	
+	//POLIZA
+	public List<Aseguradora> getAseguradoras(){
+		String sql;
+		try {
+			sql="SELECT a.* FROM aseguradora a WHERE a.estado=1";
+			return this.db.query(sql, new objAseguradora());
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+	public int verificarPolizaByPlaca(String placa){
+		System.out.println("entro sql_placa:"+placa);
+		String sql="";
+		try {
+			sql="SELECT COUNT(numeroPol) FROM  poliza WHERE placa=?";
+			int data=this.db.queryForObject(sql,Integer.class,placa);
+			System.out.println("ver????:"+data);
+			if(data!=0){
+				return data;	
+			}else{
+				return 0;
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			System.out.println("entro catch");	
+			return 0;
+		}
+		
+	}
+	
+	public Poliza DatosPoliza(String placa){
+		System.out.println("placa:"+placa);
+		String sql="";
+		try {
+			sql="SELECT p.* FROM poliza p,vehiculo v WHERE v.placa=p.placa and  v.placa=? and v.estado=1";
+			return  this.db.queryForObject(sql,new objPoliza(),placa);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			System.out.println("entro catch error");	
+			return null;
+		}
+		
+	}
+	public Aseguradora metAseguradoraPol(int id){
+		return this.db.queryForObject("select a.* from aseguradora a,poliza p where a.idaseg=p.idaseg AND a.idaseg=?", new objAseguradora(),id);
+	}
+	public Vehiculo metVehiculoPol(String placa){
+		return this.db.queryForObject("select v.* from vehiculo v,poliza p where v.placa=p.placa AND v.placa=?", new objVehiculo(),placa);
+	}
+	public Persona metObtPersonaPol(int id){
+		String sql="";
+		try {
+			sql="SELECT p.* FROM persona p JOIN usuario u ON u.idper=p.idper JOIN poliza pol ON pol.login=u.login WHERE  pol.idpol=?";
+			return this.db.queryForObject(sql,new objetoPersona(),id);
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	//FIN POLIZA
+	
 	public List<Aprobacion> cargarAprobacionesTB(int idsolt){
 		String sql;
 		try {
@@ -675,6 +977,174 @@ private JdbcTemplate db;
 		return this.db.queryForObject("select s.* from solicitud s,trasladoKitVehiculo tvk where tvk.idsoltNueva=s.idsolt and tvk.idtraslv=?", new objSolicitud(),id);
 	}
 	
+	/*INCUMPLIENTO CONTRATO*/
+	public List<IncumplimientoContrato> ListarIContratos(HttpServletRequest req){
+		String filtro=req.getParameter("filtro");
+		String sql="select ic.* from incumplimientoContrato  ic join solicitud s ON ic.idsolt=s.idsolt JOIN benVehSolt bvs ON bvs.idsolt=s.idsolt join vehiculo v on bvs.placa=v.placa JOIN beneficiario b ON b.idben=bvs.idben AND b.estado=1 join persona p on p.idper=b.idper where  (concat(p.ap,' ',p.am,' ',p.nombres) LIKE ? or p.ci LIKE ? or v.placa LIKE ?)  ORDER BY ic.idincl ASC";
+		return this.db.query(sql, new objIContrato(),"%"+filtro+"%","%"+filtro+"%","%"+filtro+"%");
+	}
+	public Persona metPersonaIC(String login){
+		String sql="SELECT p.* FROM persona p JOIN usuario u ON u.idper=p.idper and u.login=?";
+		return this.db.queryForObject(sql,new objetoPersonaN(),login);
+	}
+	public Poliza metPolizaIC(String placa){
+		String sql="SELECT p.* FROM poliza p JOIN vehiculo v ON v.placa=p.placa and p.placa=?";
+		return this.db.queryForObject(sql,new objPoliza(),placa);
+	}
+	public List<Solicitud> FiltroSolicitudIC(String cadena){
+		//String sql="SELECT s.* FROM solicitud s,beneficiario b,persona p WHERE s.idben=b.idben and s.estado=1  and aprobadoSiNo=1 and b.idper=p.idper and (s.numSolt LIKE ? or p.ci LIKE ?) and s.idsolt NOT IN (SELECT od.idsolt FROM ordenServicio od WHERE od.idsolt=s.idsolt)";
+		String sql="SELECT s.* FROM solicitud s,beneficiario b,persona p,benVehSolt bvs,ordenServicio os,registroKit rk WHERE bvs.idben=b.idben AND b.estado=1 AND bvs.idsolt=s.idsolt and s.estado=1 and s.aprobadoSiNo=1 and b.idper=p.idper and s.idsolt=os.idsolt AND os.idordserv=rk.idordserv and (s.numSolt LIKE ? or p.ci LIKE ?) and s.idsolt NOT IN (SELECT ic.idsolt FROM incumplimientoContrato ic WHERE ic.idsolt=s.idsolt)";
+		return this.db.query(sql, new objSolicitud(),'%'+cadena+'%','%'+cadena+'%');
+	}
+	public int getAccionIC() {
+		return this.db.queryForObject("select idacc from accion where tipo='ic'",Integer.class);
+	}
+	public int generarIdincl(){
+		String sql="select COALESCE(max(idincl),0)+1 as idincl from incumplimientoContrato";
+		return db.queryForObject(sql, Integer.class);
+	}
+	public int generarIdPol(){
+		String sql="select COALESCE(max(idpol),0)+1 as idpol from poliza";
+		return db.queryForObject(sql, Integer.class);
+	}
+	public Object[] registrarIC(HttpServletRequest req,Persona xuser,int idacc){
+		System.out.println("entro");
+		int idincl= generarIdincl();
+		int idpol= generarIdPol();
+		System.out.println("idincl:"+idincl+" idpol:"+idpol);
+		String login=xuser.getUsuario().getLogin();
+		int idsolt=Integer.parseInt(req.getParameter("idsolt"));
+		String descripcion=req.getParameter("descripcion");
+		String placa=req.getParameter("placa");
+		
+		String numeroPol=req.getParameter("numeroPol");
+		int idaseg=Integer.parseInt(req.getParameter("idaseg"));
+		System.out.println("idsolt:"+idsolt+" desc:"+descripcion+" placa: "+placa+" numeroPol:"+numeroPol+" idaseg;"+idaseg);
+		
+		Object []Respuesta=new Object[2];
+		String sql="";
+		try {
+
+			sql="INSERT INTO incumplimientoContrato(idincl,descripcion,idsolt,login) VALUES(?,?,?,?)"; 
+			this.db.update(sql,idincl,descripcion,idsolt,login);	
+			
+			//POLIZA
+			if(verificarPolizaByPlaca(placa)==1) {
+				sql="UPDATE poliza SET numeroPol=?,idaseg=?,login=? WHERE placa=?";
+				this.db.update(sql,numeroPol,idaseg,login,placa);
+			}else {
+				System.out.println("poliza nueva");
+				sql="INSERT INTO poliza(idpol,numeroPol,idaseg,placa,login) VALUES(?,?,?,?,?)";
+				this.db.update(sql,idpol,numeroPol,idaseg,placa,login);	
+			
+			}
+			
+			sql="UPDATE solicitud SET idacc=? WHERE idsolt=?";
+			this.db.update(sql,idacc,idsolt);
+		
+			//ANULAR SOLT
+			anular(idsolt);
+			Respuesta[0]=true;
+			Respuesta[1]=idincl;
+			return Respuesta;
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println("entro error");
+			System.out.println("err:"+e.getMessage());
+			e.printStackTrace();
+			Respuesta[0]=false;
+			return Respuesta;
+		}
+	}
+	
+	public IncumplimientoContrato verIContrato(int idincl) {
+		String sql="select * from incumplimientoContrato where idincl=?";
+		return this.db.queryForObject(sql,new objIContrato(),idincl);
+	}
+	//FIN INCUMPLIMIENTO CONTRATO
+	
+	
+	/***************************NOVEDADES***************************/
+	public TipoNovedad metTipoNovedad(int idtipnv){
+//		String sql="select tn.* from tipoNovedad tn,novedad n  where tn.idtipnv=n.idtipnv and tn.idtipnv=? and tn.estado=1";
+		String sql="select tn.* from tipoNovedad tn where tn.idtipnv=? and tn.estado=1";
+		return this.db.queryForObject(sql,new objTipoNovedad(),idtipnv);
+	}
+
+	public List<Novedad> ListarNovedades(HttpServletRequest req){
+		String filtro=req.getParameter("filtro");
+		int estado=Integer.parseInt(req.getParameter("estado"));
+//		String sql="select nov.* from novedad nov JOIN solicitud s ON s.idsolt=nov.idsolt JOIN benVehSolt bvs ON bvs.idsolt=s.idsolt join vehiculo v on bvs.placa=v.placa JOIN beneficiario b ON b.idben=bvs.idben AND b.estado=1 JOIN ordenServicio os ON os.idsolt=s.idsolt JOIN registroKit rk ON rk.idordserv=os.idordserv   where  (v.placa LIKE ? or s.numSolt LIKE ?) and (s.estado=? or ?=-1) ORDER BY nov.idnov ASC";
+		String sql="select nov.* from novedad nov JOIN solicitud s ON s.idsolt=nov.idsolt JOIN benVehSolt bvs ON bvs.idsolt=s.idsolt join vehiculo v on bvs.placa=v.placa JOIN beneficiario b ON b.idben=bvs.idben AND b.estado=1  where  (v.placa LIKE ? or s.numSolt LIKE ?) and (s.estado=? or ?=-1) ORDER BY nov.idnov ASC";
+		return this.db.query(sql, new objNovedad(),"%"+filtro+"%","%"+filtro+"%",estado,estado);
+	}
+	public List<TipoNovedad> getTipoNovedades(){
+		String sql="select * from tipoNovedad  where estado=1";
+		return this.db.query(sql,new objTipoNovedad());
+	}
+	
+	public List<Solicitud> FiltroSolicitudNov(String cadena){//LISTA TODAS LAS SOLICITUDES INICIALES Y TERMINADAS LAS CONVERSIONES
+		String sql="SELECT s.* FROM solicitud s,beneficiario b,persona p,benVehSolt bvs WHERE bvs.idben=b.idben AND b.estado=1 AND bvs.idsolt=s.idsolt and s.estado=1 and b.idper=p.idper  and (s.numSolt LIKE ? or p.ci LIKE ?) ";
+		return this.db.query(sql, new objSolicitud(),'%'+cadena+'%','%'+cadena+'%');
+	}
+	public int generarIdnov(){
+		String sql="select COALESCE(max(idnov),0)+1 as idnov from novedad";
+		return db.queryForObject(sql, Integer.class);
+	}
+	public Object[] registrarNov(HttpServletRequest req,Persona xuser){
+		System.out.println("entro");
+		int idnov= generarIdnov();
+		String login=xuser.getUsuario().getLogin();
+		int idsolt=Integer.parseInt(req.getParameter("idsolt"));
+		int idtipnv=Integer.parseInt(req.getParameter("idtipnv"));
+		String descripcion=req.getParameter("description");
+		System.out.println("descripcion:"+descripcion==null);
+		String fechaInicial=req.getParameter("fechaInicial");
+		String fechaFinal=req.getParameter("fechaFinal");
+		
+		Object []Respuesta=new Object[2];
+		String sql="";
+		try {
+
+			sql="INSERT INTO novedad(idnov,descripcionNovedad,fechaInicial,fechaFinal,idsolt,idtipnv,login) VALUES(?,?,?,?,?,?,?)"; 
+			this.db.update(sql,idnov,descripcion,fechaInicial,fechaFinal,idsolt,idtipnv,login);	
+		
+			//ANULAR SOLT
+			anular(idsolt);
+			Respuesta[0]=true;
+			Respuesta[1]=idnov;
+			return Respuesta;
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println("entro error");
+			System.out.println("err:"+e.getMessage());
+			e.printStackTrace();
+			Respuesta[0]=false;
+			return Respuesta;
+		}
+	}
+	
+	public boolean habilitarSolicitud(Integer id,String placa){
+		String sql="";
+		try {
+			sql="UPDATE vehiculo SET estado=1 WHERE placa=?";
+			int a=this.db.update(sql,placa);
+			
+			sql="UPDATE solicitud SET estado=1 WHERE idsolt=?";
+			a=this.db.update(sql,id);
+			
+			System.out.println("sql_habilito: "+a);
+			if (a==1) {
+				return true;	
+			} else {
+				return false;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 	/*REPORTES*/
 	//Solicitudes
 	public List<Map<String, Object>> ListarReportes(){		

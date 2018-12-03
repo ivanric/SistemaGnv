@@ -1,4 +1,4 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -6,8 +6,13 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="">
 	<meta name="author" content=""> 
+	<style type="text/css">
+        .ocultar{
+            display: none;
+        }
+	</style>
 </head>
-<body> -->
+<body>
 	
 	<!-- <h2 style="text-align: center;"></h2> -->
     <div class="panel panel-default">
@@ -17,73 +22,365 @@
 	  <div class="panel-body">
 	    <div class="">
             <div class="col-md-12">
-                <button  class="navbar-right btn btn-default waves-effect">
-                    Agregar Instituci�n 
-                </button>
-            </div>   &nbsp;
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-2">
-                        <input type="text" name="" class="form-control unput-sm" placeholder="Buscar..">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12">
-        	    <table  id="table-gnv" class="table table-vmiddle" width="100%">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Nombre</th>
-                            <th>Opciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                        	<td>1</td>
-                        	<td>prgrama</td>
-                        	<td>
-                        		<button class="btn btn-icon btn-default waves-effect"><span class="zmdi zmdi-edit"></span></button>
-                        		<button class="btn btn-icon btn-danger waves-effect"><span class="zmdi zmdi-delete"></span></button>
-                        	</td>
-                        </tr>
-                    </tbody>
-            	</table>
+				<form id="formulario-inst" action="../RestProgramaGnv/modificarInstitucion" method="post" 
+				    data-fv-excluded="disabled">
+
+				    <div class="" id="modal-mod-inst" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-hidden="true" style="">
+				       <div class="modal-dialog modal-md" role="document">
+				         <div class="modal-content">
+				            <div class="card">
+				                <div class="card-header my-card-padding">
+				                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				                    <h2>Unidad Ejecutora del Programa<small>Complete el formulario por favor</small></h2>
+				                </div>
+				                <div class="modal-body datos_compania">                      
+				                    <div class="row">
+				                        <div class="col-md-6">
+				                            <div class="form-group fg-float">
+				                                <div class="fg-line">
+				                                	<input type="hidden" name="idinst">
+				                                    <input class="form-control fg-input" minlength="10" maxlength="20" data-fv-stringlength-message="datos incorrectos" id="nombreCompania" name="nombreCompania" type="text"  data-fv-notempty="true" data-fv-message="Requiere Compania">
+				                                </div>
+				                                <label class="fg-label">Nombre Compania</label>
+				                            </div>
+				                        </div>
+				                        <div class="col-md-6">
+				                            <div class="form-group fg-float">
+				                                <div class="fg-line">
+				                                    <input class="form-control fg-input" minlength="10" maxlength="20" data-fv-stringlength-message="datos incorrectos" id="nombreInstitucion" name="nombreInstitucion" type="text"  data-fv-notempty="true" data-fv-message="Requiere Institucion">
+				                                </div>
+				                                <label class="fg-label">Nombre Institucion</label>
+				                            </div>
+				                        </div>
+				                     </div>
+				                     <div class="row">
+				                        <div class="col-md-6">
+				                            <div class="form-group fg-float">
+				                                <div class="fg-line">
+				                                    <input class="form-control fg-input" maxlength="30" name="direccion" type="text" data-fv-notempty="true" data-fv-message="Requiere Direccion" data-fv-stringlength-message="Solo 30 caracteres">
+				                                </div>
+				                                <label class="fg-label">Direccion</label>
+				                            </div>
+				                        </div>
+				                        <div class="col-md-6">
+				                            <div class="form-group fg-float">
+				                                <div class="fg-line">
+				                                    <input class="form-control fg-input" maxlength="20" name="telefono" type="text"  data-fv-stringlength-message="Solo 20 caracteres" data-fv-notempty="true" data-fv-message="Requiere telefono">
+				                                </div>
+				                                <label class="fg-label">Telefono</label>
+				                            </div>
+				                        </div>
+				                    </div>
+				                    <div class="row">
+				                        <div class="col-md-6">
+				                            <div class="form-group">
+				                                <div class="fg-line">
+				                                    <select data-placeholder="n" name="iddep" class="form-control" data-fv-notempty='true' data-fv-message="Requiere Departamento" id="select-dep">
+				                                        <option value="-1" selected="selected">Seleccione Departamento</option>
+				                                    </select>
+				                                </div>
+				                            </div>
+				                        </div>
+				                        <div class="col-md-6">
+				                            <div class="form-group fg-float">
+				                                <div class="fg-line">
+				                                    <input class="form-control fg-input"  name="nitInst" type="text" data-fv-notempty="true" data-fv-message="Requiere Nit de Institución" maxlength="40">
+				                                </div>
+				                                <label class="fg-label">Nit</label>
+				                            </div>
+				                        </div>
+				                    </div>
+				                    <div class="row">
+				                        <div class="form-group">
+				                            <div class="col-md-6">
+				                                <div class="form-group fg-float">
+				                                    <div class="fg-line">
+				                                        <input class="form-control fg-input"  name="fax" type="text" maxlength='40' data-fv-stringlength-message='Maximo 40 caracteres' data-fv-notempty="true" data-fv-message="Requiere Fax">
+				                                    </div>
+				                                    <label class="fg-label">Fax</label>
+				                                </div>    
+				                            </div>
+				                        </div>
+				                    </div>  
+				                </div>
+				                <div class="modal-footer">
+				                    <button type="submit"  id="btn" class="btn btn-primary waves-effect"><i class="fa fa-save fa-3x"></i></button>
+				                </div>
+				            </div>
+				          </div><!-- /.modal-content -->
+				        </div><!-- /.modal-dialog -->
+				    </div><!-- /.modal -->
+				</form>  
+
+				<form id="formulario-firm" action="../RestProgramaGnv/modificarFirmas" method="post" 
+				    data-fv-excluded="disabled">
+
+				    <div class="" id="modal-mod-firm" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-hidden="true" style="">
+				       <div class="modal-dialog modal-lg" role="document">
+				         <div class="modal-content">
+				            <div class="card">
+				                <div class="card-header my-card-padding">
+				                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				                    <h2>Firmas del Personal para Orden de Servicio<small>Complete el formulario por favor</small></h2>
+				                </div>
+				                <div class="modal-body datos_firmasOS">                      
+				                    <div class="row">
+				                        <div class="col-md-4">
+				                            <div class="form-group fg-float">
+				                                <div class="fg-line">
+				                                    <input class="form-control fg-input" name="firma1" type="text" disabled="disabled">
+				                                </div>
+				                                <label class="fg-label">Firma1 (Responsable de Operaciones)</label>
+				                            </div>
+				                        </div>
+				                        <div class="col-md-4">
+				                            <div class="form-group fg-float">
+				                                <div class="fg-line">
+				                                    <input class="form-control fg-input" name="firma2" type="text" disabled="disabled">
+				                                </div>
+				                                <label class="fg-label">Firma2 (Director de La Unidad Ejecutora)</label>
+				                            </div>
+				                        </div>
+				                        <div class="col-md-4">
+				                            <div class="form-group fg-float">
+				                                <div class="fg-line">
+				                                    <input class="form-control fg-input" name="firma3" type="text" disabled="disabled">
+				                                </div>
+				                                <label class="fg-label">Firma2 (Jefe Técnico)</label>
+				                            </div>
+				                        </div>
+				                    </div>    
+				                    <button class="btn btn-icon btn-default waves-effect" id="btn-mod-firmas" type="button"><span class="zmdi zmdi-edit"></span></button>
+				                    <br>
+				                    <br>
+				                    <div class="ocultar" id="div-firmas">
+				                        <div class="row">
+				                            <div class="col-md-4">
+				                                <div class="form-group">
+				                                    <div class="fg-line">
+				                                        <select data-placeholder="n" name="firma1_m" class="form-control" data-fv-notempty='true' data-fv-message="Requiere firma 1" id="select-firma1">
+				                                            <option value="">Seleccione Firma 1</option>
+				                                        </select>
+				                                    </div>
+				                                </div>
+				                            </div>
+				                            <div class="col-md-4">
+				                                <div class="form-group">
+				                                    <div class="fg-line">
+				                                        <select data-placeholder="n" name="firma2_m" class="form-control" data-fv-notempty='true' data-fv-message="Requiere firma 2" id="select-firma2">
+				                                            <option value="">Seleccione Firma 2</option>
+				                                        </select>
+				                                    </div>
+				                                </div>
+				                            </div>
+				                            <div class="col-md-4">
+				                                <div class="form-group">
+				                                    <div class="fg-line">
+				                                        <select data-placeholder="n" name="firma3_m" class="form-control" data-fv-notempty='true' data-fv-message="Requiere firma 3" id="select-firma3">
+				                                            <option value="">Seleccione Firma 3</option>
+				                                        </select>
+				                                    </div>
+				                                </div>
+				                            </div>
+				                        </div>
+				                    </div>
+				                </div>
+				                <div class="modal-footer">
+				                    <button type="submit" id="btn-firm" class="btn btn-primary waves-effect"><i class="fa fa-save fa-3x"></i></button>
+				                </div>
+				            </div>
+				          </div>
+				        </div>
+				    </div>
+				</form>  
             </div>   
         </div>  
 	  </div>
 	</div>
+	<script type="" src="../bower_components/jquery.nicescroll/dist/jquery.nicescroll.js"></script>
+	<script type="" src="../bower_components/autosize/dist/autosize.js"></script>    
+	<script type="" src="../js/tema/js/functions.js"></script>
 	<script type="text/javascript">
-	$(function () {
-		var result=Get_Opciones(null);
-		console.log('GESTION: ',result)
-		console.log('opcion: ',result.Opciones[0]);
-		console.log('opcion: ',result.Opciones[1]);
-	    var tablaGNV='';
-	    tablaGNV=$('#table-gnv').DataTable();
-	    correr();
-	    function correr() {
-	       var dt= $.fn.DataTable.isDataTable('#table-gnv');
-	       console.log(dt);
-	       if (dt) {
-	           console.log('destruir')
-	           tablaGNV.destroy();
-	           iniciarDatable();  
-	       } else {
-	           iniciarDatable();
-	       }				
-	   }
+    $('#select-dep').chosen()
+    $('#select-firma1').chosen()
+    $('#select-firma2').chosen()
+    $('#select-firma3').chosen()
 
-	    function iniciarDatable(){
-	        tablaGNV=$('#table-gnv').DataTable({
-	            "oLanguage": {
-	                "sUrl": "../resources/js/dataTables/Spanish.lang"
-	            },
-	            "dom":'rt<button>ip',
-	            // "ordering":false,
-	            "pageLength":3
-	        });
-	    }
+	$(function () {
+        $.post('../RestProgramaGnv/datos-mod',function(resp){
+			console.log(resp)
+            $('#formulario-inst').find('.fg-line').addClass('fg-toggled'); 
+            $('.datos_compania').loadJSON(resp[0])
+            $(resp[1]).each(function(index,item){
+                $('#select-dep').append('<option value="'+item.iddep+'">'+item.nombre+'</option>')
+            })
+        	$('#select-dep').trigger('chosen:updated');
+        	$('#select-dep').val(resp[0].iddep).trigger('chosen:updated');
+
+            $('#formulario-firm').find('.fg-line').addClass('fg-toggled'); 
+            $('.datos_firmasOS').loadJSON(resp[2])  
+
+            $(resp[3]).each(function(index,item){
+                $('#select-firma1').append(`<option value="${item.idper}">${item.persona} - ${item.rol}</option>`)
+            })
+        	$('#select-firma1').trigger('chosen:updated');
+            $(resp[3]).each(function(index,item){
+                $('#select-firma2').append(`<option value="${item.idper}">${item.persona} - ${item.rol}</option>`)
+            })
+        	$('#select-firma2').trigger('chosen:updated');
+            $(resp[3]).each(function(index,item){
+                $('#select-firma3').append(`<option value="${item.idper}">${item.persona} - ${item.rol}</option>`)
+            })
+        	$('#select-firma3').trigger('chosen:updated');
+
+        },'json')
+
+
+        $('#formulario-inst').formValidation({  
+        
+        })
+        .on('success.form.fv', function(e){
+           e.preventDefault();
+           ModificarInst();
+        })
+        $('#formulario-firm').formValidation({  
+        
+        })
+        .on('success.form.fv', function(e){
+           e.preventDefault();
+           ModificarFirm();
+        })
+
+        function ModificarInst(){
+            swal({   
+                title: "Seguro de modificar Institucion?",   
+                text: "Usted modificara los datos del Institucion",   
+                type: "warning",   
+                showCancelButton: true,   
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "Si, Continuar!",   
+                cancelButtonText: "No, Cancelar!",   
+                closeOnConfirm: false,   
+                closeOnCancel: false 
+                }, function(isConfirm){  
+                    if (isConfirm) {
+                        $('#formulario-inst').ajaxSubmit({
+                        	success:function(res){
+                                console.log('modificado',res)
+                                if(res.estado){
+                                    $.ajax({
+                                        url:"../ProgramaGNV/Gestion",
+                                        success:function(gestion){
+                                            $('#contenedor-gestion').html(gestion); 
+                                            swal({
+                                                title:"Modificado",
+                                                text:"Se ha modificado Institucion exitosamente",
+                                                type:"success",
+                                                timer: 2000,   
+                                                showConfirmButton: false 
+                                            });
+                                        }
+                                    })      
+                                }
+                            }
+                        })
+
+                    } else {     
+                        swal({
+                            title:"Cancelado",
+                            text:"Se ha cancelado operacion",
+                            type:"error",
+                            timer:2000,
+                            showCancelButton:false,
+                            showConfirmButton:false
+
+                        })
+                        $('#modal-mod').modal('hide')
+                    } 
+            });
+        }
+        function ModificarFirm(){
+            swal({   
+                title: "Seguro de modificar Firmas de Orden de Servicio?",   
+                text: "Usted modificara las Firmas de Orden de Servicio",   
+                type: "warning",   
+                showCancelButton: true,   
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "Si, Continuar!",   
+                cancelButtonText: "No, Cancelar!",   
+                closeOnConfirm: false,   
+                closeOnCancel: false 
+                }, function(isConfirm){  
+                    if (isConfirm) {
+                        $('#formulario-firm').ajaxSubmit({
+                        	success:function(res){
+                                console.log('modificado',res)
+                                if(res.estado){
+                                    $.ajax({
+                                        url:"../ProgramaGNV/Gestion",
+                                        success:function(gestion){
+                                            $('#contenedor-gestion').html(gestion); 
+                                            swal({
+                                                title:"Modificado",
+                                                text:"Se ha modificado Firmas de Orden de Servicio exitosamente",
+                                                type:"success",
+                                                timer: 2000,   
+                                                showConfirmButton: false 
+                                            });
+                                        }
+                                    })      
+                                }
+                            }
+                        })
+
+                    } else {     
+                        // swal("Cancelled", "Your imaginary file is safe :)", "error");   
+                        swal({
+                            title:"Cancelado",
+                            text:"Se ha cancelado operacion",
+                            type:"error",
+                            timer:2000,
+                            showCancelButton:false,
+                            showConfirmButton:false
+
+                        })
+                        $('#modal-mod').modal('hide')
+                    } 
+            });
+        }
+
+   		 $('#btn-firm').attr('disabled','disabled')
 	})
+
+    $('#formulario-firm').formValidation('removeField','firma1_m'); 
+    $('#formulario-firm').formValidation('removeField','firma2_m'); 
+    $('#formulario-firm').formValidation('removeField','firma3_m');
+    $('#btn-mod-firmas').on('click',function(e){
+    	// e.preventDefault();
+	    if($('#div-firmas').hasClass('ocultar')){
+	        $('#div-firmas').removeClass('ocultar')
+	        $('#div-firmas').show();
+
+            $('#formulario-firm').formValidation('addField','firma1_m');
+            $('#formulario-firm').formValidation('addField','firma2_m');
+            $('#formulario-firm').formValidation('addField','firma3_m');
+
+            $('#btn-firm').removeAttr('disabled')
+
+	    }else{
+	        $('#div-firmas').addClass('ocultar');
+	        $('#div-firmas').hide();//li con ul lo muestra
+
+            $('#formulario-firm').data('formValidation').resetField($('#select-firma1'),true);     
+            $('#formulario-firm').data('formValidation').resetField($('#select-firma2'),true);     
+            $('#formulario-firm').data('formValidation').resetField($('#select-firma3'),true);     
+            $('#formulario-firm').formValidation('removeField','firma1_m'); 
+            $('#formulario-firm').formValidation('removeField','firma2_m'); 
+            $('#formulario-firm').formValidation('removeField','firma3_m'); 
+
+            $('#btn-firm').attr('disabled','disabled')
+	    }
+    })
 	</script>
-<!-- </body>
-</html> -->
+</body>
+</html>

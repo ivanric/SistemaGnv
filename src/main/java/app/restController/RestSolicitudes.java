@@ -26,7 +26,7 @@ import app.manager.ManejadorBeneficiarios;
 import app.manager.ManejadorServicios;
 import app.manager.ManejadorSolicitudes;
 import app.models.CombustibleVehiculo;
-import app.models.Documento;
+import app.models.DocumentoBeneficiario;
 import app.models.OpcionesVehiculo;
 import app.models.Persona;
 import app.models.Solicitud;
@@ -45,12 +45,34 @@ public class RestSolicitudes {
 	ManejadorBeneficiarios manejadorBeneficiarios;
 	@Autowired
 	ManejadorServicios manejadorServicios;
-	 
+	
+	public int [] GCombustible=null;
+	
 	@RequestMapping(value="listar")
-	public ResponseEntity<List<Solicitud>> listarBneneficiarios(HttpServletRequest req,HttpServletResponse res){	
+	public ResponseEntity<List<Solicitud>> listarSolt(HttpServletRequest req,HttpServletResponse res){	
 		List<Solicitud> solicitudes=this.manejadorSolicitudes.Listar(req);
 		System.out.println("listaSolt: "+solicitudes.toString());
 		return new ResponseEntity<List<Solicitud>>(solicitudes,HttpStatus.OK);
+	}
+	@RequestMapping(value="listarVehiculos")
+	public ResponseEntity<List<Vehiculo>> listarVehiculos(HttpServletRequest req,HttpServletResponse res){	
+		List<Vehiculo> lista=this.manejadorSolicitudes.ListarVeh(req);
+		System.out.println("lista: "+lista.toString());
+		return new ResponseEntity<List<Vehiculo>>(lista,HttpStatus.OK);
+	}
+	@RequestMapping({"getDatosVeh"})
+	public ResponseEntity<List<?>> getDatosVeh(HttpServletRequest req,HttpServletResponse res){
+		List<Object> lista=new ArrayList<>();
+		lista.add(this.manejadorSolicitudes.tipoVehiculo());
+		lista.add(this.manejadorSolicitudes.marcaVehiculo());
+		lista.add(this.manejadorSolicitudes.modeloVehiculo());
+		lista.add(this.manejadorSolicitudes.tipoMotorVehiculo());
+		lista.add(this.manejadorSolicitudes.tipoServicioVehiculo());
+		lista.add(this.manejadorSolicitudes.tipoCombustible());
+//		lista.add(this.manejadorSolicitudes.numeroSolicitud());
+		System.out.println("lista_listas: "+lista);
+		return new ResponseEntity<List<?>>(lista,HttpStatus.OK);
+
 	}
 	@RequestMapping({"busqueda_benficiario"})
 	public ResponseEntity<List<?>> busqueda_benficiario(HttpServletRequest req,HttpServletResponse res){
@@ -72,13 +94,14 @@ public class RestSolicitudes {
 		System.out.println("lista_listas: "+lista);
 		return new ResponseEntity<OpcionesVehiculo>(lista,HttpStatus.OK);
 	}
+	
 	@RequestMapping ({"existePlaca"})
 	public ResponseEntity<Map<String, Object>> existe(HttpServletRequest req){
 		Map<String, Object> mapa=new HashMap<String, Object>();
 		String placa=req.getParameter("placa");
 		int existe;
 		System.out.println("tam_"+placa.length());
-		//VERIFICA PRIMERO SI EXISTE ALGUNA PLACA QUE ESTE DISPONIBLE 
+		//VERIFICA PRIMERO SI EXISTE LA PLACA QUE ESTE DISPONIBLE 
 		if(this.manejadorSolicitudes.verificarPlaca(placa)){
 			existe=2;
 		}else{
@@ -96,6 +119,52 @@ public class RestSolicitudes {
 		Vehiculo veh=this.manejadorSolicitudes.DatosVehiculo(placa);
 		return new ResponseEntity<Vehiculo>(veh,HttpStatus.OK);
 	}
+	
+	//MODIFICAR VEH
+	@RequestMapping ({"existePlacaMod"})
+	public ResponseEntity<Map<String, Object>> existePlacaMod(HttpServletRequest req){
+		Map<String, Object> mapa=new HashMap<String, Object>();
+		String placa=req.getParameter("placa");
+		int existe;
+		System.out.println("tam_"+placa.length());
+		//VERIFICA PRIMERO SI EXISTE LA PLACA QUE ESTE DISPONIBLE 
+		if(this.manejadorSolicitudes.verificarPlacaMod(placa)){
+			existe=1;
+		}else{
+			//SI LA PLACA ESTA EN USO SE VERIFICA EN QUE  ESTADO ESTA PLACA
+			existe=0;
+		}
+		System.out.println("existe: "+existe);
+		mapa.put("estado", existe);
+		return new ResponseEntity<Map<String,Object>>(mapa,HttpStatus.OK);
+	}
+
+	@RequestMapping({"getDatosVehiculoByPlaca"})
+	public ResponseEntity<Vehiculo> GetDatosVehiculo(HttpServletRequest req){
+		String placa=req.getParameter("placa");
+		System.out.println("la placa es : "+placa);
+		Vehiculo veh=this.manejadorSolicitudes.getDatosVehiculoByPlaca(placa);
+		return new ResponseEntity<Vehiculo>(veh,HttpStatus.OK);
+	}
+	
+	@Transactional
+	@RequestMapping(value="modificarVeh")
+	public Map<String, Object> modificarVeh(HttpServletRequest req,HttpServletResponse res,Vehiculo v,int [] combustible){
+		Map<String, Object> respuesta=new HashMap<String, Object>();
+		
+		GCombustible=combustible;
+		try {
+			boolean consulta=this.manejadorSolicitudes.modificarVeh(req,v,combustible);	
+			System.out.println(consulta);
+			respuesta.put("estado", consulta);
+		} catch (Exception e) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			respuesta.put("estado",false);
+		}
+		return respuesta;
+	}
+
+	//FIN MODIFICAR VEH
 	
 	@Transactional
 	@RequestMapping(value="adicionar")
@@ -184,7 +253,7 @@ public class RestSolicitudes {
 		System.out.println("ListaTelefonos: "+ListaTelefonos);
 		Map<String, Object> mapa1=new HashMap<>();
 		mapa1.put("listaTelefonos", ListaTelefonos);
-		List<Documento> listaDoc=this.manejadorBeneficiarios.listaDocumentos();
+		List<DocumentoBeneficiario> listaDoc=this.manejadorBeneficiarios.listaDocumentos();
 		List<CombustibleVehiculo> listaComb=this.manejadorSolicitudes.listaCombustible();
 		lista.add(solt);
 		lista.add(mapa1);

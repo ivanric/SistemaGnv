@@ -34,7 +34,7 @@
 							placeholder=" Buscar placa..">
 					</div>
 					<div class="col-md-3 col-xs-12">
-						<a href="/RestSolicitudes/verdemo1?idsolt=1" type="button" class="btn btn-default">resport-demo</a>
+<!-- 						<a href="/RestSolicitudes/verdemo1?idsolt=1" type="button" class="btn btn-default">resport-demo</a> -->
 					</div>
 					<div class="col-md-6 col-xs-12 navbar-right" style="text-align: right;margin-top: 10px">
 						<label class="radio radio-inline m-r-20"> <input
@@ -59,7 +59,8 @@
 								<th class="text-center" width="40px"># solt</th>
 								<th class="text-center" width="80px">fecha</th>
 								<th class="text-center" width="80px">placa</th>
-								<th class="text-center">beneficiario</th>
+                                <th class="text-center">beneficiario</th>
+								<th class="text-center">cedula</th>
 								<th class="text-center" width="15px" >Estado</th>
 								<th class="text-center" width="15px">Aprobado</th>
 								<th class="text-center">Opciones</th>
@@ -158,6 +159,7 @@
                     {data:'numSolt'},
                     {data:'numSolt'},
                     {data:'numSolt'},
+                    {data:'numSolt'},
                     {data:'estado'},
                     {data:'estado'},
                     {data:'numSolt'},
@@ -169,32 +171,33 @@
                     $('td',row).eq(1).html(data.fecha)
                     $('td',row).eq(2).html(data.vehiculo.placa)
                     $('td',row).eq(3).html(data.persona.ap+' '+data.persona.am+' '+data.persona.nombres)
+                    $('td',row).eq(4).html(data.persona.ci)
                     if(data.estado==1){
-                        $('td',row).eq(4).html('<button type="button" class="btn btn-success waves-effect" href="#" style="text-align:center"><i class="fa fa-thumbs-o-up"></i></button>').addClass('text-center').addClass('text-center');
+                        $('td',row).eq(5).html('<button type="button" class="btn btn-success waves-effect" href="#" style="text-align:center"><i class="fa fa-thumbs-o-up"></i></button>').addClass('text-center').addClass('text-center');
                     }else{
-                        $('td',row).eq(4).html('<button type="button" class="btn btn-danger waves-effect" href="#" style="text-align:center"><i class="fa fa-thumbs-o-down"></i></button>').addClass('text-center').addClass('text-center');
+                        $('td',row).eq(5).html('<button type="button" class="btn btn-danger waves-effect" href="#" style="text-align:center"><i class="fa fa-thumbs-o-down"></i></button>').addClass('text-center').addClass('text-center');
                     }
 					if (data.aprobadoSiNo==0) {
-						$('td',row).eq(5).html('<input type="checkbox" class="" disabled="disabled">').addClass('text-center').addClass('text-center');
+						$('td',row).eq(6).html('<input type="checkbox" class="" disabled="disabled">').addClass('text-center').addClass('text-center');
 					} else {
-						$('td',row).eq(5).html('<input type="checkbox" class="" checked disabled="disabled">').addClass('text-center').addClass('text-center');
+						$('td',row).eq(6).html('<input type="checkbox" class="" checked disabled="disabled">').addClass('text-center').addClass('text-center');
 					}		                    
                     if(data.estado==1){
                         if(ExisteOpcion('anular')  ){
                             // if()
-                            $('td',row).eq(6).html('<button id="btn-elim" class="btn btn-danger btn-sm waves-effect btn-espacio" accesskey="'+data.idsolt+'" data-href="'+data.idsolt+'" onclick="(Gestionar.anular(this))"><span class="zmdi zmdi-delete"></span> Anular</button>');
+                            $('td',row).eq(7).html('<button id="btn-elim" class="btn btn-danger btn-sm waves-effect btn-espacio" accesskey="'+data.idsolt+'" data-href="'+data.idsolt+'" onclick="(Gestionar.anular(this))"><span class="zmdi zmdi-delete"></span> Anular</button>');
                         }else{
-                            $('td',row).eq(6).html('<button id="btn-elim" class="btn btn-danger btn-sm waves-effect btn-espacio" disabled="disabled"><span class="zmdi zmdi-delete"></span> Anular</button>');  
+                            $('td',row).eq(7).html('<button id="btn-elim" class="btn btn-danger btn-sm waves-effect btn-espacio" disabled="disabled"><span class="zmdi zmdi-delete"></span> Anular</button>');  
                         }
                     }else{
-                        $('td',row).eq(6).html('<button id="btn-elim" class="btn bgm-bluegray  btn-sm waves-effect btn-espacio" disabled="disabled"><span class="zmdi zmdi-delete"></span> Anulado</button>');  
+                        $('td',row).eq(7).html('<button id="btn-elim" class="btn bgm-bluegray  btn-sm waves-effect btn-espacio" disabled="disabled"><span class="zmdi zmdi-delete"></span> Anulado</button>');  
 
                     }
                     if(ExisteOpcion('ver')  ){
                         // if()
-                        $('td',row).eq(6).append('<button id="btn-ver" class="btn bgm-cyan waves-effect btn-sm btn-espacio" accesskey="'+data.idsolt+'" data-href="'+data.idsolt+'" onclick="(Gestionar.ver(this))"><span class="zmdi zmdi-print"></span> Ver</button>');
+                        $('td',row).eq(7).append('<button id="btn-ver" class="btn bgm-cyan waves-effect btn-sm btn-espacio" accesskey="'+data.idsolt+'" data-href="'+data.idsolt+'" onclick="(Gestionar.ver(this))"><span class="zmdi zmdi-print"></span> Ver</button>');
                     }else{
-                        $('td',row).eq(6).append('<button id="btn-ver" class="btn bgm-cyan waves-effect btn-sm  btn-espacio" disabled="disabled"><span class="zmdi zmdi-print"></span>Ver</button>');  
+                        $('td',row).eq(7).append('<button id="btn-ver" class="btn bgm-cyan waves-effect btn-sm  btn-espacio" disabled="disabled"><span class="zmdi zmdi-print"></span>Ver</button>');  
                     }
 
                 }
@@ -245,8 +248,8 @@
                             $('#modal-add').modal('show')
                         },  
                         error:function(err){
-                            alert('sin respuesta del servidor')
-                            location.href="../principal/index"
+                            alert('Pagina no encontrada')
+                            location.href="../inicio"
                         }
                   
                     })
@@ -325,21 +328,23 @@
                                                 })
                                                 $('.dt-veh').attr('disabled','disabled')
 												$('.dt-veh').val('').trigger('chosen:updated');			
-												/*
-												$("#div-mod-veh").html(`
-													<a class="btn btn-xs bgm-purple href="#"   waves-effect" id="btn_modVehS" disabled="disabled">
-														<span class="zmdi zmdi-edit"> Modificar Vehiculo</span>
-													</a>
-												`).show();
+												
+							
 
-                                                if(ExisteOpcion('mod-veh-solt')){
+                                                if(ExisteOpcion('mv')){
+
+                                                    $("#div-mod-veh").html(`
+                                                        <a class="btn btn-xs bgm-purple href="#"   waves-effect" id="btn_modVehS" disabled="disabled">
+                                                            <span class="zmdi zmdi-edit"> Modificar Vehiculo</span>
+                                                        </a>
+                                                    `).show();
                                                     $('#btn_modVehS').attr({
                                                         onclick:"Gestionar.modificarVehiculo(this)",
                                                         // accesskey:""
                                                         })
                                                     $('#btn_modVehS').removeAttr("disabled ").focus().val("Ahora si lo puedes utilizar")
                                                 }
-                                                */
+                                                
                                                 return true
                                             }else{
                                             	padreNode.removeClass('fg-toggled'); 
@@ -499,6 +504,13 @@
                     }
                 }
                 
+            },
+            modificarVehiculo:function(a){
+              // alert('modificar el vehiculo') 
+              // $('.dt-veh').parent().removeClass('fg-toggled'); 
+              $('.dt-veh').removeAttr('disabled')
+              $('.dt-veh').trigger('chosen:updated');
+                  
             },
             anular:function(a){
                 var idsolt=$(a).attr('accesskey');

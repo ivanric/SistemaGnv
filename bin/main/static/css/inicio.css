@@ -2,7 +2,7 @@
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-	font-family:'Poppins',sans-serif ; 
+/* 	font-family:'Poppins',sans-serif ;  */
 }
 html,body{
 	background: url(../img/gnv/fondo2.jpg) no-repeat center top ;
@@ -18,11 +18,11 @@ p{
 }
 
 .menu{
-	background: rgba(0, 0, 0, 0.898);
+	background: rgb(13, 22, 31);
 	color: #fff;
 	position: fixed;
 	top: 0px;
-	width: 250px;
+	width: 270px;
 /* 	height: auto; */
 	height:100vh;
 	padding: 5em 2em;
@@ -89,7 +89,8 @@ p{
 }
 .lista-menu .title_menu{
 	/* background:blue; */
-	color:#c0392b;
+	color: #0000ff !important;
+	font-size: 14px !important;
 }
 .menu .lista-procesos {
 
@@ -108,7 +109,7 @@ p{
 
 }
 .lista-procesos li a{
-	color: #838080;
+	color: #fff;
 	/* background: #1da1f2; */
 }
 .lista-procesos li a:hover{

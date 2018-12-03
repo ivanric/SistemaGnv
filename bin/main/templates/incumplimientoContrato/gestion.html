@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta http-equiv="Content-Type" content="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>gestion</title>
+</head>
+<body>
+	<!-- <h2 style="text-align: center;">GESTION BENEFICIARIOS</h2> -->
+	<div class="card z-depth-2">
+		<div class="card-header">
+			<h2 class="panel-title">
+				GESTION INCUMPLIMIENTOS DE CONTRATOS <small>Administre Incumplientos de Contrato
+					registrados en el Sistema</small>
+			</h2>
+		</div>
+		<div class="panel-body" style="margin-top: -30px"> 
+			<div class="row">
+				<div class="col-md-12" style="text-align: right;margin-bottom: 15px">			
+					<button id="btn-add" class="btn btn-default waves-effect" disabled="disabled">NUEVO INCUMPLIMIENTO CONTRATO</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-3 col-xs-12" style="margin-bottom: 10px;">
+							<input type="text" id="filt-ben" name=""
+								class="form-control_filtro unput-sm"
+								placeholder=" Buscar Apellidos nombres o placa..">
+						</div>
+						<div class="col-md-3 col-xs-12"></div>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<table id="tablaData" class="table table-vmiddle nowrap"
+						width="100%">
+						<thead>
+							<tr>
+                                <th class="text-center">#</th>
+								<th class="text-center">Fecha Incumplio</th>
+								<th class="text-center">#Solt.</th>
+								<th class="text-center">beneficiario</th>
+								<th class="text-center">ci</th>
+								<th class="text-center">#Placa</th>
+								<th class="text-center">#Poliza</th>
+								<th class="text-center">Aseguradora</th>
+								<th class="text-center">Opciones</th>
+
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</body>
+<script type="text/javascript" >
+	var idGincl;
+
+ 	var result=Get_Opciones(null);
+	if(ExisteOpcion('adicionar')){
+		$('#btn-add').attr({
+			onclick:"(Gestionar.add())",
+			// accesskey:""
+			})
+		$('#btn-add').removeAttr("disabled ").focus().val("Ahora si lo puedes utilizar")
+	}
+	function ExisteOpcion(opc){
+		// alert('entro comparar')
+		var resultado=false;
+		for (var i = 0; i < result.AccionesUser.length; i++) {
+			console.log('for_: ',result.AccionesUser[i]);
+			if(result.AccionesUser[i].codigo==opc){
+				resultado=true;         
+			}
+		}
+		// console.log('result_dentro:',resultado)              
+		return resultado;
+	}
+
+
+	
+	var filtro=$('#filt-ben').val();
+	listar();
+	$('#filt-ben').on('keyup',function(){
+		filtro=$(this).val();
+		listar();
+	})
+	var DTable='';
+	function listar(){
+		$.ajax({
+			url:'../RestTIContrato/listar',
+			type:'post',
+			dataType:'json',
+			data:{
+				filtro:filtro,
+				// estado:estado,
+			},
+			success:function(resp){
+				console.log('icont_')
+				if ($.fn.DataTable.isDataTable('#tablaData')) {
+					DTable.destroy();
+					iniciarDatable(resp);       
+				} else {
+					iniciarDatable(resp);
+				}   
+			},
+			error:function(err){
+				alert('sin respuesta del servidor')
+			}
+		})
+	}
+
+
+	function iniciarDatable(lista){
+		console.log('respuestaAjax: ',lista);
+		DTable=$('#tablaData').DataTable({
+			"oLanguage": {
+				"sUrl": "/js/dataTables/Spanish.lang"
+			},
+			responsive:true,
+			"dom":'rt<button>ip',
+			// "ordering":false,
+			"pageLength":5,
+			data:lista,
+			columns:[
+				{data:'idincl'},
+				{data:'idincl'},
+				{data:'idincl'},
+				{data:'idincl'},
+				{data:'idincl'},
+				{data:'idincl'},
+				{data:'idincl'},
+				{data:'idincl'},
+				{data:'idincl'},
+			]
+			,
+			"createdRow":function(row,data,index){
+				$('td',row).eq(0).html(index+1).addClass('text-center');
+				$('td',row).eq(1).html(data.fechaIncumplio)
+				$('td',row).eq(2).html(data.solicitud.numSolt)
+				$('td',row).eq(3).html(data.solicitud.persona.ap+' '+data.solicitud.persona.am+' '+data.solicitud.persona.nombres)
+				$('td',row).eq(4).html(data.solicitud.persona.ci)
+				$('td',row).eq(5).html(data.solicitud.vehiculo.placa)
+				$('td',row).eq(6).html(data.solicitud.vehiculo.poliza.numeroPol)
+				$('td',row).eq(7).html(data.solicitud.vehiculo.poliza.aseguradora.nombre)
+		
+				if(ExisteOpcion('ver')  ){
+					$('td',row).eq(8).html('<button id="btn-ver" class="btn bgm-cyan waves-effect btn-sm btn-espacio" accesskey="'+data.idincl+'" data-href="'+data.idincl+'" onclick="(Gestionar.ver(this))"><span class="zmdi zmdi-print"></span> Ver Incumplimiento</button>');
+				}else{
+					$('td',row).eq(8).html('<button id="btn-ver" class="btn bgm-cyan waves-effect btn-sm  btn-espacio" disabled="disabled"><span class="zmdi zmdi-print"></span>Ver Incumplimiento</button>');  
+				}
+			}
+			,
+			"fnDrawCallback":function(oSetttings){
+				destruir(DTable);
+			}
+		});
+	}
+	function destruir(dt){
+		console.log('destroy')
+		dt.destroy();
+		DTable=$('#tablaData').DataTable({
+			"oLanguage": {
+				"sUrl": "/js/dataTables/Spanish.lang"
+			},
+			"dom":'rt<button>ip',
+			"pageLength":5,
+			responsive:true
+		})
+	}
+	var Gestionar={
+		add:function(){
+			$.ajax({
+				url:'../IContrato/modal-add',
+				type:'post',
+				async:false,
+				success:function(resp){
+					$('#cont-modales').html(resp);
+					// $('#formulario-add').data('formValidation').resetForm(true);
+					$('#text-desc').val('');
+					$('#modal-add').modal('show')
+				},  
+				error:function(err){
+					alert('sin respuesta del servidor')
+					location.href="../principal/index"
+				}
+			
+			})
+			this.EnviarFormulario();
+		},
+		EnviarFormulario:function(){
+			$('#formulario-add').formValidation({
+				fields:{
+					buscar_datos:{
+						validators:{
+							notEmpty:{  
+								message:'Buscar Solicitud por Favor'
+							}
+							// ,
+							// callback:{
+							// 	// message:'callback',
+							// 	callback:function(value,validator,$field){
+
+							// 	}
+							// }
+						}
+					}
+				}
+			}).on('success.form.fv', function(e){
+				e.preventDefault();
+				Registrar();
+			})
+			function Registrar(){
+				swal({   
+					title: "Seguro de registrar Incumplimiento de Contrato?",   
+					text: "Usted registrará una nuevo Incumplimiento de Contrato",   
+					type: "warning",   
+					showCancelButton: true,   
+					confirmButtonColor: "#DD6B55",   
+					confirmButtonText: "Si, Continuar!",   
+					cancelButtonText: "No, Cancelar!",   
+					closeOnConfirm: false,   
+					closeOnCancel: false 
+					}, function(isConfirm){   
+						if (isConfirm) {
+							$('#formulario-add').ajaxSubmit({
+								success:function(res){
+									console.log('registrado',res)
+									if(res.estado){
+										$.ajax({
+											url:"../IContrato/Gestion",
+											success:function(gestion){
+												$('#contenedor-gestion').html(gestion);
+												$('#modal-add').modal('hide')
+												swal({
+													title:"Registrado",
+													text:"Se ha registrado Incumplimiento de Contrato exitosamente",
+													type:"success",
+													timer: 1000,   
+													showConfirmButton: false 
+												}); 
+
+												var idincl=res.idincl
+												console.log('idincl: ',idincl)
+												$("#frameReportes").attr("src",'../RestTIContrato/ImprimirIC?idincl='+idincl);
+												$("#reportes").modal('show');
+
+												
+											}
+										})      
+									}
+								}
+							})
+
+						} else {     
+							swal({
+								title:"Cancelado",
+								text:"Se ha cancelado operacion",
+								type:"error",
+								timer:2000,
+								showCancelButton:false,
+								showConfirmButton:false
+
+							})
+							$('#modal-add').modal('hide')
+						} 
+				});
+
+			}
+		},
+	    ver:function(a){
+            var idincl=$(a).attr('accesskey');
+            idGincl=idincl;
+            console.log('idincl: ',idincl)
+            $.ajax({
+                url:'../IContrato/modal-ver',
+                type:"post",
+                success:function(resp){
+                    $('#cont-modales').html(resp);
+					$('#text-desc').val('');
+                    $('#modal-ver').modal('show');
+                    $('#formulario-ver').formValidation({
+                    }).on('success.form.fv', function(e){
+                       e.preventDefault();
+                       imprimir();
+                    })
+                    function imprimir(){
+                        $("#frameReportes").attr("src",'../RestTIContrato/ImprimirIC?idincl='+idincl);
+                        $("#reportes").modal('show'); 
+                    }
+                },
+                error:function(){
+                    alert('error sin respuesta del Servidor')
+                }
+            })
+        },
+	}
+</script>
+
+</html>

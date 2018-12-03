@@ -395,12 +395,18 @@ public class ManejadorServicios {
 		return this.db.queryForObject(sql,Integer.class);
 	}
 	
+	public int getRegistrarFirmasOS(){
+		String sql="SELECT DISTINCT idfirm FROM firmasOS WHERE estado=1";
+		return this.db.queryForObject(sql,Integer.class);
+	}
+	
 	public Object[] registrarOS(HttpServletRequest req,Persona xuser) {
 //		System.out.println("param1: "+req.getParameter("tipoTecnologia"));
 //		System.out.println("param2: "+req.getParameter("capacidad"));
 		String sql="";
 		Object []Respuesta=new Object[2];
 		int idOrdServ=generarIdOrdServ();
+		int idfirm=getRegistrarFirmasOS();
 		int numOrdServ=Integer.parseInt(req.getParameter("numOrdServ"));
 		int idSolt=Integer.parseInt(req.getParameter("idsolt"));
 		int idServ=Integer.parseInt(req.getParameter("idserv"));
@@ -409,8 +415,8 @@ public class ManejadorServicios {
 		String login=xuser.getUsuario().getLogin();
 		
 		try {
-			sql="INSERT INTO ordenServicio(idordserv,numords,idsolt,idtall,idserv,login,idRom) VALUES(?,?,?,?,?,?,?)";
-			this.db.update(sql,idOrdServ,numOrdServ,idSolt,idtall,idServ,login,idRom);
+			sql="INSERT INTO ordenServicio(idordserv,numords,idsolt,idtall,idserv,login,idRom,idfirm) VALUES(?,?,?,?,?,?,?,?)";
+			this.db.update(sql,idOrdServ,numOrdServ,idSolt,idtall,idServ,login,idRom,idfirm);
 			sql="UPDATE solicitud SET idacc=? WHERE idsolt=?";
 			this.db.update(sql,getAccionOS(),idSolt);
 			
@@ -513,6 +519,10 @@ public class ManejadorServicios {
 	public List<Telefono> ListaTelfBen(int idOrdServ){
 		String sql="SELECT DISTINCT(tel.numero) FROM ordenServicio ords JOIN solicitud solt ON solt.idsolt=ords.idsolt JOIN benVehSolt bvs ON solt.idsolt=bvs.idsolt JOIN beneficiario ben ON ben.idben=bvs.idben  AND ben.estado=1 JOIN persona per ON per.idper=ben.idper JOIN telefono tel ON tel.idper=per.idper WHERE idordserv=?";
 		return this.db.query(sql,new objTelefono(),idOrdServ);
+	}
+	public List<Telefono> ListaTelfIC(int idincl){
+		String sql="SELECT DISTINCT(tel.numero) FROM incumplimientoContrato ic JOIN solicitud solt ON solt.idsolt=ic.idsolt JOIN benVehSolt bvs ON solt.idsolt=bvs.idsolt JOIN beneficiario ben ON ben.idben=bvs.idben  AND ben.estado=1 JOIN persona per ON per.idper=ben.idper JOIN telefono tel ON tel.idper=per.idper WHERE idincl=?";
+		return this.db.query(sql,new objTelefono(),idincl);
 	}
 	
 	/*ORDEN SERVICIO*/

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title></title>
+    <link rel="stylesheet" href="../css/buscador.css">
+</head> 
+<body>
+<form id="formulario-add" action="../RestTIContrato/adicionar" method="post" 
+    data-fv-excluded="disabled">
+
+    <div class="modal fade" id="modal-add" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-hidden="true" style="display: none; padding-left: 0">
+       <div class="modal-dialog modal-lg" role="document">
+         <div class="modal-content">
+            <div class="card">
+                <div class="card-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <h2>Nuevo Incumplimiento Contrato<small>Llene los campos por favor</small></h2>
+                        </div>
+                        <div class="col-md-7">
+                            <!-- <b>Número Incumplimiento Contrato: </b><span id="js-numOrdServ"></span>  -->
+                            <b style="margin-left: 10em;">Fecha: </b><span id="fechaCreacion"></span> 
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                     <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8">
+                            <div class="fg-line div_busca" id="" style="text-align: center !important;">
+                                <b>Buscar por: Nro. de Solicitud / Cédula</b><br>
+                                <div class="form-group" style="margin-bottom: 0 !important">
+                                    <input type="text" style="width: 100%;margin: auto;" name="buscar_datos" id="js-busca" class="form-control_filtro unput-sm" placeholder="Ingrese número de Solicitud o Cédula de Identidad" autocomplete="off">
+                                </div>
+
+                                <input type="hidden" name="idsolt">
+                                <div id="display"  class="lista_ben z-depth-3" style="width: 100%;border-radius: 2px;margin: auto;">
+                                   <table width="100%"  class="table table-hover" id="js_table_filtro">
+                                       <thead>
+                                           <tr>
+                                               <th width=""># Solt</th>
+                                               <th width="">Placa</th>
+                                               <th width="">Fecha</th>
+                                               <th>Beneficiario</th>
+                                               <th>Cedula</th>
+                                           </tr>
+                                       </thead>
+                                       <tbody>
+                                            
+                                       </tbody>
+                                   </table>
+                                </div>  
+                            </div> 
+                        </div>
+                        <div class="col-md-2"></div>
+                     </div>  
+
+                    <fieldset>
+                        <legend><strong>DATOS BÁSICOS</strong>
+                        </legend>
+                        <div class="row" id="js_DatosBasicos">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="" class="col-md-6 control-label"><b>Número Solicitud:</b></label>
+                                    <div class="col-md-6">
+                                        <div class="fg-line"><input type="text" class="form-control mcss_input input-sm" disabled="disabled" name="numSolt"> </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="" class="col-md-6 control-label"><b>Fecha Solicictud:</b></label>
+                                    <div class="col-md-6">
+                                        <div class="fg-line"><input type="text" class="form-control mcss_input input-sm" disabled="disabled" name="fecha"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="" class="col-md-6 control-label"><b>Beneficiario:</b></label>
+                                    <div class="col-md-6">
+                                        <div class="fg-line"><input type="text" class="form-control mcss_input input-sm" disabled="disabled" name="beneficiario"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="" class="col-md-6 control-label"><b>Cédula:</b></label>
+                                    <div class="col-md-6">
+                                        <div class="fg-line"><input type="text" class="form-control mcss_input input-sm" disabled="disabled" name="ci"></div>
+                                    </div>
+                                </div>
+                            </div>
+<!--                             <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="" class="col-md-6 control-label"><b>Taller:</b></label>
+                                    <div class="col-md-6">
+                                        <select name="idtall" id="js-SeltTaller" data-placeholder="n" class="form-control fg-input sel-opcv" data-fv-notempty='true' data-fv-message="Seleccione Taller por favor">
+                                            <option value="" selected="selected" disabled="disabled">Seleccione Taller</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="" class="col-md-6 control-label"><b>Chip Rom:</b></label>
+                                    <div class="col-md-6">
+                                        <select name="idRom" id="js-SeltRom" data-placeholder="n" class="form-control fg-input sel-opcv" data-fv-notempty='true' data-fv-message="Seleccione ChiRom porfavor">
+                                            <option value="" selected="selected" disabled="disabled">Seleccione ChipRom</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend><strong>VEHÍCULO</strong></legend>
+                        <div class="row" id="js_Vehiculo">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="" class="col-md-6 control-label"><b>Placa:</b></label>
+                                    <div class="col-md-6">
+                                        <div class="fg-line">
+                                            <input type="text" class="form-control mcss_input input-sm" disabled="disabled" name="placa">
+                                            <input type="hidden" class=""  name="placa">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="" class="col-md-6 control-label"><b>Color:</b></label>
+                                    <div class="col-md-6">
+                                        <div class="fg-line"><input type="text" value="" class="form-control mcss_input input-sm" disabled="disabled" name="color"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="" class="col-md-6 control-label"><b>Marca:</b></label>
+                                    <div class="col-md-6">
+                                        <div class="fg-line"><input type="text" class="form-control mcss_input input-sm" disabled="disabled" name="marca"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="" class="col-md-6 control-label"><b>Modelo:</b></label>
+                                    <div class="col-md-6">
+                                        <div class="fg-line"><input type="text" class="form-control mcss_input input-sm" disabled="disabled" name="modelo"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="" class="col-md-6 control-label"><b>Tipo Vehiculo:</b></label>
+                                    <div class="col-md-6">
+                                        <div class="fg-line"><input type="text" class="form-control mcss_input input-sm" disabled="disabled" name="tipoVeh"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="" class="col-md-6 control-label"><b>Tipo Servicio:</b></label>
+                                    <div class="col-md-6">
+                                        <div class="fg-line"><input type="text" class="form-control mcss_input input-sm" disabled="disabled" name="tipServ"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="" class="col-md-6 control-label"><b>Sistema Motor:</b></label>
+                                    <div class="col-md-6">
+                                        <div class="fg-line"><input type="text" class="form-control mcss_input input-sm" disabled="disabled" name="SistemaMotor"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="" class="col-md-6 control-label"><b>Num. Motor:</b></label>
+                                    <div class="col-md-6">
+                                        <div class="fg-line"><input type="text" class="form-control mcss_input input-sm" disabled="disabled" name="num_motor"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="" class="col-md-6 control-label"><b>Num. Chasis:</b></label>
+                                    <div class="col-md-6">
+                                        <div class="fg-line"><input type="text" class="form-control mcss_input input-sm" disabled="disabled" name="num_chasis"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="" class="col-md-6 control-label"><b>Targta. Prioridad:</b></label>
+                                    <div class="col-md-6">
+                                        <div class="fg-line"><input type="text" class="form-control mcss_input input-sm" disabled="disabled" name="tjeta_prioridad"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>              
+                    </fieldset>
+                    <fieldset>
+                        <legend><strong>POLIZA DE SEGURO DEL VEHICULO</strong></legend>
+                        <div class="poliza-data" style="">
+                             <div class="row" >
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="" class="col-md-6 control-label" style=""><b>Numero de Poliza</b></label>
+                                        <div class="col-md-6">
+                                            <div class="fg-line">
+                                                <input type="text" placeholder="Numero de Poliza" class="form-control mcss_input input-sm dt-pol" name="numeroPol" data-fv-notempty="true" data-fv-message="Requiere numero de Poliza" data-fv-integer="true" data-fv-integer-message="Requiere solo numero" maxlength="10" id="numeroPol">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="" class="col-md-6 control-label"><b>Aseguradora</b></label>
+                                        <div class="col-md-6">
+                                            <div class="fg-line">
+                                                <select data-placeholder="n" name="idaseg" class="form-control mcss_input fg-input dt-pol" data-fv-notempty='true' data-fv-message="Requiere Aseguradora"
+                                                    id="select-aseg">
+                                                    <option value="">Seleccione Aseguradora</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>      
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend><strong>INCUMPLIMIENTO CONTRATO</strong></legend>
+                        <div class="col-md-12">
+                            <div class="form-group fg-float">
+                                <div class="fg-line">
+                                    <textarea  class="form-control fg-input " id="text-desc" name="description"  maxlength="120">                                    
+                                    </textarea>
+                                </div>
+                                <label class="fg-label">Descripcion de Incumplimiento</label>
+                            </div>    
+                        </div>
+                        
+                    </fieldset>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="btn-guardar-aprob"
+                        class="btn btn-primary waves-effect">Guardar</button>
+                    <button type="button" class="btn btn-danger waves-effect"
+                        data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</form>  
+<script type="" src="../bower_components/jquery.nicescroll/dist/jquery.nicescroll.js"></script>
+<script type="" src="../bower_components/autosize/dist/autosize.js"></script>    
+<script type="" src="../js/tema/js/functions.js"></script>
+<script type="text/javascript"> 
+var Gpegar="";
+var respPoliza=0;
+var padreNode=$('.dt-pol').parent();
+
+var meses = new Array("01", "02", "03","04", "05", "06", "07","08", "09", "10","11", "12");
+var f= new Date();
+var fecha= f.getFullYear()+ "-" + meses[f.getMonth()] + "-" +f.getDate();
+console.log('date:',fecha)
+document.getElementById('fechaCreacion').innerHTML=fecha;
+
+
+ 
+$(function(){
+    $('#modal-add').on('click keyup', function(e){
+        console.log('sin id?? ', (e.target.id) == '');
+        var id_busca = $('#busca').attr('id');
+        // var id_l_ben = $('.l_ben').attr('id');
+       
+        var id_click = e.target.id;
+        if(id_click !== ''){
+            // if (id_click !== id_busca && id_click !== id_l_ben) {
+            if (id_click == id_busca){
+                var visible = $('#display').is(":visible");
+                if (visible) {
+                    console.log('hide1')
+                    $('#display').hide()
+                } else {
+                    console.log('entro, pero no esta visible')
+                }
+            }else {
+                console.log('sigue mostrando')
+            }
+        }else{
+            var visible = $('#display').is(":visible");
+            if (visible) {
+                console.log('hide2')
+                $('#display').hide()
+            } else {
+                console.log('no esta visible')
+            }
+        }
+
+    })
+    $('#display').hide()
+    $('#js-busca').on('click keyup',function(e){
+
+        if(e.type == 'click'){
+            $('#formulario-add').data('formValidation').resetField('buscar_datos',true);
+            $('input[type="text"]').val('')
+
+    
+            $('#formulario-add').data('formValidation').resetField($('#numeroPol'),true);     
+            $('#formulario-add').data('formValidation').resetField($('#select-aseg'),true);
+
+        }
+        $('#js_table_filtro tbody').html('')
+        // alert('ok')
+        var texto = $(this).val();
+        console.log('tex: ',texto)
+
+        var DTable='';
+        $.getJSON('../RestTIContrato/FiltroSolicitudIC',{texto:texto},function(resp){
+            console.log('ListaFiltro:',resp)
+
+            $(resp).each(function(i,data){
+                $('#js_table_filtro tbody').append(`
+                    <tr>
+                        <td>${data.numSolt}</td>
+                        <td>${data.vehiculo.placa}</td>
+                        <td>${data.fecha}</td>
+                        <td>${data.persona.nombres} ${data.persona.ap} ${data.persona.am}</td>
+                        <td>${data.persona.ci}</td>
+                    </tr>          
+                `) 
+            })
+            $('#js_table_filtro tbody').on( 'click', 'tr', function () {
+                if ( $(this).hasClass('selected') ) {
+                    $(this).removeClass('selected');
+                }
+                else {
+                    $('#js_table_filtro tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+                    dato=$(this).find("td:eq(0)").text();
+                    console.log(dato);
+                $(resp).each(function(i,t){
+                    if(t.idsolt==dato){
+                        objetoFiltro=t;
+                    }    
+                })
+
+                /*INIT POLIZA*/
+                $('#formulario-add').data('formValidation').resetField('buscar_datos',true);
+                $('#formulario-add').data('formValidation').resetField($('#numeroPol'),true);     
+                $('#formulario-add').data('formValidation').resetField($('#select-aseg'),true);
+                // $('#formulario').formValidation('removeField','numeroPol');      
+                // $('#formulario').formValidation('removeField','idaseg'); 
+                $.ajax({
+                    url:"../RestAprobaciones/existePolizaByPlaca",
+                    data:{
+                        placa:objetoFiltro.vehiculo.placa
+                    },
+                    type:"post",
+                    dataType:"json",
+                    async:false,
+                    // cache:false,
+                    success:function(resp){
+                        console.log('existe: ',resp) 
+                        respPoliza=resp.estado
+                    },  
+                    error:function(err){
+                        alert('sin respuesta del servidor')
+                    }
+
+                })
+
+                if(respPoliza==1){
+                    // $('#mensaje-placa').html('se encontro placa registrada').show()
+                    var poliza;
+                    $.post('../RestAprobaciones/PolizaDatos',{placa:objetoFiltro.vehiculo.placa},function(resp){
+                        poliza=resp;
+                        console.log('Poliza: ',poliza)
+                        padreNode.addClass('fg-toggled');
+                        // $('#select-aseg').val(poliza.aseguradora.idaseg).trigger('chosen:updated');
+                        $('#select-aseg option').each(function(){
+                            // alert('value'+$(this).val())
+                            if($(this).val()==poliza.aseguradora.idaseg){
+                                document.getElementById("select-aseg").value=""+poliza.aseguradora.idaseg+""
+                            }
+                        })
+                        $('input[name="numeroPol"]').val(poliza.numeroPol);                                                                                
+                    })
+                    
+                }
+
+                // $('#formulario-add-aprob').formValidation('addField','numeroPol');      
+                // $('#formulario-add-aprob').formValidation('addField','idaseg');  
+                /*FIN POLIZA*/
+
+                var objetoDatosBasicos;
+                console.log('objetoFiltro: ',objetoFiltro)
+                Gpegar='Placa: '+objetoFiltro.vehiculo.placa+' Beneficiario: '+objetoFiltro.persona.nombres+' '+objetoFiltro.persona.ap+' '+objetoFiltro.persona.am;
+                $('input[name="buscar_datos"]').val(Gpegar)
+                $('input[name="idsolt"]').val(objetoFiltro.idsolt)
+                $('#js_DatosBasicos').loadJSON(objetoFiltro)
+                $('input[name="beneficiario"]').val(objetoFiltro.persona.nombres+' '+objetoFiltro.persona.ap+' '+objetoFiltro.persona.am)
+                $('input[name="ci"]').val(objetoFiltro.persona.ci)
+
+                //VEHICULO
+                $('#js_Vehiculo').loadJSON(objetoFiltro.vehiculo)
+                $('input[name="marca"]').val(objetoFiltro.vehiculo.marcaVehiculo.nombre)
+                $('input[name="modelo"]').val(objetoFiltro.vehiculo.modeloVehiculo.nombre)
+                $('input[name="tipoVeh"]').val(objetoFiltro.vehiculo.tipoVehiculo.nombre)
+                $('input[name="tipServ"]').val(objetoFiltro.vehiculo.tipoServicio.nombre)
+                $('input[name="SistemaMotor"]').val(objetoFiltro.vehiculo.tipoMotor.nombre)
+
+            });
+        })
+        $('#display').show()
+    })
+
+    $.post('../RestAprobaciones/getAseguradoras',function(resp){
+        console.log('Aseguradora: ',resp)
+
+        iniciarCallback(IniciarChosen);
+
+        function iniciarCallback(metodo){
+            $(resp).each(function(index,item){
+
+                $('#select-aseg').append('<option value="'+item.idaseg+'">'+item.nombre+'</option>')
+            })
+            metodo();    
+        }
+
+        function IniciarChosen(){
+            // $('#select-aseg').chosen()
+        }
+
+    })
+})
+</script> 
+</body>
+</html> 

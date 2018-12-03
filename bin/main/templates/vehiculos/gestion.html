@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta http-equiv="Content-Type" content="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>gestion</title>
+</head>
+<body>
+ 
+	<!-- <h2 style="text-align: center;">GESTION BENEFICIARIOS</h2> -->
+	<div class="card z-depth-2">
+		<div class="card-header">
+			<h2 class="panel-title">
+				GESTION VEHÍCULOS <small>Administre Vehículos
+					registrados en el Sistema</small>
+			</h2>
+		</div>
+		<div class="panel-body" style="margin-top: -30px"> 
+
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-3 col-xs-12" style="margin-bottom: 10px;">
+							<input type="text" id="filt-data" name=""
+								class="form-control_filtro unput-sm"
+								placeholder=" Buscar Apellidos nombres o cedula..">
+						</div>
+						<div class="col-md-3 col-xs-12"></div>
+						<div class="col-md-6 col-xs-12 navbar-right" style="text-align: right; margin-top: 10px">
+							<label class="radio radio-inline m-r-20"> <input
+								type="radio" name="iestado" id="activos" value="1"> <i
+								class="input-helper"></i>activos
+							</label> <label class="radio radio-inline m-r-20"> <input
+								type="radio" name="iestado" id="bajas" value="0"> <i
+								class="input-helper"></i>bajas
+							</label> <label class="radio radio-inline m-r-20"> <input
+								type="radio" name="iestado" id="todos" value="-1"
+								checked="checked"> <i class="input-helper"></i>todos
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<table id="table-data" class="table table-vmiddle nowrap"
+						width="100%">
+						<thead>
+							<tr>
+								<th class="text-center">#</th>
+								<th class="text-center">placa</th>
+								<th class="text-center">color</th>
+								<th class="text-center">cilindrada</th>
+                                <th class="text-center"># Motor</th>
+                                <th class="text-center">Tipo Vehiculo</th>
+                                <th class="text-center">Marca</th>
+                                <th class="text-center">Modelo</th>
+                                <th class="text-center">KIT GLP</th>
+								<th class="text-center">estado</th>
+								<th class="text-center">Opciones</th>
+
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+        var GPlaca;
+        var result=Get_Opciones(null);
+
+        function ExisteOpcion(opc){
+            // alert('entro comparar')
+            var resultado=false;
+            for (var i = 0; i < result.AccionesUser.length; i++) {
+                console.log('for_: ',result.AccionesUser[i]);
+                if(result.AccionesUser[i].codigo==opc){
+                    resultado=true;         
+                }
+            }
+            // console.log('result_dentro:',resultado)              
+            return resultado;
+        }
+
+        var filtro=$('#filt-data').val();
+        var estado=$('input[name="iestado"]:checked').val();
+        listar();
+
+        $('#filt-data').on('keyup',function(){
+            filtro=$(this).val();
+            listar();
+        })
+
+        $('input[name="iestado"]').on('change',function(){
+            estado=$(this).val();
+            listar();
+        })
+        var DTable='';
+        function listar(){
+            $.ajax({
+                url:'../RestSolicitudes/listarVehiculos',
+                type:'post',
+                dataType:'json',
+                data:{
+                    filtro:filtro,
+                    estado:estado,
+                },
+                success:function(resp){
+                    console.log('icont_')
+                    if ($.fn.DataTable.isDataTable('#table-data')) {
+                        DTable.destroy();
+                        iniciarDatable(resp);       
+                    } else {
+                        iniciarDatable(resp);
+                    }   
+                },
+                error:function(err){
+                    alert('sin respuesta del servidor')
+                }
+            })
+        }
+      
+        function iniciarDatable(lista){
+            console.log('respuestaAjax: ',lista);
+            DTable=$('#table-data').DataTable({
+                "oLanguage": {
+                    "sUrl": "/js/dataTables/Spanish.lang"
+                },
+                responsive:true,
+                "dom":'rt<button>ip',
+                // "ordering":false,
+                "pageLength":5,
+                data:lista,
+                columns:[
+                    {data:'placa'},
+                    {data:'placa'},
+                    {data:'placa'},
+                    {data:'placa'},
+                    {data:'placa'},
+                    {data:'placa'},
+                    {data:'placa'},
+                    {data:'placa'},
+                    {data:'placa'},
+                    {data:'estado'},
+                    {data:'placa'},
+                ]
+                ,
+                "createdRow":function(row,data,index){
+                    $('td',row).eq(0).html(index+1).addClass('text-center');
+                    $('td',row).eq(1).html(data.placa)
+                    $('td',row).eq(2).html(data.color)
+                    $('td',row).eq(3).html(data.cilindrada)
+                    $('td',row).eq(4).html(data.num_motor)
+                    $('td',row).eq(5).html(data.tipoVehiculo.nombre)
+                    $('td',row).eq(6).html(data.marcaVehiculo.nombre)
+                    $('td',row).eq(7).html(data.modeloVehiculo.nombre)
+                    if (data.kitGlp==0) {
+                        $('td',row).eq(8).html('<input type="checkbox" class="" disabled="disabled">').addClass('text-center').addClass('text-center');
+                    } else {
+                        $('td',row).eq(9).html('<input type="checkbox" class="" checked disabled="disabled">').addClass('text-center').addClass('text-center');
+                    }
+                    if(data.estado==1){
+                        $('td',row).eq(9).html('<button type="button" class="btn btn-success waves-effect" href="#" style="text-align:center"><i class="fa fa-thumbs-o-up"></i></button>').addClass('text-center').addClass('text-center');
+                    }else{
+                        $('td',row).eq(9).html('<button type="button" class="btn btn-danger waves-effect" href="#" style="text-align:center"><i class="fa fa-thumbs-o-down"></i></button>').addClass('text-center').addClass('text-center');
+                    }
+                    if(ExisteOpcion('modificar')){
+                        $('td',row).eq(10).html('<button id="btn-mod" class="btn btn-info btn-sm waves-effect btn-espacio" accesskey="'+data.placa+'" data-href="'+data.placa+'" onclick="(Gestionar.mod(this))"><span class="zmdi zmdi-edit"></span> Modificar</button>')
+                        // $('td',row).eq(5).append('<button>hola</button>')
+                    }else{
+                        // $('td',row).eq(10).html('<button id="btn-mod" class="btn btn-info btn-sm waves-effect btn-espacio" disabled="disabled"><span class="zmdi zmdi-edit"></span> Modificar</button>') 
+                        $('td',row).eq(10).html('') 
+                    }
+
+
+                }
+                ,
+                "fnDrawCallback":function(oSetttings){
+                    destruir(DTable);
+                }
+            });
+        }
+
+        function destruir(dt){
+            console.log('destroy')
+            dt.destroy();
+            DTable=$('#table-data').DataTable({
+                "oLanguage": {
+                    "sUrl": "/js/dataTables/Spanish.lang"
+                },
+                "dom":'rt<button>ip',
+                "pageLength":5,
+                responsive:true
+            })
+        }
+        
+        var Gestionar={
+            mod:function(a){
+                var placa=$(a).attr('accesskey');
+                GPlaca=placa;
+                $.ajax({
+                    url:'../Vehiculos/modal-mod',
+                    type:'post',
+                    data:{
+                        placa:placa
+                    },
+                    success:function(resp){
+                        $('#cont-modales').html(resp);
+                        $('#modal-mod').modal('show')
+
+                        $('#formulario-mod').formValidation({
+                            fields:{
+                                placa:{     
+                                    validators:{
+                                        callback:{
+                                            message:'callback placa',
+                                            callback:function(value,validator,$field){
+                                                // alert('click')
+                                                console.log($field)
+                                                console.log(value)
+                                                var respPlaca=0;
+                                                var padreNode=$('.dt-veh').parent(); 
+                                                // if(value=='' || value.indexOf(' ') != -1){
+                                                                                                 
+                                                //     $('#mensaje-placa').hide()
+                                                //     $('.dt-veh').removeAttr('disabled')
+                                                //     return{
+                                                //         valid:false,
+                                                //         message:"Requiere una placa"
+                                                //     }
+                                                // }
+
+                                                $.ajax({
+                                                    url:"../RestSolicitudes/existePlacaMod",
+                                                    data:{
+                                                        placa:value
+                                                    },
+                                                    type:"post",
+                                                    dataType:"json",
+                                                    async:false,
+                                                    cache:false,
+                                                    success:function(resp){
+                                                        console.log('existePlaca: ',resp) 
+                                                        respPlaca=resp.estado
+                 
+                                                    },  
+                                                    error:function(err){
+                                                        alert('sin respuesta del servidor')
+                                                    }
+
+                                                })
+                                                console.log('respPlaca: ',respPlaca)
+                                                if(respPlaca==1){
+                                                    $('#mensaje-placa').hide();
+                                                    // $('.dt-veh').attr('disabled','disabled')
+                                                    // $('.dt-veh').val('').trigger('chosen:updated'); 
+                                                    if($('input[name="placa_hidden"]').val()!=value){
+                                                        return {
+                                                            valid:false,
+                                                            message:'esta placa ya existe'
+                                                        } 
+                                                    }
+                                                }
+
+                                                return {
+                                                    valid:true,
+                                                    message:'ok'
+                                                }
+                                                    
+
+                                            }
+                                        }
+                                    }
+                                },
+                            }                           
+                        })
+                        .on('success.form.fv', function(e){
+                           e.preventDefault();
+                           Modificar();
+                        })
+                        function Modificar(){
+                            swal({   
+                                title: "Seguro de modificar Vehículo?",   
+                                text: "Usted modificara los datos del Vehículo",   
+                                type: "warning",   
+                                showCancelButton: true,   
+                                confirmButtonColor: "#DD6B55",   
+                                confirmButtonText: "Si, Continuar!",   
+                                cancelButtonText: "No, Cancelar!",   
+                                closeOnConfirm: false,   
+                                closeOnCancel: false 
+                                }, function(isConfirm){  
+                                    $('.doc-mod').removeAttr('disabled') 
+                                    if (isConfirm) {
+                                        $('#formulario-mod').ajaxSubmit({
+                                        	success:function(res){
+                                                console.log('modificado',res)
+                                                if(res.estado){
+                                                   //  $.ajax({
+                                                   //      url:"../RestSolicitudes/modificarCombVeh",
+                                                   //      data:{
+                                                   //          placa:$('input[name="placa_hidden"]').val()
+                                                   //      },
+                                                   //      success:function(resp){
+                                                   //          if (resp.estado) {
+
+                                                   //          }
+                                                   //      }
+
+                                                   // })     
+                                                    $.ajax({
+                                                        url:"../Vehiculos/Gestion",
+                                                        success:function(gestion){
+                                                            $('#contenedor-gestion').html(gestion); 
+                                                            swal({
+                                                                title:"Modificado",
+                                                                text:"Se ha modificado Vehículo exitosamente",
+                                                                type:"success",
+                                                                timer: 2000,   
+                                                                showConfirmButton: false 
+                                                            });
+                                                            $('#modal-mod').modal('hide')
+                                                        }
+                                                    })      
+
+                                                }
+                                            }
+                                        })
+
+                                    } else {     
+                                        // swal("Cancelled", "Your imaginary file is safe :)", "error");   
+                                        swal({
+                                            title:"Cancelado",
+                                            text:"Se ha cancelado operacion",
+                                            type:"error",
+                                            timer:2000,
+                                            showCancelButton:false,
+                                            showConfirmButton:false
+
+                                        })
+                                        $('#modal-mod').modal('hide')
+                                    } 
+                            });
+                        }
+
+                    },
+                    error:function(err){
+                        alert('sin respuesta del servidor')
+                    }
+                })    
+            }
+
+        }        
+        
+    // })
+        
+    </script>
+</body>
+</html>
